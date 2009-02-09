@@ -1,0 +1,4 @@
+Name=mp3 Player
+Icon=mp3player.png
+Description=Runs mp3 player
+Module=mp3player

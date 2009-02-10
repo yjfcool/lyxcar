@@ -12,7 +12,7 @@
 
 #include "main.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char * argv[]) {
 	QApplication app(argc, argv);
 	
 //	if (!QSystemTrayIcon::isSystemTrayAvailable()) {
@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 	
 //	Q_INIT_RESOURCE(docstyle);
 	
-	AMainWindow window((QWidget*)QApplication::desktop());
+	AMainWindow window((QWidget *)QApplication::desktop());
 	window.show();
 
 	return app.exec();

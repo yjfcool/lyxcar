@@ -14,7 +14,7 @@
 
 #include "mainmenu.h"
 
-AMainMenuButton::AMainMenuButton(QWidget *parent) {
+AMainMenuButton::AMainMenuButton(QWidget * parent) {
 	buttonImages.append(QPixmap("../skins/default/menu_u.png")); // Default
 	buttonImages.append(QPixmap("../skins/default/menu_o.png")); // Over
 	buttonImages.append(QPixmap("../skins/default/menu_p.png")); // Pressed
@@ -23,17 +23,17 @@ AMainMenuButton::AMainMenuButton(QWidget *parent) {
 	setMouseTracking(true);
 }
 
-void AMainMenuButton::mousePressEvent(QMouseEvent *ev) {
+void AMainMenuButton::mousePressEvent(QMouseEvent * ev) {
 	setPixmap(buttonImages[2]);
 }
-void AMainMenuButton::mouseReleaseEvent(QMouseEvent *ev) {
+void AMainMenuButton::mouseReleaseEvent(QMouseEvent * ev) {
 	setPixmap(buttonImages[0]);
 	emit activated();
 }
 
 /***********************************************************/
 
-AMainMenuWidget::AMainMenuWidget(QWidget *parent) {
+AMainMenuWidget::AMainMenuWidget(QWidget * parent) {
 	resize(400, 500);
 	setAutoFillBackground(true);
 	setWindowFlags(Qt::SubWindow);

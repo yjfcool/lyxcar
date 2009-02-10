@@ -15,6 +15,7 @@
 #ifndef __SKINNER_H__
 #define __SKINNER_H__
 
+#include <QtXml>
 #include <QtGui>
 #include <QString>
 
@@ -24,6 +25,9 @@ class ASkinner {
 		ASkinner(QString skinName);
 
 		int loadSkin(QString name);
+
+		QDomDocument * skin;
+		QDomElement skinRoot;
 
 	private:
 		QString	skinsPath;

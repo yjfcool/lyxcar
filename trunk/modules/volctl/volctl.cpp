@@ -86,6 +86,8 @@ void volCtlModule::activate(QWidget *parent) {
 // @brief Adding an applet to panel into specified position.
 //
 void volCtlModule::appendToPanel(APanel *panel, int position) {
+	qDebug() << "Appending volCtl plugin to panel";
+
 	// Создаем виджет апплета
 	appletWidget = new volCtlModuleApplet(NULL, skinner);	
 	appletWidget->setSkinner(skinner);

@@ -21,12 +21,12 @@ int main(int argc, char * argv[]) {
 //	}
 
 //	QTranslator translator;
-//	translator.load("../translate/ru.qm");
+//	translator.load("./translate/ru.qm");
 //	app.installTranslator(&translator);
 	
 //	Q_INIT_RESOURCE(docstyle);
 	
-	AMainWindow window((QWidget *)QApplication::desktop());
+	AMainWindow window(qobject_cast<QWidget *>(QApplication::desktop()));
 	window.show();
 
 	return app.exec();

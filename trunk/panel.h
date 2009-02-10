@@ -14,11 +14,12 @@
 #define __PANEL_H__
 
 #include "mainmenu.h"
+#include "skinner.h"
 
 class APanel : public QWidget {
 	Q_OBJECT
 	public:
-		APanel(QWidget *parent = 0);
+		APanel(QWidget *parent = 0, ASkinner *s = 0);
 		~APanel();
 
 		void fill();
@@ -31,6 +32,9 @@ class APanel : public QWidget {
 		QList<QToolButton *> items;
 
 		QHBoxLayout *layout;
+
+	protected:
+		ASkinner * skinner;
 
 	signals:
 		void repaintModuleArea();

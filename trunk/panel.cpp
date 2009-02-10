@@ -13,7 +13,9 @@
 #include "panel.h"
 #include "mainmenu.h"
 
-APanel::APanel(QWidget *parent) {
+APanel::APanel(QWidget *parent, ASkinner *s) {
+
+	skinner = s;
 
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	setFixedHeight(79);
@@ -22,7 +24,7 @@ APanel::APanel(QWidget *parent) {
 	infoBar = new QWidget(this);
 
 	QPalette pal = palette();
-	QPixmap bgImg("../skins/default/mbg.png");
+	QPixmap bgImg(skinner->skinValue("", "panel", "background"));
 	QBrush brush = QBrush();
 	brush.setTexture(bgImg);
 	pal.setBrush(QPalette::Window, brush);
@@ -30,6 +32,8 @@ APanel::APanel(QWidget *parent) {
 	setAutoFillBackground(true);
 
 	layout->setSpacing(0);
+	layout->addSpacing(skinner->skinValue("", "panel", "padding-left").toInt());
+	layout->insertSpacing(100, skinner->skinValue("", "panel", "padding-right").toInt());
 	layout->setMargin(0);
         layout->insertWidget(0, infoBar, 1);
 

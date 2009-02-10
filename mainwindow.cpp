@@ -33,6 +33,15 @@ AMainWindow::AMainWindow(QWidget *parent) {
 	mainArea = new QWidget();
 	mainArea->setLayout(new QVBoxLayout());
 
+	QPalette pal = palette();
+	QPixmap bgImg("../skins/default/background.png");
+	QBrush brush = QBrush();
+	brush.setTexture(bgImg);
+	pal.setBrush(QPalette::Window, brush);
+	mainArea->setPalette(pal);
+	mainArea->setAutoFillBackground(true);
+
+
 	((QBoxLayout *)mainWidget->layout())->insertWidget(0, panel);
 	((QBoxLayout *)mainWidget->layout())->insertWidget(0, mainArea, 1);
 

@@ -74,7 +74,6 @@ QString ASkinner::skinModuleValue(QString module, QString object, QString attrib
 		if(!objectRoot.isNull()) {
 			QString attr = "./skins/"+skinName+"/"+module+"/"+objectRoot.attribute(attribute);
 			qDebug() << "Loaded skin attribute: " << attr;
-			printf(attr.toAscii());
 			return attr;
 		}
 	}

@@ -14,13 +14,15 @@
 #define __M_INTERFACE_H__
 
 #include <QWidget>
+#include <QtPlugin>
+
 #include "panel.h"
 #include "skinner.h"
 
 class M_Interface {
 	public:
 		QWidget * moduleWindow;
-//		virtual ~M_Interface() {}
+		virtual ~M_Interface() {}
 		virtual void activate(QWidget * parent = 0);
 		virtual void activatePeriodically(QWidget * parent = 0);
 		virtual void appendToPanel(APanel * panel = 0, int position = 0);

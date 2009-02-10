@@ -20,6 +20,8 @@
 AMainWindow::AMainWindow(QWidget *parent) {
 	resize(800, 600);
 
+	skinner = new ASkinner("default");
+
 	QWidget *mainWidget = new QWidget(this);
 	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
 	layout->setSpacing(0);
@@ -34,7 +36,7 @@ AMainWindow::AMainWindow(QWidget *parent) {
 	mainArea->setLayout(new QVBoxLayout());
 
 	QPalette pal = palette();
-	QPixmap bgImg("../skins/default/background.png");
+	QPixmap bgImg(skinner->skinValue("", "background"));
 	QBrush brush = QBrush();
 	brush.setTexture(bgImg);
 	pal.setBrush(QPalette::Window, brush);

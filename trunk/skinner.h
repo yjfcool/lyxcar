@@ -27,7 +27,11 @@ class ASkinner {
 		int loadSkin(QString name);
 
 		QDomDocument * skin;
+
 		QDomElement skinRoot;
+		QDomElement panel;
+
+		QString	skinValue(QString root = "", QString attribute = "");
 
 	private:
 		QString	skinsPath;

@@ -26,8 +26,13 @@ class ALyxButton : public QAbstractButton {
 		void setDownPixmap(QPixmap image);
 
 	private:
+		bool currentState; // Button isn't pressed
+
 		QPixmap buttonUpImage;
 		QPixmap buttonDownImage;
+
+		void mousePressEvent(QMouseEvent *e);
+		void mouseReleaseEvent(QMouseEvent *e);
 
 	protected:
 		void paintEvent(QPaintEvent *event);

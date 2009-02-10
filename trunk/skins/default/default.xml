@@ -3,8 +3,8 @@
 	<panel
 	height="79"
 	position="bottom"
-	padding-left="40"
-	padding-right="40"
+	padding-left="60"
+	padding-right="60"
 	background="mbg.png">
 	</panel>
 

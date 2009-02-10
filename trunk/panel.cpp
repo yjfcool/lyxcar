@@ -24,7 +24,7 @@ APanel::APanel(QWidget *parent, ASkinner *s) {
 	infoBar = new QWidget(this);
 
 	QPalette pal = palette();
-	QPixmap bgImg(skinner->skinValue("", "panel", "background"));
+	QPixmap bgImg(skinner->skinImage("", "panel", "background"));
 	QBrush brush = QBrush();
 	brush.setTexture(bgImg);
 	pal.setBrush(QPalette::Window, brush);
@@ -32,9 +32,8 @@ APanel::APanel(QWidget *parent, ASkinner *s) {
 	setAutoFillBackground(true);
 
 	layout->setSpacing(0);
-	layout->addSpacing(skinner->skinValue("", "panel", "padding-left").toInt());
-	layout->insertSpacing(100, skinner->skinValue("", "panel", "padding-right").toInt());
-	layout->setMargin(0);
+	layout->setContentsMargins(skinner->skinValue("", "panel", "padding-left").toInt(), 0,
+				skinner->skinValue("", "panel", "padding-right").toInt(), 0);
         layout->insertWidget(0, infoBar, 1);
 
 //	button = new AMainMenuButton(this);

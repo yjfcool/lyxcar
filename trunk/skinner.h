@@ -36,6 +36,9 @@ class ASkinner : public QObject {
 		QString	skinValue(QString part = "", QString root = "", QString attribute = "");
 		QString	skinModuleValue(QString module = "", QString object = "", QString attribute = "");
 
+		QString	skinImage(QString part = "", QString root = "", QString attribute = "");
+		QString	skinModuleImage(QString module = "", QString object = "", QString attribute = "");
+
 	private:
 		QString	skinsPath;
 		QString skinName;

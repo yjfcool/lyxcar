@@ -51,10 +51,17 @@ int ASkinner::loadSkin(QString name) {
 
 QString ASkinner::skinValue(QString part, QString root, QString attribute) {
 	if(((root == "") || (root == "root")) && (part == "")) {
+
 		QString attr = "../skins/"+skinName+"/"+skinRoot.attribute(attribute);
 		qDebug() << "Loaded skin root attribute: " << attr;
-		printf(attr.toAscii());
 		return attr;
+
+	} else if(root == "panel") {
+
+		QString attr = "../skins/"+skinName+"/"+panel.attribute(attribute);
+		qDebug() << "Loaded skin panel attribute: " << attr;
+		return attr;
+
 	}
 
 	return QString("");

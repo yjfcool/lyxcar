@@ -30,7 +30,7 @@ AMainWindow::AMainWindow(QWidget *parent) {
 
 	setCentralWidget(mainWidget);
 
-	panel = new APanel(mainWidget);
+	panel = new APanel(mainWidget, skinner);
 
 	mainArea = new QWidget();
 	mainArea->setLayout(new QVBoxLayout());

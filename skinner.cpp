@@ -31,7 +31,7 @@ int ASkinner::loadSkin(QString name) {
 	skinName = name;
 
 	// Load skin configuration file
-	QFile file("../skins/"+skinName+"/"+skinName+".xml");
+	QFile file("./skins/"+skinName+"/"+skinName+".xml");
 	if(!file.open(QIODevice::ReadOnly))
 		return 1;
 
@@ -52,13 +52,13 @@ int ASkinner::loadSkin(QString name) {
 QString ASkinner::skinValue(QString part, QString root, QString attribute) {
 	if(((root == "") || (root == "root")) && (part == "")) {
 
-		QString attr = "../skins/"+skinName+"/"+skinRoot.attribute(attribute);
+		QString attr = "./skins/"+skinName+"/"+skinRoot.attribute(attribute);
 		qDebug() << "Loaded skin root attribute: " << attr;
 		return attr;
 
 	} else if(root == "panel") {
 
-		QString attr = "../skins/"+skinName+"/"+panel.attribute(attribute);
+		QString attr = "./skins/"+skinName+"/"+panel.attribute(attribute);
 		qDebug() << "Loaded skin panel attribute: " << attr;
 		return attr;
 
@@ -72,7 +72,7 @@ QString ASkinner::skinModuleValue(QString module, QString object, QString attrib
 	if(!moduleRoot.isNull()) {
 		QDomElement objectRoot = moduleRoot.firstChildElement(object);
 		if(!objectRoot.isNull()) {
-			QString attr = "../skins/"+skinName+"/"+module+"/"+objectRoot.attribute(attribute);
+			QString attr = "./skins/"+skinName+"/"+module+"/"+objectRoot.attribute(attribute);
 			qDebug() << "Loaded skin attribute: " << attr;
 			printf(attr.toAscii());
 			return attr;

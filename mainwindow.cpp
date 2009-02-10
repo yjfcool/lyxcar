@@ -57,12 +57,24 @@ AMainWindow::~AMainWindow() {
 }
 
 bool AMainWindow::loadPlugin() {
-	QDir pluginDirectory("../modules/volctl");
+	QDir pluginDirectory("modules/volctl");
+
+#ifdef Q_OS_WIN32
+	qDebug() << "Loading Windows plugins";
 	QString fileName = pluginDirectory.entryList(QStringList() << "*.dll").first();
+#endif
+
+#ifdef Q_OS_UNIX
+	qDebug() << "Loading Unix plugins";
+	QString fileName = pluginDirectory.entryList(QStringList() << "*.so").first();
+#endif
 
 	QPluginLoader pluginLoader(pluginDirectory.absoluteFilePath(fileName));
 	QObject *plugin = pluginLoader.instance();
-	if (plugin) {
+	qDebug() << "Trying plugin" << pluginDirectory.absoluteFilePath(fileName);
+
+	if (plugin != NULL) {
+		qDebug() << "Discovered plugin" << fileName;
 		m_interface = qobject_cast<M_Interface *>(plugin);
 		if(m_interface) {
 			m_interface->setSkinner(skinner);
@@ -70,6 +82,8 @@ bool AMainWindow::loadPlugin() {
                		m_interface->appendToPanel(panel, 0);
 			return true;
 		}
+	} else {
+	    qDebug() << "Plugin not loaded" << pluginDirectory.absoluteFilePath(fileName);
 	}
 	return false;
 } 

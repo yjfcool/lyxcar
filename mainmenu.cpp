@@ -15,9 +15,9 @@
 #include "mainmenu.h"
 
 AMainMenuButton::AMainMenuButton(QWidget * parent) {
-	buttonImages.append(QPixmap("../skins/default/menu_u.png")); // Default
-	buttonImages.append(QPixmap("../skins/default/menu_o.png")); // Over
-	buttonImages.append(QPixmap("../skins/default/menu_p.png")); // Pressed
+	buttonImages.append(QPixmap("./skins/default/menu_u.png")); // Default
+	buttonImages.append(QPixmap("./skins/default/menu_o.png")); // Over
+	buttonImages.append(QPixmap("./skins/default/menu_p.png")); // Pressed
 
 	setPixmap(buttonImages[0]);
 	setMouseTracking(true);

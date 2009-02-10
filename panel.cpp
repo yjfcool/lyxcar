@@ -74,7 +74,7 @@ void APanel::fill() {
 
 	menuArea->setLayout(new QVBoxLayout());
 
-	QDir	dir("../conf/menus");
+	QDir	dir("./conf/menus");
 	QStringList itemFiles = dir.entryList(QDir::Files);
 	foreach(QString itemFile, itemFiles) {
 
@@ -82,7 +82,7 @@ void APanel::fill() {
 		QString itemIcon;
 		QString itemDesc;
 
-		QFile file("../conf/menus/"+itemFile);
+		QFile file("./conf/menus/"+itemFile);
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		while(!file.atEnd()) {
 			QString line = file.readLine();
@@ -97,7 +97,7 @@ void APanel::fill() {
 		items << new QToolButton(menuArea);
 		items.last()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 		items.last()->setText(itemName+"\n"+itemDesc);
-		items.last()->setIcon(QIcon("../skins/default/icons/"+itemIcon));
+		items.last()->setIcon(QIcon("./skins/default/icons/"+itemIcon));
 		items.last()->setIconSize(QSize(32, 32));
 		items.last()->setAutoRaise(true);
 		items.last()->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);

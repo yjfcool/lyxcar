@@ -66,7 +66,7 @@ bool AMainWindow::loadPlugin() {
 
 #ifdef Q_OS_UNIX
 	qDebug() << "Loading Unix plugins";
-	QString fileName = pluginDirectory.entryList(QStringList() << "*.so").first();
+	QString fileName = pluginDirectory.entryList(QStringList() << ".so").first();
 #endif
 
 	QPluginLoader pluginLoader(pluginDirectory.absoluteFilePath(fileName));

@@ -13,7 +13,8 @@
 #include "buttons.h"
 
 ALyxButton::ALyxButton(QWidget *parent) {
-
+	currentState = false;
+	if(isChecked()) { currentState = true; }
 }
 
 void ALyxButton::setUpPixmap(QPixmap image) {
@@ -28,8 +29,25 @@ void ALyxButton::setDownPixmap(QPixmap image) {
 	repaint();
 }
 
+void ALyxButton::mousePressEvent(QMouseEvent *e) {
+	currentState = true;
+	repaint();
+}
+
+void ALyxButton::mouseReleaseEvent(QMouseEvent *e) {
+	currentState = false;
+	repaint();
+}
+
 void ALyxButton::paintEvent(QPaintEvent *e)  {
 	QPainter painter(this);
-
-	painter.drawPixmap(0, 0, buttonUpImage);
+	if(currentState) {
+		if(!buttonUpImage.size().isNull()) {
+			painter.drawPixmap(0, 0, buttonDownImage);
+		}
+	} else {
+		if(!buttonDownImage.size().isNull()) {
+			painter.drawPixmap(0, 0, buttonUpImage);
+		}
+	}
 }

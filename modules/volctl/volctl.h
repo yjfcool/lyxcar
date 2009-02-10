@@ -32,6 +32,11 @@ class volCtlModuleApplet : public QWidget {
 		ALyxButton *vol_up_button;
 		ALyxButton *vol_down_button;
 		ALyxButton *vol_mute_button;
+
+	private slots:
+		void	volume_up();
+		void	volume_down();
+		void	volume_mute();
 };
 
 class volCtlModule : public QObject, M_Interface {

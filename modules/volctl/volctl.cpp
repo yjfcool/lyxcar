@@ -36,6 +36,14 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent) {
 	vol_down_button->setUpPixmap(QPixmap("../skins/default/volctl/volctl_volume_down.png"));
 	vol_mute_button->setUpPixmap(QPixmap("../skins/default/volctl/volctl_mute.png"));
 
+	vol_up_button->setDownPixmap(QPixmap("../skins/default/volctl/volctl_volume_up_act.png"));
+	vol_down_button->setDownPixmap(QPixmap("../skins/default/volctl/volctl_volume_down_act.png"));
+	vol_mute_button->setDownPixmap(QPixmap("../skins/default/volctl/volctl_mute_act.png"));
+
+	connect(vol_up_button, SIGNAL(clicked()), this, SLOT(volume_up()));
+	connect(vol_down_button, SIGNAL(clicked()), this, SLOT(volume_down()));
+	connect(vol_mute_button, SIGNAL(clicked()), this, SLOT(volume_mute()));
+
 	layout->setSpacing(0);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addStretch(1);
@@ -47,6 +55,22 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent) {
 
 volCtlModuleApplet::~volCtlModuleApplet() {
 
+}
+
+//
+// @brief Volume control functions.
+// Functions for increasing and decreasing volume level and for muting.
+//
+void volCtlModuleApplet::volume_up() {
+	qDebug() << "Volume UP button pressed";
+}
+
+void volCtlModuleApplet::volume_mute() {
+	qDebug() << "Volume MUTE button pressed";
+}
+
+void volCtlModuleApplet::volume_down() {
+	qDebug() << "Volume DOWN button pressed";
 }
 
 //

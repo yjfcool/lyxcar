@@ -19,10 +19,11 @@
 #include <QtGui>
 #include <QString>
 
-class ASkinner {
+class ASkinner : public QObject {
 	public:
-		ASkinner();
-		ASkinner(QString skinName);
+		ASkinner(QObject *parent);
+		ASkinner(QObject *parent, QString skinName);
+		~ASkinner() {}
 
 		int loadSkin(QString name);
 
@@ -30,8 +31,10 @@ class ASkinner {
 
 		QDomElement skinRoot;
 		QDomElement panel;
+		QDomElement modules;
 
-		QString	skinValue(QString root = "", QString attribute = "");
+		QString	skinValue(QString part = "", QString root = "", QString attribute = "");
+		QString	skinModuleValue(QString module = "", QString object = "", QString attribute = "");
 
 	private:
 		QString	skinsPath;

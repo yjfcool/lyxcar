@@ -15,6 +15,7 @@
 
 #include <QWidget>
 #include "panel.h"
+#include "skinner.h"
 
 class M_Interface {
 	public:
@@ -23,6 +24,11 @@ class M_Interface {
 		virtual void activate(QWidget * parent = 0);
 		virtual void activatePeriodically(QWidget * parent = 0);
 		virtual void appendToPanel(APanel * panel = 0, int position = 0);
+
+		void setSkinner(ASkinner *skinnerObj) { printf("Skinner object set!\n"); skinner = skinnerObj; }
+
+	protected:
+		ASkinner *skinner;
 
 };
 

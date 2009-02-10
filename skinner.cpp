@@ -12,14 +12,14 @@
 
 #include "skinner.h"
 
-ASkinner::ASkinner() {
+ASkinner::ASkinner(QObject *parent) {
 	skin = new QDomDocument();
 }
 
 //
 // @brief Create a skin object and load skin specified by skinName.
 //
-ASkinner::ASkinner(QString name) {
+ASkinner::ASkinner(QObject *parent, QString name) {
 	skin = new QDomDocument();
 	if(loadSkin(name) > 0) {
 		// Skin load error
@@ -44,13 +44,32 @@ int ASkinner::loadSkin(QString name) {
 
 	skinRoot = skin->documentElement();
 	panel = skinRoot.firstChildElement("panel");
+	modules = skinRoot.firstChildElement("modules");
 
 	return 0; // Return 1 if loading error
 }
 
-QString ASkinner::skinValue(QString root, QString attribute) {
-	if((root == "") || (root == "root")) {
-		return "../skins/"+skinName+"/"+skinRoot.attribute(attribute);
+QString ASkinner::skinValue(QString part, QString root, QString attribute) {
+	if(((root == "") || (root == "root")) && (part == "")) {
+		QString attr = "../skins/"+skinName+"/"+skinRoot.attribute(attribute);
+		qDebug() << "Loaded skin root attribute: " << attr;
+		printf(attr.toAscii());
+		return attr;
+	}
+
+	return QString("");
+}
+
+QString ASkinner::skinModuleValue(QString module, QString object, QString attribute) {
+	QDomElement moduleRoot = modules.firstChildElement(module);
+	if(!moduleRoot.isNull()) {
+		QDomElement objectRoot = moduleRoot.firstChildElement(object);
+		if(!objectRoot.isNull()) {
+			QString attr = "../skins/"+skinName+"/"+module+"/"+objectRoot.attribute(attribute);
+			qDebug() << "Loaded skin attribute: " << attr;
+			printf(attr.toAscii());
+			return attr;
+		}
 	}
 
 	return QString("");

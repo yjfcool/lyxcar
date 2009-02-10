@@ -20,7 +20,7 @@
 AMainWindow::AMainWindow(QWidget *parent) {
 	resize(800, 600);
 
-	skinner = new ASkinner("default");
+	skinner = new ASkinner(this, "default");
 
 	QWidget *mainWidget = new QWidget(this);
 	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
@@ -36,7 +36,7 @@ AMainWindow::AMainWindow(QWidget *parent) {
 	mainArea->setLayout(new QVBoxLayout());
 
 	QPalette pal = palette();
-	QPixmap bgImg(skinner->skinValue("", "background"));
+	QPixmap bgImg(skinner->skinValue("", "", "background"));
 	QBrush brush = QBrush();
 	brush.setTexture(bgImg);
 	pal.setBrush(QPalette::Window, brush);
@@ -65,6 +65,7 @@ bool AMainWindow::loadPlugin() {
 	if (plugin) {
 		m_interface = qobject_cast<M_Interface *>(plugin);
 		if(m_interface) {
+			m_interface->setSkinner(skinner);
                		m_interface->activate(mainArea);
                		m_interface->appendToPanel(panel, 0);
 			return true;

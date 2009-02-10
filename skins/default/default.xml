@@ -1,0 +1,26 @@
+<skin resolution="800x600" background="background.png">
+	<font family="Calibri"/>
+	<panel
+	height="79"
+	position="bottom"
+	padding-left="40"
+	padding-right="40"
+	background="mbg.png">
+	</panel>
+
+	<modules>
+		<module name="volctl">
+			<volume_up_button
+			released="volctl_volume_up.png"
+			pressed="volctl_volume_up_act.png"/>
+
+			<volume_down_button
+			released="volctl_volume_up.png"
+			pressed="volctl_volume_up_act.png"/>
+
+			<volume_mute_button
+			released="volctl_mute.png"
+			pressed="volctl_mute_act.png"/>
+		</module>
+	</modules>
+</skin>

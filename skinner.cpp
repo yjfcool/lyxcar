@@ -52,13 +52,13 @@ int ASkinner::loadSkin(QString name) {
 QString ASkinner::skinValue(QString part, QString root, QString attribute) {
 	if(((root == "") || (root == "root")) && (part == "")) {
 
-		QString attr = "./skins/"+skinName+"/"+skinRoot.attribute(attribute);
+		QString attr = skinRoot.attribute(attribute);
 		qDebug() << "Loaded skin root attribute: " << attr;
 		return attr;
 
 	} else if(root == "panel") {
 
-		QString attr = "./skins/"+skinName+"/"+panel.attribute(attribute);
+		QString attr = panel.attribute(attribute);
 		qDebug() << "Loaded skin panel attribute: " << attr;
 		return attr;
 
@@ -72,11 +72,21 @@ QString ASkinner::skinModuleValue(QString module, QString object, QString attrib
 	if(!moduleRoot.isNull()) {
 		QDomElement objectRoot = moduleRoot.firstChildElement(object);
 		if(!objectRoot.isNull()) {
-			QString attr = "./skins/"+skinName+"/"+module+"/"+objectRoot.attribute(attribute);
+			QString attr = objectRoot.attribute(attribute);
 			qDebug() << "Loaded skin attribute: " << attr;
 			return attr;
 		}
 	}
 
 	return QString("");
+}
+
+QString ASkinner::skinModuleImage(QString module, QString object, QString attribute) {
+	QString attr = "./skins/"+skinName+"/"+module+"/"+skinModuleValue(module, object, attribute);;
+	return attr;
+}
+
+QString ASkinner::skinImage(QString part, QString root, QString attribute) {
+	QString attr = "./skins/"+skinName+"/"+skinValue(part, root, attribute);;
+	return attr;
 }

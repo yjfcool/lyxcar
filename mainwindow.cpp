@@ -36,7 +36,7 @@ AMainWindow::AMainWindow(QWidget *parent) {
 	mainArea->setLayout(new QVBoxLayout());
 
 	QPalette pal = palette();
-	QPixmap bgImg(skinner->skinValue("", "", "background"));
+	QPixmap bgImg(skinner->skinImage("", "", "background"));
 	QBrush brush = QBrush();
 	brush.setTexture(bgImg);
 	pal.setBrush(QPalette::Window, brush);

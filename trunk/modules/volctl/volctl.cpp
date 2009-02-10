@@ -16,7 +16,7 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent) {
 	// 220px ширина апплета
 	setFixedWidth(220);
 
-	QLayout *layout = new QHBoxLayout();
+	QBoxLayout *layout = new QHBoxLayout();
 	setLayout(layout);
 
 	QPalette pal = palette();
@@ -36,9 +36,13 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent) {
 	vol_down_button->setUpPixmap(QPixmap("../skins/default/volctl/volctl_volume_down.png"));
 	vol_mute_button->setUpPixmap(QPixmap("../skins/default/volctl/volctl_mute.png"));
 
+	layout->setSpacing(0);
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->addStretch(1);
 	layout->addWidget(vol_up_button);
 	layout->addWidget(vol_down_button);
 	layout->addWidget(vol_mute_button);
+	layout->addStretch(1);
 }
 
 volCtlModuleApplet::~volCtlModuleApplet() {

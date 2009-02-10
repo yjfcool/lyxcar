@@ -20,7 +20,7 @@ ASkinner::ASkinner() {
 // @brief Create a skin object and load skin specified by skinName.
 //
 ASkinner::ASkinner(QString name) {
-	ASkinner();
+	skin = new QDomDocument();
 	if(loadSkin(name) > 0) {
 		// Skin load error
 		QApplication::exit(1);
@@ -32,14 +32,26 @@ int ASkinner::loadSkin(QString name) {
 
 	// Load skin configuration file
 	QFile file("../skins/"+skinName+"/"+skinName+".xml");
-	if(!file.open(QIODevice::ReadOnly)) return 1;
+	if(!file.open(QIODevice::ReadOnly))
+		return 1;
+
 	if(!skin->setContent(&file)) {
  		file.close();
 		return 1;
 	}
+
 	file.close();
 
 	skinRoot = skin->documentElement();
+	panel = skinRoot.firstChildElement("panel");
 
 	return 0; // Return 1 if loading error
+}
+
+QString ASkinner::skinValue(QString root, QString attribute) {
+	if((root == "") || (root == "root")) {
+		return "../skins/"+skinName+"/"+skinRoot.attribute(attribute);
+	}
+
+	return QString("");
 }

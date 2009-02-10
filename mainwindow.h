@@ -10,6 +10,9 @@
  *
 */
 
+#ifndef __MAINWINDOW_H__
+#define __MAINWINDOW_H__
+
 #include <QMainWindow>
 #include <QSettings>
 
@@ -17,9 +20,7 @@
 #include <QBoxLayout>
 
 #include "m_interface.h"
-
-#ifndef __DOCSTYLE_H__
-#define __DOCSTYLE_H__
+#include "skinner.h"
 
 /*
  * Main window class
@@ -33,6 +34,7 @@ class AMainWindow : public QMainWindow {
 
 		QWidget *mainArea;	// Area for viewing modules!
 		APanel	*panel;
+		ASkinner *skinner;
 
 		void	closeEvent(QCloseEvent *) {};
 		bool	loadPlugin();

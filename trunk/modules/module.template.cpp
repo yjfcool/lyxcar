@@ -28,9 +28,9 @@ void templateModule::activatePeriodically(QWidget *parent) {
 
 }
 
-/*
- * Добавление апплета модуля на панель в указанную позицию
-*/
+//
+// @brief Adding an applet to panel into specified position.
+//
 void templateModule::appendToPanel(QWidget *parent, int position) {
 
 }

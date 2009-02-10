@@ -13,7 +13,6 @@
 #include "volctl.h"
 
 volCtlModuleApplet::volCtlModuleApplet(QWidget *parent) {
-	// 220px ширина апплета
 	setFixedWidth(220);
 
 	QBoxLayout *layout = new QHBoxLayout();
@@ -82,9 +81,9 @@ void volCtlModule::activate(QWidget *parent) {
 
 }
 
-/*
- * Добавление апплета модуля на панель в указанную позицию
-*/
+//
+// @brief Adding an applet to panel into specified position.
+//
 void volCtlModule::appendToPanel(APanel *panel, int position) {
 	// Создаем виджет апплета
 	appletWidget = new volCtlModuleApplet() ;	

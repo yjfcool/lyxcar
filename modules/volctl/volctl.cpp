@@ -28,9 +28,9 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent) {
 	setAutoFillBackground(true);
 
 	// Установить скиновые картинки для кнопок
-	vol_up_button = new ALyxButton();
-	vol_down_button = new ALyxButton();
-	vol_mute_button = new ALyxButton();
+	vol_up_button = new ALyxButton(this);
+	vol_down_button = new ALyxButton(this);
+	vol_mute_button = new ALyxButton(this);
 
 	vol_up_button->setUpPixmap(QPixmap("../skins/default/volctl/volctl_volume_up.png"));
 	vol_down_button->setUpPixmap(QPixmap("../skins/default/volctl/volctl_volume_down.png"));
@@ -45,6 +45,11 @@ volCtlModuleApplet::~volCtlModuleApplet() {
 
 }
 
+//
+// @brief Module activation function.
+// Module activation stands for executing its code in main area of
+// an interface window.
+//
 void volCtlModule::activate(QWidget *parent) {
 
 }
@@ -52,7 +57,6 @@ void volCtlModule::activate(QWidget *parent) {
 /*
  * Добавление апплета модуля на панель в указанную позицию
 */
-
 void volCtlModule::appendToPanel(APanel *panel, int position) {
 	// Создаем виджет апплета
 	appletWidget = new volCtlModuleApplet() ;	

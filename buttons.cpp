@@ -18,11 +18,13 @@ ALyxButton::ALyxButton(QWidget *parent) {
 
 void ALyxButton::setUpPixmap(QPixmap image) {
 	buttonUpImage = image;
+	setFixedSize(image.rect().size());
 	repaint();
 }
 
 void ALyxButton::setDownPixmap(QPixmap image) {
 	buttonDownImage = image;
+	setFixedSize(image.rect().size());
 	repaint();
 }
 
@@ -30,5 +32,4 @@ void ALyxButton::paintEvent(QPaintEvent *e)  {
 	QPainter painter(this);
 
 	painter.drawPixmap(0, 0, buttonUpImage);
-	painter.drawText(10, 10, "ttt");
 }

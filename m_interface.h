@@ -18,11 +18,11 @@
 
 class M_Interface {
 	public:
-		QWidget *moduleWindow;
+		QWidget * moduleWindow;
 //		virtual ~M_Interface() {}
-		virtual void activate(QWidget *parent = 0);
-		virtual void activatePeriodically(QWidget *parent = 0);
-		virtual void appendToPanel(APanel *panel = 0, int position = 0);
+		virtual void activate(QWidget * parent = 0);
+		virtual void activatePeriodically(QWidget * parent = 0);
+		virtual void appendToPanel(APanel * panel = 0, int position = 0);
 
 };
 

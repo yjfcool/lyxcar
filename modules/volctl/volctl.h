@@ -14,6 +14,7 @@
 #define __VOLCTL_H__
 
 #include <QtGui>
+#include <QPushButton>
 
 #include "../../panel.h"
 #include "../../buttons.h"

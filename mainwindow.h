@@ -22,22 +22,23 @@
 #include "m_interface.h"
 #include "skinner.h"
 
-/*
- * Main window class
+//! \brief The class of main window.
+/*!
+ * 
  */
-
 class AMainWindow : public QMainWindow {
 		Q_OBJECT
 	public:
 		AMainWindow(QWidget *parent = 0);
 		~AMainWindow();
 
-		QWidget *mainArea;	// Area for viewing modules!
-		APanel	*panel;
-		ASkinner *skinner;
-
 		void	closeEvent(QCloseEvent *) {};
 		bool	loadPlugin();
+
+	private:
+		QWidget *mainArea;	//! Area for viewing modules!
+		APanel	*panel;
+		ASkinner *skinner;
 
 		M_Interface *m_interface;
 

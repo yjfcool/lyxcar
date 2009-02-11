@@ -19,13 +19,25 @@
 #include "panel.h"
 #include "skinner.h"
 
+//! \brief This is a basic interface for implementing modules for LyxCar.
+
 class M_Interface {
 	public:
 		QWidget * moduleWindow;
+		//! \brief Pure virtual method. This must be implemented as needed to display module's interface in main window.
+		/*!
+			\param parent specifies parent widget for module's widget.
+		*/
 		virtual void activate(QWidget * parent = 0);
 		virtual void activatePeriodically(QWidget * parent = 0);
+		//! \brief Pure virtual method. This must be implemented as needed to append module's control to panel.
+		/*!
+			\param panel specifies the panel to insert the control.
+			\param position specifies the position in which the control is inserted.
+		*/
 		virtual void appendToPanel(APanel * panel = 0, int position = 0);
 
+		//! \brief Sets the ASkinner object.
 		void setSkinner(ASkinner *skinnerObj) { printf("Skinner object set!\n"); skinner = skinnerObj; }
 
 	protected:

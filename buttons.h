@@ -16,13 +16,24 @@
 #include <QAbstractButton>
 #include <QPixmap>
 #include <QPainter>
-
+//! \brief Picture buttons for LyxCar interface.
+/*!
+	Inherited from QAbstractButton. Generates Qt signals clicked(), doubleClicked(), pressed(), released() and so on.
+*/
 class ALyxButton : public QAbstractButton {
 	Q_OBJECT
 	public:
 		ALyxButton(QWidget *parent = 0);
 		
+		//! \brief Sets released or unchecked button picture.
+		/*!
+			\param image is a QPixmap containing image.
+		*/
 		void setUpPixmap(QPixmap image);
+		//! \brief Sets pressed or checked button picture.
+		/*!
+			\param image is a QPixmap containing image.
+		*/
 		void setDownPixmap(QPixmap image);
 
 	private:

@@ -9,3 +9,11 @@
  * License, or any later version.
  *
 */
+
+//! \brief This class implements on-screen-display for useful information, e.g. when changing volume or TV-channel.
+class ALyxOSD : public QWidget {
+	Q_OBJECT
+	public:
+		ALyxOSD(QWidget *parent = 0);
+		~ALyxOSD();
+};

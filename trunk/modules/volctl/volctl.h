@@ -49,8 +49,16 @@ class volCtlModule : public QObject, M_Interface {
 	Q_INTERFACES(M_Interface)
 
 	public:
+
+		/// @brief Module activation function.
+		// Module activation stands for executing its code
+		// in main area of an interface window.
+		//
 		void activate(QWidget * parent = 0);
 		void activatePeriodically(QWidget * parent = 0) {}
+
+		/// @brief Adding an applet to panel into specified position.
+		//
 		void appendToPanel(APanel * panel = 0, int position = 0);
 
 	private:

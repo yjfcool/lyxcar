@@ -84,7 +84,7 @@ void volCtlModule::appendToPanel(APanel *panel, int position) {
 	appletWidget->setSkinner(skinner);
 
 	// Insert it to panel
-	panel->layout->insertWidget(position, appletWidget, 0);
+	qobject_cast<QBoxLayout *>(panel->layout())->insertWidget(position, appletWidget, 0);
 }
 
 Q_EXPORT_PLUGIN2(volCtl, volCtlModule);

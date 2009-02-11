@@ -7,5 +7,6 @@ QT		+= xml
 
 win32:release {
 	DESTDIR		= ./
-	OBJECTS_DIR	= ./
+	OBJECTS_DIR	= ./libs
+	MOC_DIR		= ./libs
 }

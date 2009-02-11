@@ -16,9 +16,18 @@
 #include "mainmenu.h"
 #include "skinner.h"
 
+//! Panel bar class
+/*!
+  This implements panel for inserting applets.
+*/
 class APanel : public QWidget {
 	Q_OBJECT
 	public:
+		//! Constructor
+		/*
+			\param parent is a parent widget
+			\param s is an ASkinner object
+		*/
 		APanel(QWidget *parent = 0, ASkinner *s = 0);
 		~APanel();
 

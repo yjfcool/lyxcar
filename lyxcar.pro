@@ -13,7 +13,7 @@ LIBS		+= -L./release
 SUBDIRS		= modules/volctl
 
 win32:release {
-#	RC_FILE		= lyxcar.rc 
+	RC_FILE		= lyxcar.rc
 	CONFIG		+= console
 	OBJECTS_DIR	= ./libs
 	MOC_DIR		= ./libs

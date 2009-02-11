@@ -24,7 +24,7 @@ class APanel : public QWidget {
 	Q_OBJECT
 	public:
 		//! Constructor
-		/*
+		/*!
 			\param parent is a parent widget
 			\param s is an ASkinner object
 		*/
@@ -33,6 +33,11 @@ class APanel : public QWidget {
 
 		void fill();
 
+	protected:
+
+	private:
+		ASkinner * skinner;
+		
 		QWidget *infoBar;
 		AMainMenuButton *button;
 		AMainMenuWidget *widget;
@@ -41,9 +46,6 @@ class APanel : public QWidget {
 		QList<QToolButton *> items;
 
 		QHBoxLayout *layout;
-
-	protected:
-		ASkinner * skinner;
 
 	signals:
 		void repaintModuleArea();

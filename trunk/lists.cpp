@@ -12,12 +12,23 @@
 
 #include "lists.h"
 
-ALyxListBox::ALyxListBox(QWidget *parent, ASkinner *s) {}
+ALyxListBox::ALyxListBox(QWidget *parent, ASkinner *s) {
+	l_font = QFont("Calibri", 14);
+	l_paddingTop = 20;
+	l_paddingLeft = 20;
+
+	QLabel *lbl = new QLabel("<b>Hello world</b>\nHello all", this);
+	lbl->setFont(l_font);
+	lbl->move(l_paddingLeft, l_paddingTop);
+	l_items << lbl;
+}
 
 ALyxListBox::~ALyxListBox() {}
 	
 void ALyxListBox::paintEvent(QPaintEvent *e) {
 	QPainter p(this);
+	
+	p.setFont(l_font);
 	
 	QPixmap corner_ul("./skins/default/list_ul.png");
 	QPixmap corner_bl("./skins/default/list_dl.png");
@@ -43,6 +54,9 @@ void ALyxListBox::paintEvent(QPaintEvent *e) {
 		corner_ul.height(), 
 		width() - corner_ul.width() - corner_ur.width(), 
 		height() - corner_ur.height() - corner_br.height());
+
+	/*p.setPen(QColor("black"));
+	p.drawText(l_paddingLeft, l_paddingTop+l_font.pointSize(), l_items[0]);*/
 
 	// Draw skinned frame of the listbox
 }

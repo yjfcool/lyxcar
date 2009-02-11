@@ -11,6 +11,9 @@
 */
 
 #include <QWidget>
+#include <QStringList>
+#include <QLabel>
+#include <QList>
 
 #include "skinner.h"
 
@@ -26,10 +29,21 @@ class ALyxListBox : public QWidget {
 		*/
 		ALyxListBox(QWidget *parent = 0, ASkinner *s = 0);
 		~ALyxListBox();
-		
+
+		//! \brief Returns QStringList of items contained in a box.
+		QList <QLabel*> items() { return l_items; }
+	
 	private:
 		void drawFrame();
 
+		QList <QLabel*>l_items;
+		QFont l_font;
+		int l_verticalSpacing;
+		int l_paddingLeft;
+		int l_paddingRight;
+		int l_paddingTop;
+		int l_paddingBottom;
+		
 	protected:
 		void paintEvent(QPaintEvent *e);
 };

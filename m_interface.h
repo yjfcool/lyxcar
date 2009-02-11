@@ -29,7 +29,6 @@ class M_Interface {
 			\param parent specifies parent widget for module's widget.
 		*/
 		virtual void activate(QWidget * parent = 0);
-		virtual void activatePeriodically(QWidget * parent = 0);
 		//! \brief Pure virtual method. This must be implemented as needed to append module's control to panel.
 		/*!
 			\param panel specifies the panel to insert the control.

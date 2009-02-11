@@ -10,6 +10,8 @@
  *
 */
 
+#include <QWidget>
+
 //! \brief This class implements on-screen-display for useful information, e.g. when changing volume or TV-channel.
 class ALyxOSD : public QWidget {
 	Q_OBJECT

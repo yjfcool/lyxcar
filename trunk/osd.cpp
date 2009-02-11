@@ -9,3 +9,9 @@
  * License, or any later version.
  *
 */
+
+#include "osd.h"
+
+ALyxOSD::ALyxOSD(QWidget *parent) {}
+
+ALyxOSD::~ALyxOSD() {}

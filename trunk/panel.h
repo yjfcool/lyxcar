@@ -33,8 +33,6 @@ class APanel : public QWidget {
 
 		void fill();
 
-		QHBoxLayout *layout;
-
 	protected:
 
 	private:

@@ -20,7 +20,7 @@ APanel::APanel(QWidget *parent, ASkinner *s) {
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	setFixedHeight(79);
 
-	layout = new QHBoxLayout(this); setLayout(layout);
+	QHBoxLayout *layout = new QHBoxLayout(this); setLayout(layout);
 	infoBar = new QWidget(this);
 
 	QPalette pal = palette();

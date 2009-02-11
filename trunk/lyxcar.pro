@@ -1,13 +1,11 @@
-TEMPLATE	= app
-HEADERS         = main.h mainwindow.h mainmenu.h panel.h buttons.h osd.h \
-		  skinner.h
-SOURCES         = main.cpp mainwindow.cpp mainmenu.cpp panel.cpp buttons.cpp osd.cpp \
-		  skinner.cpp
+TEMPLATE			= app
+HEADERS				= main.h mainwindow.h mainmenu.h panel.h buttons.h osd.h skinner.h lists.h
+SOURCES				= main.cpp mainwindow.cpp mainmenu.cpp panel.cpp buttons.cpp osd.cpp skinner.cpp lists.cpp
 #TRANSLATIONS	= translate/ru.ts
-CONFIG		+= release config qt
-QT		+= network xml sql
-INCLUDEPATH     += ./include
-LIBS		+= -L./release
+CONFIG				+= release config qt
+QT						+= network xml sql
+INCLUDEPATH		+= ./include
+LIBS					+= -L./release
 
 
 SUBDIRS		= modules/volctl

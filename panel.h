@@ -33,6 +33,8 @@ class APanel : public QWidget {
 
 		void fill();
 
+		QHBoxLayout *layout;
+
 	protected:
 
 	private:
@@ -45,9 +47,8 @@ class APanel : public QWidget {
 		QScrollArea *scroller;
 		QList<QToolButton *> items;
 
-		QHBoxLayout *layout;
-
 	signals:
+		//! This signal is emitted when module rectangle needs to be redrawed.
 		void repaintModuleArea();
 
 	public slots:

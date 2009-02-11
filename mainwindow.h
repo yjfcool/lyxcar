@@ -29,10 +29,12 @@
 class AMainWindow : public QMainWindow {
 		Q_OBJECT
 	public:
+		//! Constructs main window
 		AMainWindow(QWidget *parent = 0);
 		~AMainWindow();
 
-		void	closeEvent(QCloseEvent *) {};
+//		void	closeEvent(QCloseEvent *) {};
+		//! \brief Loads plugin
 		bool	loadPlugin();
 
 	private:

@@ -23,6 +23,10 @@
 class ALyxButton : public QAbstractButton {
 	Q_OBJECT
 	public:
+		//! \brief Constructs a button.
+		/*!
+			\param parent specifies parent widget for the button.
+		*/
 		ALyxButton(QWidget *parent = 0);
 		
 		//! \brief Sets released or unchecked button picture.
@@ -44,9 +48,11 @@ class ALyxButton : public QAbstractButton {
 
 		void mousePressEvent(QMouseEvent *e);
 		void mouseReleaseEvent(QMouseEvent *e);
-
-	protected:
+		
 		void paintEvent(QPaintEvent *event);
+	
+	protected:
+
 };
 
 #endif

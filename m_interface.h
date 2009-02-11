@@ -38,7 +38,7 @@ class M_Interface {
 		virtual void appendToPanel(APanel * panel = 0, int position = 0);
 
 		//! \brief Sets the ASkinner object.
-		void setSkinner(ASkinner *skinnerObj) { printf("Skinner object set!\n"); skinner = skinnerObj; }
+		void setSkinner(ASkinner *skinnerObj) { qDebug() << "Skinner object set!"; skinner = skinnerObj; }
 
 	protected:
 		ASkinner *skinner;

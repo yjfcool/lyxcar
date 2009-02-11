@@ -26,8 +26,6 @@
 */
 class ASkinner : public QObject {
 	public:
-		ASkinner(QObject *parent);
-		
 		//! \brief Constructor
 		/*!
 			\param parent specifies parent object

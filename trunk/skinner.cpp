@@ -10,19 +10,15 @@
  *
 */
 
+#include <QMessageBox>
+
 #include "skinner.h"
 
-ASkinner::ASkinner(QObject *parent) {
-	skin = new QDomDocument();
-}
-
-//
-// @brief Create a skin object and load skin specified by skinName.
-//
 ASkinner::ASkinner(QObject *parent, QString name) {
 	skin = new QDomDocument();
 	if(loadSkin(name) > 0) {
 		// Skin load error
+		QMessageBox::critical(0, tr("Skin load error"), tr("LyxCar cannot load skin."));
 		QApplication::exit(1);
 	}
 }

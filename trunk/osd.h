@@ -14,6 +14,10 @@
 class ALyxOSD : public QWidget {
 	Q_OBJECT
 	public:
+		//! \brief Constructor, constructs OSD object.
+		/*!
+			\param parent specifies parent widget.
+		*/
 		ALyxOSD(QWidget *parent = 0);
 		~ALyxOSD();
 };

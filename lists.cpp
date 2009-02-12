@@ -14,21 +14,67 @@
 
 ALyxListBox::ALyxListBox(QWidget *parent, ASkinner *s) {
 	l_font = QFont("Calibri", 14);
-	l_paddingTop = 20;
-	l_paddingLeft = 20;
+	l_paddingTop = 15;
+	l_paddingLeft = 5;
 
-	QLabel *lbl = new QLabel("<b>Hello world</b>\nHello all", this);
+	setAttribute(Qt::WA_NoSystemBackground, true);
+	setFrameStyle(0);
+	setWidgetResizable(true);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+	l_viewport = new QWidget();
+	l_viewport->setAttribute(Qt::WA_NoSystemBackground, true);
+	setViewport(l_viewport);
+	
+	l_widget = new QWidget();
+	l_widget->setAttribute(Qt::WA_NoSystemBackground, true);
+	l_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	setWidget(l_widget);
+
+	l_widget->setAutoFillBackground(false);
+	
+	QVBoxLayout *view_layout = new QVBoxLayout();
+	view_layout->setContentsMargins(5, 15, 5, 15);
+	view_layout->setSpacing(0);
+	l_widget->setLayout(view_layout);
+
+	QLabel *lbl = new QLabel("<b>Hello world</b><br/>Hello all");
+	view_layout->addWidget(lbl);
+
+	QBrush brush = QBrush();
+	QPalette pal = palette();
+	brush.setTexture(QPixmap("./skins/default/list_selector.png"));
+	pal.setBrush(QPalette::Window, brush);
+	lbl->setPalette(pal);
+	lbl->setAutoFillBackground(true);
+
 	lbl->setFont(l_font);
+	lbl->setFixedHeight(65);
 	lbl->move(l_paddingLeft, l_paddingTop);
+	lbl->setContentsMargins(15, 0, 15, 0);
 	l_items << lbl;
+	
+	for(int i = 0; i < 5; i++) {
+		QLabel *lbl = new QLabel("<b>Hello world</b><br/>Hello all");
+		view_layout->addWidget(lbl);
+		lbl->setFont(l_font);
+		lbl->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+		lbl->setFixedHeight(65);
+		lbl->move(l_paddingLeft, l_paddingTop);
+		lbl->setContentsMargins(15, 0, 15, 0);
+		l_items << lbl;
+	}
 }
 
 ALyxListBox::~ALyxListBox() {}
 	
 void ALyxListBox::paintEvent(QPaintEvent *e) {
-	QPainter p(this);
-	
+	QScrollArea::paintEvent(e);
+
+	QPainter p(viewport());
 	p.setFont(l_font);
+
+	// Draw skinned frame of the listbox
 	
 	QPixmap corner_ul("./skins/default/list_ul.png");
 	QPixmap corner_bl("./skins/default/list_dl.png");
@@ -54,9 +100,4 @@ void ALyxListBox::paintEvent(QPaintEvent *e) {
 		corner_ul.height(), 
 		width() - corner_ul.width() - corner_ur.width(), 
 		height() - corner_ur.height() - corner_br.height());
-
-	/*p.setPen(QColor("black"));
-	p.drawText(l_paddingLeft, l_paddingTop+l_font.pointSize(), l_items[0]);*/
-
-	// Draw skinned frame of the listbox
 }

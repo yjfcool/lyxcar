@@ -44,12 +44,16 @@ AMainWindow::AMainWindow(QWidget *parent) {
 	mainArea->setPalette(pal);
 	mainArea->setAutoFillBackground(true);
 
-	ALyxListBox *listbox = new ALyxListBox(NULL, skinner);
+	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(0, panel);
+	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(0, mainArea, 1);
 
-	((QBoxLayout *)mainWidget->layout())->insertWidget(0, panel);
-	((QBoxLayout *)mainWidget->layout())->insertWidget(0, mainArea, 1);
-	((QBoxLayout *)mainWidget->layout())->insertWidget(0, listbox, 1);
+	mainArea->setLayout(new QVBoxLayout());
 
+	ALyxListBox *listbox = new ALyxListBox(mainArea, skinner);
+	listbox->setGeometry(100, 100, 300, 200);
+	qobject_cast<QBoxLayout *>(mainArea->layout())->addStretch(1);
+	qobject_cast<QBoxLayout *>(mainArea->layout())->addWidget(listbox, 1);
+	
 	connect(panel, SIGNAL(repaintModuleArea()), mainArea, SLOT(repaint()));
 
 	loadPlugin();

@@ -14,11 +14,13 @@
 #include <QStringList>
 #include <QLabel>
 #include <QList>
+#include <QScrollArea>
+#include <QBoxLayout>
 
 #include "skinner.h"
 
 //! \brief This class implements skinned listbox for LyxCar.
-class ALyxListBox : public QWidget {
+class ALyxListBox : public QScrollArea {
 	Q_OBJECT
 	public:
 
@@ -32,6 +34,9 @@ class ALyxListBox : public QWidget {
 
 		//! \brief Returns QStringList of items contained in a box.
 		QList <QLabel*> items() { return l_items; }
+		
+		QWidget *l_viewport;
+		QWidget *l_widget;
 	
 	private:
 		void drawFrame();

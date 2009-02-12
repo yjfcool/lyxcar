@@ -8,6 +8,12 @@
  * published by the Free Software Foundation; either version 2 of the
  * License, or any later version.
  *
+ 
+ Properties:
+ 
+ - padding from frame to selector
+ - padding from selector to item text
+ 
 */
 
 #include "lists.h"
@@ -28,6 +34,7 @@ ALyxListBox::ALyxListBox(QWidget *parent, ASkinner *s) {
 	
 	l_widget = new QWidget();
 	l_widget->setAttribute(Qt::WA_NoSystemBackground, true);
+	l_widget->setAttribute(Qt::WA_PaintOutsidePaintEvent, true);
 	l_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 	setWidget(l_widget);
 
@@ -69,8 +76,6 @@ ALyxListBox::ALyxListBox(QWidget *parent, ASkinner *s) {
 ALyxListBox::~ALyxListBox() {}
 	
 void ALyxListBox::paintEvent(QPaintEvent *e) {
-	QScrollArea::paintEvent(e);
-
 	QPainter p(viewport());
 	p.setFont(l_font);
 
@@ -100,4 +105,22 @@ void ALyxListBox::paintEvent(QPaintEvent *e) {
 		corner_ul.height(), 
 		width() - corner_ul.width() - corner_ur.width(), 
 		height() - corner_ur.height() - corner_br.height());
+	p.end();
+	
+	QScrollArea::paintEvent(e);
+
+	widget()->paintEvent(e);
+	
+	foreach(QLabel *lbl, l_items) {
+		lbl->repaint();
+	}
+
+	/*QPainter p2(widget());
+	p2.setBrush(QBrush(QColor("red")));
+	p2.setPen(QColor("white"));
+	p2.drawRect(corner_ul.width(), 
+		corner_ul.height(), 
+		width() - corner_ul.width() - corner_ur.width(), 
+		height() - corner_ur.height() - corner_br.height());
+	p2.end();*/
 }

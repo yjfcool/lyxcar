@@ -44,6 +44,6 @@ class M_Interface {
 
 };
 
-Q_DECLARE_INTERFACE(M_Interface, "com.trolltech.Plugin.M_Interface/1.0"); 
+Q_DECLARE_INTERFACE(M_Interface, "com.trolltech.Lyxcar.M_Interface/1.0"); 
 
 #endif

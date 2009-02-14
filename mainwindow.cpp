@@ -90,7 +90,7 @@ bool AMainWindow::loadPlugin() {
 			return true;
 		}
 	} else {
-	    qDebug() << "Plugin not loaded" << pluginDirectory.absoluteFilePath(fileName);
+	    qDebug() << "Plugin not loaded" << pluginDirectory.absoluteFilePath(fileName) << pluginLoader.errorString();
 	}
 	return false;
 } 

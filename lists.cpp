@@ -109,11 +109,11 @@ void ALyxListBox::paintEvent(QPaintEvent *e) {
 	
 	QScrollArea::paintEvent(e);
 
-	widget()->paintEvent(e);
+//	widget()->paintEvent(e);
 	
-	foreach(QLabel *lbl, l_items) {
-		lbl->repaint();
-	}
+//	foreach(QLabel *lbl, l_items) {
+//		lbl->repaint();
+//	}
 
 	/*QPainter p2(widget());
 	p2.setBrush(QBrush(QColor("red")));

@@ -6,6 +6,8 @@ CONFIG				+= release config qt
 QT						+= network xml sql
 INCLUDEPATH		+= ./include
 LIBS					+= -L./release
+OBJECTS_DIR	= ./libs
+MOC_DIR		= ./libs
 
 
 SUBDIRS		= modules/volctl
@@ -13,7 +15,5 @@ SUBDIRS		= modules/volctl
 win32:release {
 	RC_FILE		= lyxcar.rc
 	CONFIG		+= console
-	OBJECTS_DIR	= ./libs
-	MOC_DIR		= ./libs
 	DESTDIR		= ./
 } 

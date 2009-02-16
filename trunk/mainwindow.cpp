@@ -18,8 +18,8 @@
 #include "mainmenu.h"
 #include "lists.h"
 
-AMainWindow::AMainWindow(QWidget *parent) {
-	resize(800, 600);
+AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
+	setFixedSize(800, 600);
 
 	skinner = new ASkinner(this, "default");
 

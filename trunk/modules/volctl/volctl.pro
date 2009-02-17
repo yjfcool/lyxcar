@@ -1,5 +1,5 @@
 TEMPLATE	= lib
-CONFIG		+= plugin release
+CONFIG		+= plugin
 HEADERS		= volctl.h ../../buttons.h ../../skinner.h
 SOURCES		= volctl.cpp ../../buttons.cpp ../../skinner.cpp
 TARGET		= volctl

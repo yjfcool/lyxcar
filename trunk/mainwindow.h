@@ -22,6 +22,7 @@
 #include "m_interface.h"
 #include "skinner.h"
 #include "buttons.h"
+#include "home.h"
 
 //! \brief The class of main window.
 /*!
@@ -33,6 +34,9 @@ class AMainWindow : public QMainWindow {
 		//! Constructs main window
 		AMainWindow(QWidget *parent = 0);
 		~AMainWindow();
+		
+		QString activeModuleName() { return m_activeModuleName; }
+		ALyxHome *homeWidget() { return m_homeWidget; }
 
 //		void	closeEvent(QCloseEvent *) {};
 
@@ -50,10 +54,20 @@ class AMainWindow : public QMainWindow {
 		QStringList modulesList;	// Module names list
 		QHash<QString, QObject *> modules; // Module objects list by name
 		
+		QString m_activeModuleName;	// Contains name of module which is displayed in main area now
+		ALyxHome *m_homeWidget;
 		M_Interface *m_interface;
 		
 		//! \brief Loads plugin with name <moduleName>. Returns true if there was an error.
 		bool	loadModule(QString moduleName);
+		
+		//! \brief Activates a module named <moduleName>. Activation means the module widget is inserted into main area and
+		//! activeModuleName is set to <moduleName>.
+		void activateModule(QString moduleName);
+		
+		//! \brief Clears main area layout. NOTICE: Widgets inserted into that layout lose their parent, that's why we need
+		//! to destroy them properly on application quit.
+		void clearMainArea();
 		
 		bool fillPanel();
 

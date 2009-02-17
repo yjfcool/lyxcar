@@ -26,16 +26,18 @@ class M_Interface {
 		QWidget * moduleWindow;
 		//! \brief Pure virtual method. This must be implemented as needed to display module's interface in main window.
 		/*!
-			\param parent specifies parent widget for module's widget.
 			Module's main widget isn't constructed after module's loaded. That's why you need to call activate() function
 			to create it's contents and fuctionality. This function returns QWidget * object.
+
+			\param parent specifies parent widget for module's widget.
 		*/
 		virtual QWidget * activate(QWidget * parent = 0);
 		//! \brief Pure virtual method. This must be implemented as needed to append module's control to panel.
 		/*!
-			\param parent specifies the panel to insert the control.
 			Constructs and returns small applet widget to insert into panel. You need to call this if you need to create
 			applet widget with module's functionality.
+
+			\param parent specifies the panel to insert the control.
 		*/
 		virtual QWidget * activateApplet(QWidget * parent = 0);
 

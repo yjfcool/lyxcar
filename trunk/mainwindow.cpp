@@ -120,8 +120,8 @@ void AMainWindow::activateModule(QString moduleName) {
 void AMainWindow::clearMainArea() {
 		// We need to destroy boxLayout to clear main area and create it again.
 		if(mainArea->layout()) {
-			qDebug() << "Clearing main area's layout";
-			mainArea->layout()->destroy();
+			qDebug() << "Clearing main area's layout: mainArea->layout() destroyed";
+			delete mainArea->layout();
 		}
 }
 

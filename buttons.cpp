@@ -32,11 +32,14 @@ void ALyxButton::setDownPixmap(QPixmap image) {
 void ALyxButton::mousePressEvent(QMouseEvent *e) {
 	currentState = true;
 	repaint();
+	emit pressed();
 }
 
 void ALyxButton::mouseReleaseEvent(QMouseEvent *e) {
 	currentState = false;
 	repaint();
+	emit released();
+	emit clicked();
 }
 
 void ALyxButton::paintEvent(QPaintEvent *e)  {

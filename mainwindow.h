@@ -21,6 +21,7 @@
 
 #include "m_interface.h"
 #include "skinner.h"
+#include "buttons.h"
 
 //! \brief The class of main window.
 /*!
@@ -35,7 +36,13 @@ class AMainWindow : public QMainWindow {
 
 //		void	closeEvent(QCloseEvent *) {};
 
+	public slots:
+		//! \brief Call this if you want to display home page.
+		void goHome();
+
 	private:
+		ALyxButton *homeBtn;
+		
 		QWidget *mainArea;	//! Area for viewing modules!
 		APanel	*panel; // Panel object
 		ASkinner *skinner; // Skin engine object
@@ -45,7 +52,7 @@ class AMainWindow : public QMainWindow {
 		
 		M_Interface *m_interface;
 		
-		//! \brief Loads plugin
+		//! \brief Loads plugin with name <moduleName>. Returns true if there was an error.
 		bool	loadModule(QString moduleName);
 		
 		bool fillPanel();

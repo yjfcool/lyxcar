@@ -17,6 +17,7 @@
 #include "mainwindow.h"
 #include "mainmenu.h"
 #include "lists.h"
+#include "home.h"
 
 AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
 	setFixedSize(800, 600);
@@ -33,31 +34,73 @@ AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
 
 	panel = new APanel(mainWidget, skinner);
 
-	mainArea = new QWidget();
-	mainArea->setLayout(new QVBoxLayout());
-
 	QPalette pal = palette();
 	QPixmap bgImg(skinner->skinImage("", "", "background"));
 	QBrush brush = QBrush();
 	brush.setTexture(bgImg);
 	pal.setBrush(QPalette::Window, brush);
+
+	mainArea = new QWidget();
+	mainArea->setLayout(new QVBoxLayout());
 	mainArea->setPalette(pal);
 	mainArea->setAutoFillBackground(true);
 
 	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(0, panel);
 	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(0, mainArea, 1);
+	qobject_cast<QBoxLayout *>(mainArea->layout())->insertSpacing(0, 64);
+
+	ALyxHome *home = new ALyxHome();
+	((QBoxLayout*)mainArea->layout())->addWidget(home);
 
 	connect(panel, SIGNAL(repaintModuleArea()), mainArea, SLOT(repaint()));
 
-	loadPlugin();
+	// Load modules from configuration file
+	QSettings *modules_conf = new QSettings("conf/modules.conf", QSettings::IniFormat);
+	modulesList = modules_conf->childGroups();
+	// Then load all modules into QHash - create objects
+	foreach (QString mod, modulesList) {
+		loadModule(mod);
+	}
+	
+	fillPanel();
+	
+	// FOR TESTING ONLY!!!
+	/*m_interface = qobject_cast<M_Interface *>(modules["volctl"]);
+	if(m_interface) {
+		m_interface->setSkinner(skinner);
+ 		m_interface->activate(mainArea);
+		((QBoxLayout*)panel->layout())->insertWidget(0, m_interface->activateApplet(panel));
+	}
+
+	m_interface = qobject_cast<M_Interface *>(modules["mp3player"]);
+	if(m_interface) {
+		m_interface->setSkinner(skinner);
+ 		m_interface->activate(mainArea);
+		((QBoxLayout*)panel->layout())->insertWidget(0, m_interface->activateApplet(panel));
+	}*/
+	// \FOR TESTING ONLY!!!
 }
 
 AMainWindow::~AMainWindow() {
 
 }
 
-bool AMainWindow::loadPlugin() {
-	QDir pluginDirectory("modules/volctl");
+bool AMainWindow::fillPanel() {
+	foreach (QString moduleName, modules.keys()) {
+		M_Interface *m_int = qobject_cast<M_Interface *>(modules[moduleName]);
+		m_int->setSkinner(skinner);
+		QWidget *applet = m_int->activateApplet(panel);
+		if(applet) {
+			((QBoxLayout*)panel->layout())->insertWidget(0, applet);
+			qDebug() << "Module" << moduleName << " added applet to panel";
+		} else {
+			qDebug() << "Module" << moduleName << "has no applet functionality";
+		}
+	}
+}
+
+bool AMainWindow::loadModule(QString moduleName) {
+	QDir pluginDirectory("modules/"+moduleName);
 
 #ifdef Q_OS_WIN32
 	qDebug() << "Loading Windows plugins";
@@ -75,13 +118,7 @@ bool AMainWindow::loadPlugin() {
 
 	if (plugin != NULL) {
 		qDebug() << "Discovered plugin" << fileName;
-		m_interface = qobject_cast<M_Interface *>(plugin);
-		if(m_interface) {
-			m_interface->setSkinner(skinner);
-               		m_interface->activate(mainArea);
-               		m_interface->appendToPanel(panel, 0);
-			return true;
-		}
+		modules[moduleName] = plugin;
 	} else {
 	    qDebug() << "Plugin not loaded" << pluginDirectory.absoluteFilePath(fileName) << pluginLoader.errorString();
 	}

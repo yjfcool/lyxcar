@@ -27,7 +27,8 @@ class mp3playerModule : public QObject, M_Interface {
 	Q_INTERFACES(M_Interface)
 
 	public:
-		void activate(QWidget *parent = 0);
+		QWidget * activate(QWidget *parent = 0);
+		QWidget * activateApplet(QWidget *parent = 0);
 };
 
 class mp3playerWindow : public QWidget, private Ui_mp3player {

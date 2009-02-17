@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'main.ui'
 **
-** Created: Fri 23. Jan 09:33:28 2009
+** Created: Tue 17. Feb 11:26:57 2009
 **      by: Qt User Interface Compiler version 4.3.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -144,7 +144,7 @@ public:
 
     mediaTree = new QTreeView(tab_2);
     mediaTree->setObjectName(QString::fromUtf8("mediaTree"));
-    mediaTree->setAnimated(true);
+    mediaTree->setAnimated(false);
 
     gridLayout->addWidget(mediaTree, 0, 1, 4, 1);
 

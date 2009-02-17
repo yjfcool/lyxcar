@@ -34,15 +34,21 @@ class AMainWindow : public QMainWindow {
 		~AMainWindow();
 
 //		void	closeEvent(QCloseEvent *) {};
-		//! \brief Loads plugin
-		bool	loadPlugin();
 
 	private:
 		QWidget *mainArea;	//! Area for viewing modules!
-		APanel	*panel;
-		ASkinner *skinner;
+		APanel	*panel; // Panel object
+		ASkinner *skinner; // Skin engine object
 
+		QStringList modulesList;	// Module names list
+		QHash<QString, QObject *> modules; // Module objects list by name
+		
 		M_Interface *m_interface;
+		
+		//! \brief Loads plugin
+		bool	loadModule(QString moduleName);
+		
+		bool fillPanel();
 
 	private slots:
 };

@@ -72,19 +72,18 @@ void volCtlModuleApplet::volume_down() {
 	qDebug() << "Volume DOWN button pressed";
 }
 
-void volCtlModule::activate(QWidget *parent) {
-
+QWidget * volCtlModule::activate(QWidget *parent) {
+	return 0;
 }
 
-void volCtlModule::appendToPanel(APanel *panel, int position) {
+QWidget * volCtlModule::activateApplet(QWidget *parent) {
 	qDebug() << "Appending volCtl plugin to panel";
 
 	// Create applet widget
 	appletWidget = new volCtlModuleApplet(NULL, skinner);	
 	appletWidget->setSkinner(skinner);
 
-	// Insert it to panel
-	qobject_cast<QBoxLayout *>(panel->layout())->insertWidget(position, appletWidget, 0);
+	return appletWidget;
 }
 
 Q_EXPORT_PLUGIN2(volCtl, volCtlModule);

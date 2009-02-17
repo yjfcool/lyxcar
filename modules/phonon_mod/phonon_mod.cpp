@@ -10,23 +10,24 @@
  *
 */
 
-#include "xine_mod.h"
+#include "phonon_mod.h"
+
+phononWindow::phononWindow(QWidget *parent) {
+
+
+}
+
+QWidget *phononModule::activate(QWidget *parent) {
 
 
 
+    return 0;
+}
 
+QWidget *phononModule::activateApplet(QWidget *parent) {
 
-
-
-
-
-
-
-
-
-
-
-
+    return 0;
+}
 
 
 

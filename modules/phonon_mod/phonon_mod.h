@@ -16,4 +16,24 @@
 #include <QtGui>
 #include <QBoxLayout>
 
+#include "../../m_interface.h"
+
+class phononModule : public QObject, M_Interface {
+	Q_OBJECT
+	Q_INTERFACES(M_Interface)
+
+	public:
+		QWidget * activate(QWidget *parent = 0);
+		QWidget * activateApplet(QWidget *parent = 0);
+};
+
+class phononWindow : public QWidget {
+	Q_OBJECT
+	public:
+		phononWindow(QWidget *parent = 0);
+
+	private:
+};
+
 #endif
+

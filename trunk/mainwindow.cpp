@@ -97,6 +97,8 @@ void AMainWindow::goHome() {
 	if(activeModuleName() != "home") {
 		qDebug() << "Going home...";
 		m_activeModuleName = "home";
+
+		clearMainArea(); // Clearing
 		mainArea->setLayout(new QVBoxLayout());
 		((QBoxLayout*)mainArea->layout())->addWidget(homeWidget());
 	} else {
@@ -107,13 +109,20 @@ void AMainWindow::goHome() {
 void AMainWindow::activateModule(QString moduleName) {
 	if(activeModuleName() != moduleName) {
 		qDebug() << "Activating module"	<< moduleName;
+		m_activeModuleName = moduleName;
+
+		clearMainArea(); // Clearing
 	} else {
 		qDebug() << "Already activated" << moduleName;
 	}
 }
 
 void AMainWindow::clearMainArea() {
-	//mainArea->layout();
+		// We need to destroy boxLayout to clear main area and create it again.
+		if(mainArea->layout()) {
+			qDebug() << "Clearing main area's layout";
+			mainArea->layout()->destroy();
+		}
 }
 
 bool AMainWindow::fillPanel() {

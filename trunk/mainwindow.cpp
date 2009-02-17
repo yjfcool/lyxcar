@@ -49,6 +49,15 @@ AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
 	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(0, mainArea, 1);
 	qobject_cast<QBoxLayout *>(mainArea->layout())->insertSpacing(0, 64);
 
+	// Home button
+	homeBtn = new ALyxButton();
+	homeBtn->setUpPixmap(QPixmap("skins/default/button_66x70.png"));
+	homeBtn->setDownPixmap(QPixmap("skins/default/button_66x70.png"));
+	((QBoxLayout*)panel->layout())->insertWidget(0, homeBtn, Qt::AlignCenter);
+	((QBoxLayout*)panel->layout())->insertSpacing(1, 10);
+
+	connect(homeBtn, SIGNAL(clicked()), this, SLOT(goHome()));
+
 	ALyxHome *home = new ALyxHome();
 	((QBoxLayout*)mainArea->layout())->addWidget(home);
 
@@ -85,18 +94,23 @@ AMainWindow::~AMainWindow() {
 
 }
 
+void AMainWindow::goHome() {
+	qDebug() << "Going home!";
+}
+
 bool AMainWindow::fillPanel() {
 	foreach (QString moduleName, modules.keys()) {
 		M_Interface *m_int = qobject_cast<M_Interface *>(modules[moduleName]);
 		m_int->setSkinner(skinner);
 		QWidget *applet = m_int->activateApplet(panel);
 		if(applet) {
-			((QBoxLayout*)panel->layout())->insertWidget(0, applet);
+			((QBoxLayout*)panel->layout())->insertWidget(2, applet);
 			qDebug() << "Module" << moduleName << " added applet to panel";
 		} else {
 			qDebug() << "Module" << moduleName << "has no applet functionality";
 		}
 	}
+	return false;
 }
 
 bool AMainWindow::loadModule(QString moduleName) {

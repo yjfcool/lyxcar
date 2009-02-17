@@ -53,6 +53,10 @@ class ALyxButton : public QAbstractButton {
 	
 	protected:
 
+	signals:
+		void clicked();
+		void pressed();
+		void released();
 };
 
 #endif

@@ -27,14 +27,17 @@ class M_Interface {
 		//! \brief Pure virtual method. This must be implemented as needed to display module's interface in main window.
 		/*!
 			\param parent specifies parent widget for module's widget.
+			Module's main widget isn't constructed after module's loaded. That's why you need to call activate() function
+			to create it's contents and fuctionality. This function returns QWidget * object.
 		*/
-		virtual void activate(QWidget * parent = 0);
+		virtual QWidget * activate(QWidget * parent = 0);
 		//! \brief Pure virtual method. This must be implemented as needed to append module's control to panel.
 		/*!
-			\param panel specifies the panel to insert the control.
-			\param position specifies the position in which the control is inserted.
+			\param parent specifies the panel to insert the control.
+			Constructs and returns small applet widget to insert into panel. You need to call this if you need to create
+			applet widget with module's functionality.
 		*/
-		virtual void appendToPanel(APanel * panel = 0, int position = 0);
+		virtual QWidget * activateApplet(QWidget * parent = 0);
 
 		//! \brief Sets the ASkinner object.
 		void setSkinner(ASkinner *skinnerObj) { qDebug() << "Skinner object set!"; skinner = skinnerObj; }

@@ -64,9 +64,14 @@ void mp3playerWindow::pauseCurrent() {
 /*
  * Module activation procedure
  */
-void mp3playerModule::activate(QWidget *parent) {
+QWidget * mp3playerModule::activate(QWidget *parent) {
 	moduleWindow = new mp3playerWindow();
-	((QBoxLayout*)parent->layout())->insertWidget(0, moduleWindow);
+
+	return moduleWindow;
+}
+
+QWidget * mp3playerModule::activateApplet(QWidget *parent) {
+	return 0;
 }
 
 Q_EXPORT_PLUGIN2(mp3player, mp3playerModule);

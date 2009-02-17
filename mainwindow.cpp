@@ -24,30 +24,29 @@ AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
 
 	skinner = new ASkinner(this, "default");
 
-	QWidget *mainWidget = new QWidget(this);
-	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
-	layout->setSpacing(0);
-	layout->setMargin(0);
-	mainWidget->setLayout(layout);
-
-	setCentralWidget(mainWidget);
-
-	panel = new APanel(mainWidget, skinner);
-
+	// Create main widget background palette
 	QPalette pal = palette();
 	QPixmap bgImg(skinner->skinImage("", "", "background"));
 	QBrush brush = QBrush();
 	brush.setTexture(bgImg);
 	pal.setBrush(QPalette::Window, brush);
 
-	mainArea = new QWidget();
-	mainArea->setLayout(new QVBoxLayout());
-	mainArea->setPalette(pal);
-	mainArea->setAutoFillBackground(true);
+	QWidget *mainWidget = new QWidget(this);
+	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
+	layout->setSpacing(0);
+	layout->setMargin(0);
+	mainWidget->setLayout(layout);
+	mainWidget->setPalette(pal);
+	mainWidget->setAutoFillBackground(true);
 
-	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(0, panel);
-	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(0, mainArea, 1);
-	qobject_cast<QBoxLayout *>(mainArea->layout())->insertSpacing(0, 64);
+	setCentralWidget(mainWidget);
+
+	panel = new APanel(mainWidget, skinner);
+	mainArea = new QWidget();
+	
+	qobject_cast<QBoxLayout *>(mainWidget->layout())->addSpacing(64); // Space for header
+	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(1, mainArea, 1);
+	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(2, panel);
 
 	// Home button
 	homeBtn = new ALyxButton();
@@ -55,13 +54,10 @@ AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
 	homeBtn->setDownPixmap(QPixmap("skins/default/button_66x70.png"));
 	((QBoxLayout*)panel->layout())->insertWidget(0, homeBtn, Qt::AlignCenter);
 	((QBoxLayout*)panel->layout())->insertSpacing(1, 10);
-
 	connect(homeBtn, SIGNAL(clicked()), this, SLOT(goHome()));
 
-	ALyxHome *home = new ALyxHome();
-	((QBoxLayout*)mainArea->layout())->addWidget(home);
-
-	connect(panel, SIGNAL(repaintModuleArea()), mainArea, SLOT(repaint()));
+	// Home widget (create only)
+	m_homeWidget = new ALyxHome();
 
 	// Load modules from configuration file
 	QSettings *modules_conf = new QSettings("conf/modules.conf", QSettings::IniFormat);
@@ -74,6 +70,9 @@ AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
 	fillPanel();
 	
 	// FOR TESTING ONLY!!!
+	
+	//connect(panel, SIGNAL(repaintModuleArea()), mainArea, SLOT(repaint()));
+
 	/*m_interface = qobject_cast<M_Interface *>(modules["volctl"]);
 	if(m_interface) {
 		m_interface->setSkinner(skinner);
@@ -95,7 +94,26 @@ AMainWindow::~AMainWindow() {
 }
 
 void AMainWindow::goHome() {
-	qDebug() << "Going home!";
+	if(activeModuleName() != "home") {
+		qDebug() << "Going home...";
+		m_activeModuleName = "home";
+		mainArea->setLayout(new QVBoxLayout());
+		((QBoxLayout*)mainArea->layout())->addWidget(homeWidget());
+	} else {
+		qDebug() << "Already at home!..";
+	}
+}
+
+void AMainWindow::activateModule(QString moduleName) {
+	if(activeModuleName() != moduleName) {
+		qDebug() << "Activating module"	<< moduleName;
+	} else {
+		qDebug() << "Already activated" << moduleName;
+	}
+}
+
+void AMainWindow::clearMainArea() {
+	//mainArea->layout();
 }
 
 bool AMainWindow::fillPanel() {

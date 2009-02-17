@@ -57,9 +57,6 @@ volCtlModuleApplet::~volCtlModuleApplet() {
 
 }
 
-/// @brief Volume control functions.
-// Functions for increasing and decreasing volume level and for muting.
-//
 void volCtlModuleApplet::volume_up() {
 	qDebug() << "Volume UP button pressed";
 }

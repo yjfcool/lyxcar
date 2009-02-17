@@ -23,6 +23,9 @@
 
 class M_Interface {
 	public:
+		//! \brief Virtual destructor.
+		virtual ~M_Interface() {}
+
 		QWidget * moduleWindow;
 		//! \brief Pure virtual method. This must be implemented as needed to display module's interface in main window.
 		/*!
@@ -31,7 +34,7 @@ class M_Interface {
 
 			\param parent specifies parent widget for module's widget.
 		*/
-		virtual QWidget * activate(QWidget * parent = 0);
+		virtual QWidget * activate(QWidget * parent = 0) = 0;
 		//! \brief Pure virtual method. This must be implemented as needed to append module's control to panel.
 		/*!
 			Constructs and returns small applet widget to insert into panel. You need to call this if you need to create
@@ -39,7 +42,7 @@ class M_Interface {
 
 			\param parent specifies the panel to insert the control.
 		*/
-		virtual QWidget * activateApplet(QWidget * parent = 0);
+		virtual QWidget * activateApplet(QWidget * parent = 0) = 0;
 
 		//! \brief Sets the ASkinner object.
 		void setSkinner(ASkinner *skinnerObj) { qDebug() << "Skinner object set!"; skinner = skinnerObj; }

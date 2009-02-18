@@ -7,6 +7,8 @@ INCLUDEPATH		+= ./include
 LIBS					+= -L./release
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs
+DESTDIR		= ../
+TARGET		= lt
 
 
 win32:release {

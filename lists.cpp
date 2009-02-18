@@ -25,9 +25,14 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) {
 	l_paddingTop = 15;
 	l_paddingLeft = 15;
 	l_paddingSelector = 5;
+	l_verticalSpacing = 0;
 	m_defaultItemHeight = 65;
 	m_acceleration = MIN_ACCELERATION;
 	m_selectorPosition.setX(l_paddingSelector);
+	m_selectorPosition.setY(0);
+	m_selectedItem = 0;
+	m_selectedIndex = 0;
+	animationStep = 0;
 
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
@@ -125,6 +130,7 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	p.setPen(QColor("black"));
 	int cpos = l_paddingTop;
 	foreach (ALyxListWidgetItem *item, items()) {
+//		qDebug() << "Painted item" << item->text() << "at" << l_paddingLeft << "x" << cpos << "width" << width() << "height" << item->height();
 		p.drawText(l_paddingLeft,
 			   cpos, 
 			   width(),

@@ -18,6 +18,7 @@ ALyxButton::ALyxButton(QWidget *parent) {
 
 	animationTimer = new QTimer();
 	animationTimer->setInterval(20);
+	currentOpacity = 0;
 
 	connect(animationTimer, SIGNAL(timeout()), this, SLOT(animate()));
 }

@@ -16,71 +16,74 @@
  
 */
 
+#define MIN_ACCELERATION 5
+
 #include "lists.h"
 
-ALyxListBox::ALyxListBox(QWidget *parent, ASkinner *s) {
+ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) {
 	l_font = QFont("Calibri", 14);
 	l_paddingTop = 15;
-	l_paddingLeft = 5;
+	l_paddingLeft = 15;
+	l_paddingSelector = 5;
+	m_defaultItemHeight = 65;
+	m_acceleration = MIN_ACCELERATION;
+	m_selectorPosition.setX(l_paddingSelector);
 
 	setAttribute(Qt::WA_NoSystemBackground, true);
-	setFrameStyle(0);
-	setWidgetResizable(true);
-	setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	l_viewport = new QWidget();
-	l_viewport->setAttribute(Qt::WA_NoSystemBackground, true);
-	setViewport(l_viewport);
-	
-	l_widget = new QWidget();
-	l_widget->setAttribute(Qt::WA_NoSystemBackground, true);
-	l_widget->setAttribute(Qt::WA_PaintOutsidePaintEvent, true);
-	l_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	setWidget(l_widget);
+	animationTimer = new QTimer(this);
+	animationTimer->setInterval(10);
+	connect(animationTimer, SIGNAL(timeout()), this, SLOT(animateSelector()));
+}
 
-	l_widget->setAutoFillBackground(false);
-	
-	QVBoxLayout *view_layout = new QVBoxLayout();
-	view_layout->setContentsMargins(5, 15, 5, 15);
-	view_layout->setSpacing(0);
-	l_widget->setLayout(view_layout);
+ALyxListWidget::~ALyxListWidget() {}
 
-	QLabel *lbl = new QLabel("<b>Hello world</b><br/>Hello all");
-	view_layout->addWidget(lbl);
+void ALyxListWidget::addItem(ALyxListWidgetItem *item) {
+	item->setHeight(m_defaultItemHeight);
+	l_items << item; 
+	repaint();
+}
 
-	QBrush brush = QBrush();
-	QPalette pal = palette();
-	brush.setTexture(QPixmap("./skins/default/list_selector.png"));
-	pal.setBrush(QPalette::Window, brush);
-	lbl->setPalette(pal);
-	lbl->setAutoFillBackground(true);
+void ALyxListWidget::setSelectedItem(ALyxListWidgetItem *item) {
+	m_selectedItem = item;
+	m_selectedIndex = l_items.indexOf(item);
+	repaint();
+}
 
-	lbl->setFont(l_font);
-	lbl->setFixedHeight(65);
-	lbl->move(l_paddingLeft, l_paddingTop);
-	lbl->setContentsMargins(15, 0, 15, 0);
-	l_items << lbl;
-	
-	for(int i = 0; i < 5; i++) {
-		QLabel *lbl = new QLabel("<b>Hello world</b><br/>Hello all");
-		view_layout->addWidget(lbl);
-		lbl->setFont(l_font);
-		lbl->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-		lbl->setFixedHeight(65);
-		lbl->move(l_paddingLeft, l_paddingTop);
-		lbl->setContentsMargins(15, 0, 15, 0);
-		l_items << lbl;
+void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
+	foreach (ALyxListWidgetItem *item, items()) {
+		if(item->rect.contains(e->pos())) {
+			int prev_selectedIndex = m_selectedIndex;
+			setSelectedItem(item);
+			if(prev_selectedIndex < m_selectedIndex) {
+				animationStep = 1;
+			} else if(prev_selectedIndex > m_selectedIndex) {
+				animationStep = -1;
+			}
+			animationTimer->start();
+		}
+	}	
+}
+
+void ALyxListWidget::animateSelector() {
+	if(animationStep != 0) {
+		m_selectorPosition.setY(m_selectorPosition.y()+(m_acceleration*animationStep));
+		m_acceleration++;
+		if(((m_selectorPosition.y() <= m_selectedItem->rect.y() && animationStep < 0)) || 
+		   ((m_selectorPosition.y() >= m_selectedItem->rect.y() && animationStep > 0))) {
+			animationTimer->stop();
+			m_acceleration = MIN_ACCELERATION;
+			m_selectorPosition.setY(m_selectedItem->rect.y());
+		}
+		repaint();
 	}
 }
 
-ALyxListBox::~ALyxListBox() {}
-	
-void ALyxListBox::paintEvent(QPaintEvent *e) {
-	QPainter p(viewport());
+void ALyxListWidget::paintEvent(QPaintEvent *e) {
+	QPainter p(this);
 	p.setFont(l_font);
 
-	// Draw skinned frame of the listbox
-	
+	// Draw skinned frame of the listWidget
 	QPixmap corner_ul("./skins/default/list_ul.png");
 	QPixmap corner_bl("./skins/default/list_dl.png");
 	QPixmap corner_br("./skins/default/list_br.png");
@@ -89,6 +92,8 @@ void ALyxListBox::paintEvent(QPaintEvent *e) {
 	QPixmap bottom("./skins/default/list_b.png");
 	QPixmap right("./skins/default/list_r.png");
 	QPixmap left("./skins/default/list_l.png");
+	QPixmap selector("./skins/default/list_selector.png");
+	QPixmap selector_fill("./skins/default/list_selector_fill.png");
 	
 	p.drawPixmap(0, 0, corner_ul); // Upper left
 	p.drawPixmap(corner_ul.width(), 0, top.scaled(width() - corner_ul.width() - corner_ur.width(), corner_ul.height())); // Top
@@ -105,22 +110,34 @@ void ALyxListBox::paintEvent(QPaintEvent *e) {
 		corner_ul.height(), 
 		width() - corner_ul.width() - corner_ur.width(), 
 		height() - corner_ur.height() - corner_br.height());
+
+	// Draw selector
+	if(m_selectedItem) {
+		p.drawPixmap(m_selectorPosition, selector);
+		p.drawTiledPixmap(m_selectorPosition.x()+selector.width(),
+				  m_selectorPosition.y(),
+				  width()-m_selectorPosition.x()-selector.width()-l_paddingSelector,
+				  selector.height(),
+				  selector_fill);
+	}
+	
+	// Draw items
+	p.setPen(QColor("black"));
+	int cpos = l_paddingTop;
+	foreach (ALyxListWidgetItem *item, items()) {
+		p.drawText(l_paddingLeft,
+			   cpos, 
+			   width(),
+			   item->height(),
+			   Qt::AlignVCenter,
+			   item->text()
+		);
+		item->rect.setX(l_paddingLeft);
+		item->rect.setY(cpos);
+		item->rect.setWidth(width());
+		item->rect.setHeight(item->height());
+		cpos+=l_verticalSpacing+item->height();
+	}
+
 	p.end();
-	
-	QScrollArea::paintEvent(e);
-
-//	widget()->paintEvent(e);
-	
-//	foreach(QLabel *lbl, l_items) {
-//		lbl->repaint();
-//	}
-
-	/*QPainter p2(widget());
-	p2.setBrush(QBrush(QColor("red")));
-	p2.setPen(QColor("white"));
-	p2.drawRect(corner_ul.width(), 
-		corner_ul.height(), 
-		width() - corner_ul.width() - corner_ur.width(), 
-		height() - corner_ur.height() - corner_br.height());
-	p2.end();*/
 }

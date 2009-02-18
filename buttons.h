@@ -16,6 +16,7 @@
 #include <QAbstractButton>
 #include <QPixmap>
 #include <QPainter>
+#include <QTimer>
 //! \brief Picture buttons for LyxCar interface.
 /*!
 	Inherited from QAbstractButton. Generates Qt signals clicked(), doubleClicked(), pressed(), released() and so on.
@@ -41,6 +42,10 @@ class ALyxButton : public QAbstractButton {
 		void setDownPixmap(QPixmap image);
 
 	private:
+		QTimer *animationTimer;
+		int animationStep; // 1 - forward, -1 backward, 0 stop
+		double currentOpacity; // 0.0 - 1.0
+
 		bool currentState; // Button isn't pressed
 
 		QPixmap buttonUpImage;
@@ -51,6 +56,9 @@ class ALyxButton : public QAbstractButton {
 		
 		void paintEvent(QPaintEvent *event);
 	
+	private slots:
+		void animate(); // Animation frame step
+
 	protected:
 
 	signals:

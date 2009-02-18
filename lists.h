@@ -16,39 +16,85 @@
 #include <QList>
 #include <QScrollArea>
 #include <QBoxLayout>
+#include <QTimer>
 
 #include "skinner.h"
 
+class ALyxListWidgetItem : public QObject {
+	Q_OBJECT
+	public:
+		ALyxListWidgetItem(QObject *parent = 0) {}
+		~ALyxListWidgetItem() {}
+
+		QString text() { return m_text; }
+		void setText(QString t) { m_text = t; }
+
+		QPixmap pixmap() { return m_pixmap; }
+		void setPixmap(QPixmap p) { m_pixmap = p; }
+
+		int height() { return m_height; }
+		void setHeight(int h) { m_height = h; }
+
+		QRect rect;
+	private:
+		QString m_text;
+		QPixmap m_pixmap;
+		int m_height;
+};
+
+typedef QList<ALyxListWidgetItem *> ALyxListWidgetItems;
+
 //! \brief This class implements skinned listbox for LyxCar.
-class ALyxListBox : public QScrollArea {
+class ALyxListWidget : public QWidget {
 	Q_OBJECT
 	public:
 
-		//! \brief Constructs listbox with the skin specified by s
+		//! \brief Constructs listWidget with the skin specified by s
 		/*!
 			\param parent is a parent widget
 			\param s is an ASkinner object
 		*/
-		ALyxListBox(QWidget *parent = 0, ASkinner *s = 0);
-		~ALyxListBox();
+		ALyxListWidget(QWidget *parent = 0, ASkinner *s = 0);
+		~ALyxListWidget();
 
-		//! \brief Returns QStringList of items contained in a box.
-		QList <QLabel*> items() { return l_items; }
-		
-		QWidget *l_viewport;
-		QWidget *l_widget;
+		//! \brief Returns list of items contained in a Widget.
+		ALyxListWidgetItems items() { return l_items; }
+
+		void addItem(ALyxListWidgetItem *item);
+		void setSelectedItem(ALyxListWidgetItem *item);
 	
 	private:
-		void drawFrame();
+		QTimer	*animationTimer;
 
-		QList <QLabel*>l_items;
 		QFont l_font;
-		int l_verticalSpacing;
+		int l_verticalSpacing;	// Item top and bottom spacing
 		int l_paddingLeft;
 		int l_paddingRight;
 		int l_paddingTop;
 		int l_paddingBottom;
+
+		int l_paddingSelector; // Padding from window left to selector
+
+		int m_scrollPosition; // Current scroller position
+		int m_scrollMax; // Maximum scrolling position
+
+		ALyxListWidgetItems l_items;
+		int m_defaultItemHeight;
+
+		ALyxListWidgetItem *m_selectedItem;
+		int m_selectedIndex;
+
+		int animationStep;	// -1 move up, 1 move down, 0 stop
+		QPoint m_selectorPosition; // Position of top left corner
+		int m_acceleration;
+
+		void drawFrame();
+
+	private slots:
+		void animateSelector();
+
 		
 	protected:
 		void paintEvent(QPaintEvent *e);
+		void mousePressEvent(QMouseEvent *e);
 };

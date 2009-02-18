@@ -15,6 +15,11 @@
 ALyxButton::ALyxButton(QWidget *parent) {
 	currentState = false;
 	if(isChecked()) { currentState = true; }
+
+	animationTimer = new QTimer();
+	animationTimer->setInterval(20);
+
+	connect(animationTimer, SIGNAL(timeout()), this, SLOT(animate()));
 }
 
 void ALyxButton::setUpPixmap(QPixmap image) {
@@ -31,12 +36,16 @@ void ALyxButton::setDownPixmap(QPixmap image) {
 
 void ALyxButton::mousePressEvent(QMouseEvent *e) {
 	currentState = true;
+	animationStep = 1;
+	animationTimer->start();
 	repaint();
 	emit pressed();
 }
 
 void ALyxButton::mouseReleaseEvent(QMouseEvent *e) {
 	currentState = false;
+	animationStep = -1;
+	animationTimer->start();
 	repaint();
 	emit released();
 	emit clicked();
@@ -44,13 +53,38 @@ void ALyxButton::mouseReleaseEvent(QMouseEvent *e) {
 
 void ALyxButton::paintEvent(QPaintEvent *e)  {
 	QPainter painter(this);
-	if(currentState) {
-		if(!buttonUpImage.size().isNull()) {
+//	if(currentState) {
+//		if(!buttonUpImage.size().isNull()) {
+			painter.drawPixmap(0, 0, buttonUpImage);
+			painter.setOpacity(currentOpacity);
 			painter.drawPixmap(0, 0, buttonDownImage);
-		}
+			painter.setOpacity(1.0);
+/*		}
 	} else {
 		if(!buttonDownImage.size().isNull()) {
+			painter.drawPixmap(0, 0, buttonDownImage);
+			painter.setOpacity(currentOpacity);
 			painter.drawPixmap(0, 0, buttonUpImage);
+			painter.setOpacity(1.0);
+
 		}
+	}*/
+}
+
+void ALyxButton::animate() {
+	if(animationStep == 1) {
+		currentOpacity+=0.1;
+		if(currentOpacity >= 1.0) {
+			currentOpacity = 1.0;
+			animationTimer->stop();
+		}
+		repaint();
+	} else if(animationStep == -1) {
+		currentOpacity-=0.1;
+		if(currentOpacity <= 0.0) {
+			currentOpacity = 0.0;
+			animationTimer->stop();
+		}
+		repaint();
 	}
 }

@@ -19,6 +19,7 @@
 #include <QTimer>
 
 #include "skinner.h"
+#include "scrollbar.h"
 
 class ALyxListWidgetItem : public QObject {
 	Q_OBJECT
@@ -89,6 +90,19 @@ class ALyxListWidget : public QWidget {
 		int m_acceleration;
 
 		void drawFrame();
+
+		QPixmap corner_ul;
+		QPixmap corner_ur;
+		QPixmap corner_bl;
+		QPixmap corner_br;
+		QPixmap top;
+		QPixmap bottom;
+		QPixmap left;
+		QPixmap right;
+		QPixmap selector;
+		QPixmap selector_fill;
+
+		ALyxScrollBar *m_scrollBar;
 
 	private slots:
 		void animateSelector();

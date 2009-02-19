@@ -19,6 +19,7 @@
 #define MIN_ACCELERATION 5
 
 #include "lists.h"
+#include <QPushButton>
 
 ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) {
 	l_font = QFont("Calibri", 14);
@@ -34,7 +35,20 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) {
 	m_selectedIndex = 0;
 	animationStep = 0;
 
+	m_scrollBar = new ALyxScrollBar(this, s);
+	
 	setAttribute(Qt::WA_NoSystemBackground, true);
+
+	corner_ul = QPixmap("./skins/default/list_ul.png");
+	corner_bl = QPixmap("./skins/default/list_dl.png");
+	corner_br = QPixmap("./skins/default/list_br.png");
+	corner_ur = QPixmap("./skins/default/list_ur.png");
+	top = QPixmap("./skins/default/list_u.png");
+	bottom = QPixmap("./skins/default/list_b.png");
+	right = QPixmap("./skins/default/list_r.png");
+	left = QPixmap("./skins/default/list_l.png");
+	selector = QPixmap("./skins/default/list_selector.png");
+	selector_fill = QPixmap("./skins/default/list_selector_fill.png");
 
 	animationTimer = new QTimer(this);
 	animationTimer->setInterval(10);
@@ -89,17 +103,6 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	p.setFont(l_font);
 
 	// Draw skinned frame of the listWidget
-	QPixmap corner_ul("./skins/default/list_ul.png");
-	QPixmap corner_bl("./skins/default/list_dl.png");
-	QPixmap corner_br("./skins/default/list_br.png");
-	QPixmap corner_ur("./skins/default/list_ur.png");
-	QPixmap top("./skins/default/list_u.png");
-	QPixmap bottom("./skins/default/list_b.png");
-	QPixmap right("./skins/default/list_r.png");
-	QPixmap left("./skins/default/list_l.png");
-	QPixmap selector("./skins/default/list_selector.png");
-	QPixmap selector_fill("./skins/default/list_selector_fill.png");
-	
 	p.drawPixmap(0, 0, corner_ul); // Upper left
 	p.drawPixmap(corner_ul.width(), 0, top.scaled(width() - corner_ul.width() - corner_ur.width(), corner_ul.height())); // Top
 	p.drawPixmap(0, height()-corner_bl.height(), corner_bl); // Bottom left
@@ -146,4 +149,9 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	}
 
 	p.end();
+
+	m_scrollBar->setFixedSize(60, height());
+	m_scrollBar->move(width()-m_scrollBar->width(), 0);
+
+	//m_scrollBar->repaint();
 }

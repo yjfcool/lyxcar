@@ -1,6 +1,6 @@
 TEMPLATE			= app
-HEADERS				= main.h mainwindow.h mainmenu.h panel.h buttons.h osd.h skinner.h lists.h home.h
-SOURCES				= main.cpp mainwindow.cpp mainmenu.cpp panel.cpp buttons.cpp osd.cpp skinner.cpp lists.cpp home.cpp
+HEADERS				= main.h mainwindow.h mainmenu.h panel.h buttons.h osd.h skinner.h lists.h home.h scrollbar.h
+SOURCES				= main.cpp mainwindow.cpp mainmenu.cpp panel.cpp buttons.cpp osd.cpp skinner.cpp lists.cpp home.cpp scrollbar.cpp
 #TRANSLATIONS	= translate/ru.ts
 CONFIG				+= release config qt
 QT						+= network xml sql

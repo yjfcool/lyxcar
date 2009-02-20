@@ -76,6 +76,10 @@ class ALyxListWidget : public QWidget {
 
 		int l_paddingSelector; // Padding from window left to selector
 
+		int m_scrollBarPaddingEdge;
+		int m_scrollBarPaddingTop;
+		int m_scrollBarPaddingBottom;
+
 		int m_scrollPosition; // Current scroller position
 		int m_scrollMax; // Maximum scrolling position
 
@@ -103,6 +107,10 @@ class ALyxListWidget : public QWidget {
 		QPixmap selector_fill;
 
 		ALyxScrollBar *m_scrollBar;
+
+	public slots:
+		void selectItem(int itemIndex);
+		void selectItem(ALyxListWidgetItem *item);
 
 	private slots:
 		void animateSelector();

@@ -22,6 +22,9 @@ ALyxScrollBar::ALyxScrollBar(QWidget *parent, ASkinner *s) : QWidget(parent) {
 	slider_up = QPixmap("./skins/default/scroller.png");
 	slider_down = QPixmap("./skins/default/scroller.png");
 	
+	m_position = 100;
+	m_maximumPosition = 100;
+	
 	setAttribute(Qt::WA_NoSystemBackground, true);	
 }
 
@@ -35,9 +38,16 @@ void ALyxScrollBar::paintEvent(QPaintEvent *e) {
 	p.drawPixmap(0, 0, backbtn_up);
 	p.drawPixmap(0, height()-forwardbtn_up.height(), forwardbtn_up);
 	
+	int tmp_sliderMin = backbtn_up.height();
+	int tmp_sliderLength = height()-forwardbtn_up.height()-tmp_sliderMin-backbtn_up.height();
+	float tmp_sliderStep = (float)tmp_sliderLength / (float)m_maximumPosition;
+	qDebug() << "slitedlength" << tmp_sliderLength << "sliderStep" << tmp_sliderStep;
+	
+	p.drawPixmap(0, tmp_sliderMin+(int)(tmp_sliderStep*m_position), slider_up);
+	
 	p.end();
 }
 
 void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
-	
+
 }

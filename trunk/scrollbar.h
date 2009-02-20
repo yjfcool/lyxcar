@@ -37,6 +37,11 @@ class ALyxScrollBar : public QWidget {
 		QPixmap bar_begin;
 		QPixmap bar_end;
 		QPixmap bar_fill;
+		
+		int m_position;
+		int m_maximumPosition;
+		
+		int m_sliderOffset;
 
 		
 	signals:

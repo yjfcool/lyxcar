@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+    <buttons>
+	<button name="MP3" value="MP3 Player"
+	    appear-effect="flow"
+	    disappear-effect="flow"
+	    appear-pause="0"
+	    disappear-pause="0">
+
+	    <passive-image src="btn1_up.png"/>
+	    <active-image src="btn1_down.png"/>
+	    <position x="10" y="10" width="100" height="100"/>
+
+	    <effect type="flow" velocity="10">
+	    	<position-step time="0" x="0" y="0" width="0" height="0" acceleration="1"/>
+		<position-step time="5" x="20" y="20" width="100" height="100" acceleration="3"/>
+		<position-step time="10" x="10" y="10" width="100" height="100" acceleration="1"/>
+	    </effect>
+
+	    <effect type="blend" velocity="10">
+		<opacity-step time="0" value="0"/>
+	        <opacity-step time="3" value="30"/>
+	        <opacity-step time="4" value="100"/>
+	        <opacity-step time="6" value="60"/>
+	        <opacity-step time="10" value="100"/>
+	    </effect>
+	</button>
+    </buttons>
+</config>

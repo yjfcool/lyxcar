@@ -61,7 +61,9 @@ class ALyxListWidget : public QWidget {
 		//! \brief Returns list of items contained in a Widget.
 		ALyxListWidgetItems items() { return l_items; }
 
+		//! \brief Add an item to the list widget
 		void addItem(ALyxListWidgetItem *item);
+		//! \brief Sets item specified as a currently selected item
 		void setSelectedItem(ALyxListWidgetItem *item);
 	
 	private:
@@ -107,6 +109,9 @@ class ALyxListWidget : public QWidget {
 		QPixmap selector_fill;
 
 		ALyxScrollBar *m_scrollBar;
+
+	signals:
+		void selected(ALyxListWidgetItem *item);
 
 	public slots:
 		void selectItem(int itemIndex);

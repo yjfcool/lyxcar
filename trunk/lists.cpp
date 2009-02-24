@@ -16,7 +16,7 @@
  
 */
 
-#define MIN_ACCELERATION 5
+#define MIN_ACCELERATION 7
 
 #include "lists.h"
 #include <QPushButton>

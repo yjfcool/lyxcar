@@ -41,15 +41,29 @@ class ALyxScrollBar : public QWidget {
 		int m_position;
 		int m_maximumPosition;
 		
-		int m_sliderOffset;
+		int m_sliderOffset; // Current slider position in pixels
+		int m_sliderStep;	// Slider one step (when pressing forward or backward button) in items
+		int m_sliderPage; // Slider page step (when pressing on a slider bar above or below the slider) in items
 
+
+		int tmp_sliderMin;
+		int tmp_sliderLength;
+		float tmp_sliderStep;
+		
+		bool tmp_sliderPressed;
+		QPoint tmp_sliderPressPos;
+		int tmp_sliderInitialPos;
 		
 	signals:
 		void changed();
 
 	protected:
+		void resizeEvent(QResizeEvent *e);
 		void paintEvent(QPaintEvent *e);
+
 		void mousePressEvent(QMouseEvent *e);
+		void mouseReleaseEvent(QMouseEvent *e);
+		void mouseMoveEvent(QMouseEvent *e);
 };
 
 #endif

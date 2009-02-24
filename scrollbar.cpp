@@ -41,7 +41,7 @@ void ALyxScrollBar::paintEvent(QPaintEvent *e) {
 	int tmp_sliderMin = backbtn_up.height();
 	int tmp_sliderLength = height()-forwardbtn_up.height()-tmp_sliderMin-backbtn_up.height();
 	float tmp_sliderStep = (float)tmp_sliderLength / (float)m_maximumPosition;
-	qDebug() << "slitedlength" << tmp_sliderLength << "sliderStep" << tmp_sliderStep;
+//	qDebug() << "slidlength" << tmp_sliderLength << "sliderStep" << tmp_sliderStep;
 	
 	p.drawPixmap(0, tmp_sliderMin+(int)(tmp_sliderStep*m_position), slider_up);
 	
@@ -51,3 +51,4 @@ void ALyxScrollBar::paintEvent(QPaintEvent *e) {
 void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 
 }
+

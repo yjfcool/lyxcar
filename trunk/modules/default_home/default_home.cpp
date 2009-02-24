@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2008 Pavlov Denis
  *
- * Volume control module.
+ * Main home module.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -17,7 +17,7 @@
 */
 
 homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
-
+    m_skinner = s;
 }
 
 homeModuleWidget::~homeModuleWidget() {

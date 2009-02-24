@@ -81,6 +81,7 @@ void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
 		if(item->rect.contains(e->pos())) {
 			int prev_selectedIndex = m_selectedIndex;
 			setSelectedItem(item);
+			emit selected(item);
 			if(prev_selectedIndex < m_selectedIndex) {
 				animationStep = 1;
 			} else if(prev_selectedIndex > m_selectedIndex) {
@@ -196,9 +197,9 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 }
 
 void ALyxListWidget::selectItem(int itemIndex) {
-	
+
 }
 
 void ALyxListWidget::selectItem(ALyxListWidgetItem *item) {
-	
+	setSelectedItem(item);
 }

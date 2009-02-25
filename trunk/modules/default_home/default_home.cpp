@@ -37,7 +37,9 @@ homeModuleApplet::~homeModuleApplet() {
 }
 
 QWidget *homeModule::activate(QWidget *parent) {
+	moduleWidget = new homeModuleWidget(parent, skinner);
 
+	return moduleWidget;
 }
 
 QWidget *homeModule::activateApplet(QWidget *parent) {
@@ -49,3 +51,5 @@ QWidget *homeModule::activateApplet(QWidget *parent) {
 
 	return appletWidget;
 }
+
+Q_EXPORT_PLUGIN2(home, homeModule);

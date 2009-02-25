@@ -25,13 +25,13 @@ ALyxButton::ALyxButton(QWidget *parent) {
 
 void ALyxButton::setUpPixmap(QPixmap image) {
 	buttonUpImage = image;
-	setFixedSize(image.rect().size());
+	resize(image.rect().size());
 	repaint();
 }
 
 void ALyxButton::setDownPixmap(QPixmap image) {
 	buttonDownImage = image;
-	setFixedSize(image.rect().size());
+	resize(image.rect().size());
 	repaint();
 }
 
@@ -54,22 +54,10 @@ void ALyxButton::mouseReleaseEvent(QMouseEvent *e) {
 
 void ALyxButton::paintEvent(QPaintEvent *e)  {
 	QPainter painter(this);
-//	if(currentState) {
-//		if(!buttonUpImage.size().isNull()) {
-			painter.drawPixmap(0, 0, buttonUpImage);
-			painter.setOpacity(currentOpacity);
-			painter.drawPixmap(0, 0, buttonDownImage);
-			painter.setOpacity(1.0);
-/*		}
-	} else {
-		if(!buttonDownImage.size().isNull()) {
-			painter.drawPixmap(0, 0, buttonDownImage);
-			painter.setOpacity(currentOpacity);
-			painter.drawPixmap(0, 0, buttonUpImage);
-			painter.setOpacity(1.0);
-
-		}
-	}*/
+	painter.drawPixmap(0, 0, buttonUpImage.scaled(width(), height()));
+	painter.setOpacity(currentOpacity);
+	painter.drawPixmap(0, 0, buttonDownImage.scaled(width(), height()));
+	painter.setOpacity(1.0);
 }
 
 void ALyxButton::animate() {

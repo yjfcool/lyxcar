@@ -63,6 +63,7 @@ class homeModule : public QObject, M_Interface {
 
 	private:
 		homeModuleApplet * appletWidget;
+		homeModuleWidget * moduleWidget;
 };
 
 #endif

@@ -28,11 +28,10 @@ Window::Window(QWidget *parent) {
 	ALyxAnimation *anim2 = new ALyxAnimation(cw, btn2);
 
 	anim2->setAnimationTime(30);
-	anim2->stops << ALyxAnimationStop(0, 0, 200, 0, 0);
-	anim2->stops << ALyxAnimationStop(10, 0, 200, 0, 0);
-	anim2->stops << ALyxAnimationStop(25, 20, 230, 432, 190);
-	anim2->stops << ALyxAnimationStop(28, 30, 240, 432, 190);
-	anim2->stops << ALyxAnimationStop(30, 20, 230, 432, 190);
+	anim2->stops << ALyxAnimationStop(0, 20, 230, 432, 190, 0.0);
+	anim2->stops << ALyxAnimationStop(20, 20, 230, 432, 190, 0.8);
+	anim2->stops << ALyxAnimationStop(22, 20, 230, 432, 190, 0.3);
+	anim2->stops << ALyxAnimationStop(30, 20, 230, 432, 190, 1.0);
 
 	anim2->start();
 

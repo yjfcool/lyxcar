@@ -20,6 +20,7 @@
 
 #include "skinner.h"
 #include "scrollbar.h"
+#include "control.h"
 
 class ALyxListWidgetItem : public QObject {
 	Q_OBJECT
@@ -46,7 +47,7 @@ class ALyxListWidgetItem : public QObject {
 typedef QList<ALyxListWidgetItem *> ALyxListWidgetItems;
 
 //! \brief This class implements skinned listbox for LyxCar.
-class ALyxListWidget : public QWidget {
+class ALyxListWidget : public ALyxControl {
 	Q_OBJECT
 	public:
 

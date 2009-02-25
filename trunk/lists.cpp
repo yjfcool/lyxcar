@@ -21,7 +21,7 @@
 #include "lists.h"
 #include <QPushButton>
 
-ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) {
+ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
 	l_font = QFont("Calibri", 12);
 	l_paddingTop = 15;
 	l_paddingLeft = 15;

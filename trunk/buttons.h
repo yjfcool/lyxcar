@@ -17,11 +17,14 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QTimer>
+
+#include "control.h"
+
 //! \brief Picture buttons for LyxCar interface.
 /*!
 	Inherited from QAbstractButton. Generates Qt signals clicked(), doubleClicked(), pressed(), released() and so on.
 */
-class ALyxButton : public QAbstractButton {
+class ALyxButton : public ALyxControl {
 	Q_OBJECT
 	public:
 		//! \brief Constructs a button.

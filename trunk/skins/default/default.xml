@@ -24,4 +24,7 @@
 			pressed="volctl_mute_act.png"/>
 		</volctl>
 	</modules>
+	<home module="default_home">
+	</home>
 </skin>
+

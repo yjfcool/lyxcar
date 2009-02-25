@@ -54,9 +54,17 @@ void ALyxButton::mouseReleaseEvent(QMouseEvent *e) {
 
 void ALyxButton::paintEvent(QPaintEvent *e)  {
 	QPainter painter(this);
-	painter.drawPixmap(0, 0, buttonUpImage.scaled(width(), height()));
+	if(width() != buttonUpImage.width()) {
+	    painter.drawPixmap(0, 0, buttonUpImage.scaled(width(), height()));
+	} else {
+	    painter.drawPixmap(0, 0, buttonUpImage);
+	}
 	painter.setOpacity(currentOpacity);
-	painter.drawPixmap(0, 0, buttonDownImage.scaled(width(), height()));
+	if(width() != buttonDownImage.width()) {
+	    painter.drawPixmap(0, 0, buttonDownImage.scaled(width(), height()));
+	} else {
+	    painter.drawPixmap(0, 0, buttonDownImage);
+	}
 	painter.setOpacity(1.0);
 }
 

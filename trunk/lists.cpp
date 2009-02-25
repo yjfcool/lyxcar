@@ -22,7 +22,7 @@
 #include <QPushButton>
 
 ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) {
-	l_font = QFont("Calibri", 14);
+	l_font = QFont("Calibri", 12);
 	l_paddingTop = 15;
 	l_paddingLeft = 15;
 	l_paddingRight = 25;

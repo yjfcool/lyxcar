@@ -12,7 +12,7 @@
 
 #include "animated.h"
 
-ALyxAnimation::ALyxAnimation(QObject *parent, QWidget *control) : QObject(parent) {
+ALyxAnimation::ALyxAnimation(QObject *parent, ALyxControl *control) : QObject(parent) {
 	m_control = control;
 
 	timer = new QTimer();
@@ -34,6 +34,7 @@ void ALyxAnimation::start() {
 	ALyxAnimationStop stop = stops[0];
 	m_control->move(stop.x(), stop.y());
 	m_control->resize(stop.width(), stop.height());
+	m_control->setOpacity(stop.opacity());
 
 	timer->start();
 }
@@ -53,14 +54,16 @@ void ALyxAnimation::animateStep() {
 	}
 
 	// Calculate movement in one tick
-	float x_diff = (n_stop.x() - c_stop.x()) / time_diff;
-	float y_diff = (n_stop.y() - c_stop.y()) / time_diff;
-	float w_diff = (n_stop.width() - c_stop.width()) / time_diff;
-	float h_diff = (n_stop.height() - c_stop.height()) / time_diff;
-
+	qreal x_diff = (n_stop.x() - c_stop.x()) / time_diff;
+	qreal y_diff = (n_stop.y() - c_stop.y()) / time_diff;
+	qreal w_diff = (n_stop.width() - c_stop.width()) / time_diff;
+	qreal h_diff = (n_stop.height() - c_stop.height()) / time_diff;
+	qreal opa_diff = (n_stop.opacity() - c_stop.opacity()) / time_diff;
+	
 	// Transform control
 	m_control->move(m_control->x() + x_diff, m_control->y() + y_diff);
 	m_control->resize(m_control->width() + w_diff, m_control->height() + h_diff);
+	m_control->setOpacity(m_control->opacity() + opa_diff);
 
 	m_currentTime++;
 	if(m_currentTime > m_totalAnimationTime) {
@@ -68,6 +71,7 @@ void ALyxAnimation::animateStep() {
 		// Set last time stop animation step
 		m_control->move(n_stop.x(), n_stop.y());
 		m_control->resize(n_stop.width(), n_stop.height());
+		m_control->setOpacity(n_stop.opacity());
 
 		//
 		m_currentTime = 0;

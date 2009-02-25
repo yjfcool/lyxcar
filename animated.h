@@ -17,9 +17,11 @@
 #include <QWidget>
 #include <QObject>
 
+#include "control.h"
+
 class ALyxAnimationStop {
 	public:
-		ALyxAnimationStop(int time, int x, int y, int w, int h, int accel = 0, int velo = 1) {
+		ALyxAnimationStop(int time, int x, int y, int w, int h, qreal opacity = 1.0, int accel = 0, int velo = 1) {
 			m_time = time;
 			m_w = w;
 			m_h = h;
@@ -27,6 +29,7 @@ class ALyxAnimationStop {
 			m_y = y;
 			m_accel = accel;
 			m_velocity = velo;
+			m_opacity = opacity;
 		}
 		~ALyxAnimationStop() {}
 
@@ -35,6 +38,8 @@ class ALyxAnimationStop {
 		int width() { return m_w; }
 		int height() { return m_h; }
 		int time() { return m_time; }
+		qreal opacity() { return m_opacity; }
+
 	private:
 		int m_time;
 		int m_w;
@@ -43,6 +48,7 @@ class ALyxAnimationStop {
 		int m_y;
 		int m_accel;
 		int m_velocity;
+		qreal m_opacity;
 };
 
 typedef QList<ALyxAnimationStop> ALyxAnimationStops;
@@ -58,15 +64,16 @@ typedef QList<ALyxAnimationStop> ALyxAnimationStops;
 class ALyxAnimation : public QObject {
 	Q_OBJECT
 	public:
-		ALyxAnimation(QObject * parent = 0, QWidget * control = 0);
+		ALyxAnimation(QObject * parent = 0, ALyxControl * control = 0);
 		~ALyxAnimation();
 
 		ALyxAnimationStops	stops;
 
 		void start();
 		void setAnimationTime(int ticks) { m_totalAnimationTime = ticks; }
+
 	private:
-		QWidget *m_control;
+		ALyxControl *m_control;
 
 		int m_totalAnimationTime;
 

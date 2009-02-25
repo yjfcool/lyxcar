@@ -12,9 +12,9 @@
 
 #include "buttons.h"
 
-ALyxButton::ALyxButton(QWidget *parent) {
+ALyxButton::ALyxButton(QWidget *parent) : ALyxControl(parent) {
 	currentState = false;
-	if(isChecked()) { currentState = true; }
+	//if(isChecked()) { currentState = true; }
 
 	animationTimer = new QTimer();
 	animationTimer->setInterval(20);
@@ -54,6 +54,7 @@ void ALyxButton::mouseReleaseEvent(QMouseEvent *e) {
 
 void ALyxButton::paintEvent(QPaintEvent *e)  {
 	QPainter painter(this);
+	painter.setOpacity(m_opacity);
 	if(width() != buttonUpImage.width()) {
 	    painter.drawPixmap(0, 0, buttonUpImage.scaled(width(), height()));
 	} else {
@@ -65,14 +66,14 @@ void ALyxButton::paintEvent(QPaintEvent *e)  {
 	} else {
 	    painter.drawPixmap(0, 0, buttonDownImage);
 	}
-	painter.setOpacity(1.0);
+	painter.setOpacity(m_opacity);
 }
 
 void ALyxButton::animate() {
 	if(animationStep == 1) {
 		currentOpacity+=0.1;
-		if(currentOpacity >= 1.0) {
-			currentOpacity = 1.0;
+		if(currentOpacity >= m_opacity) {
+			currentOpacity = m_opacity;
 			animationTimer->stop();
 		}
 		repaint();

@@ -133,12 +133,13 @@ bool AMainWindow::fillPanel() { // ** Finished **
 bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
 	QDir pluginDirectory("modules/"+moduleName);
 
-   QString fileName;
+   QString fileName, temporaryName;
 
-   // module path is modules/<moduleName>/<moduleName>.<platform-specific ext>
-   foreach (fileName, pluginDirectory.entryList(QStringList() << moduleName + ".*")) {
+   // module path is modules/<moduleName>/<prefix><moduleName>.<platform-specific ext>
+   foreach (temporaryName, pluginDirectory.entryList(QStringList() << "*" + moduleName + ".*")) {
       // check extension
-      if (QLibrary::isLibrary(fileName)) {
+      if (QLibrary::isLibrary(temporaryName)) {
+         fileName = temporaryName;
          break;
       }
    }

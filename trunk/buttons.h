@@ -56,7 +56,7 @@ class ALyxButton : public ALyxControl {
 
 		void mousePressEvent(QMouseEvent *e);
 		void mouseReleaseEvent(QMouseEvent *e);
-		
+		void resizeEvent(QResizeEvent *e);
 		void paintEvent(QPaintEvent *event);
 	
 	private slots:

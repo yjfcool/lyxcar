@@ -9,6 +9,11 @@
 	</panel>
 
 	<modules>
+		<default_home>
+			<button
+			released="button_up.png"
+			pressed="button_down.png"/>
+		</default_home>
 		<volctl>
 			<panel background="volctl_panel_bg.png"/>
 			<volume_up_button

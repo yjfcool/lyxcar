@@ -34,7 +34,8 @@ APanel::APanel(QWidget *parent, ASkinner *s) {
 	layout->setSpacing(0);
 	layout->setContentsMargins(skinner->skinValue("", "panel", "padding-left").toInt(), 0,
 				skinner->skinValue("", "panel", "padding-right").toInt(), 0);
-        layout->insertWidget(0, infoBar, 1);
+//        layout->insertWidget(0, new QWidget(), 5);
+        layout->insertStretch(0, 5);
 
 //	button = new AMainMenuButton(this);
 //	layout->insertWidget(0, button);

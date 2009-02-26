@@ -19,9 +19,19 @@
 
 #include "control.h"
 
+//! \brief This is an animation stop point for ALyxAnimation object.
+//! It defines the state of a control (position, size and opacity) at time defined by <time>.
+//!
+//! It may also be defined an acceleration in percent that means that the last step state change of animation queue
+//! will be faster or slower than the first. Of course the acceleration is divided by number of steps in that queue.
+//!
+//! For example:
+//!  - first step is ALyxAnimationStop(0, 0, 0, 0, 0, 1.5)
+//!  - second step is ALyxAnimationStop(30, 0, 0, 100, 100)
+//! According to this the animation goes in 30 ticks and accelerates by 50% from 1st step to 2nd one.
 class ALyxAnimationStop {
 	public:
-		ALyxAnimationStop(int time, int x, int y, int w, int h, qreal opacity = 1.0, int accel = 0, int velo = 1) {
+		ALyxAnimationStop(int time, int x, int y, int w, int h, qreal opacity = 1.0, qreal accel = 1.0, int velo = 1) {
 			m_time = time;
 			m_w = w;
 			m_h = h;
@@ -46,7 +56,7 @@ class ALyxAnimationStop {
 		int m_h;
 		int m_x;
 		int m_y;
-		int m_accel;
+		qreal m_accel;
 		int m_velocity;
 		qreal m_opacity;
 };

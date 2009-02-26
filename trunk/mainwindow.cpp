@@ -49,15 +49,15 @@ AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
 	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(2, panel);
 
 	// Home button
-	homeBtn = new ALyxButton();
+/*	homeBtn = new ALyxButton();
 	homeBtn->setUpPixmap(QPixmap("skins/default/button_66x70.png"));
 	homeBtn->setDownPixmap(QPixmap("skins/default/button_66x70.png"));
 	((QBoxLayout*)panel->layout())->insertWidget(0, homeBtn, Qt::AlignCenter);
 	((QBoxLayout*)panel->layout())->insertSpacing(1, 10);
-	connect(homeBtn, SIGNAL(clicked()), this, SLOT(goHome()));
+	connect(homeBtn, SIGNAL(clicked()), this, SLOT(goHome()));*/
 
 	// Home widget (create only)
-	m_homeWidget = new ALyxHome();
+//	m_homeWidget = new ALyxHome();
 
 	// Load modules from configuration file
 	QSettings *modules_conf = new QSettings("conf/modules.conf", QSettings::IniFormat);
@@ -93,7 +93,7 @@ AMainWindow::~AMainWindow() {
 
 }
 
-void AMainWindow::goHome() {
+/*void AMainWindow::goHome() {
 	if(activeModuleName() != "home") {
 		qDebug() << "Going home...";
 		m_activeModuleName = "home";
@@ -104,7 +104,7 @@ void AMainWindow::goHome() {
 	} else {
 		qDebug() << "Already at home!..";
 	}
-}
+}*/
 
 void AMainWindow::activateModule(QString moduleName) {
 	if(activeModuleName() != moduleName) {
@@ -131,7 +131,7 @@ bool AMainWindow::fillPanel() {
 		m_int->setSkinner(skinner);
 		QWidget *applet = m_int->activateApplet(panel);
 		if(applet) {
-			((QBoxLayout*)panel->layout())->insertWidget(2, applet);
+			((QBoxLayout*)panel->layout())->insertWidget(0, applet);
 			qDebug() << "Module" << moduleName << " added applet to panel";
 		} else {
 			qDebug() << "Module" << moduleName << "has no applet functionality";

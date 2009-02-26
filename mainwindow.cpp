@@ -13,14 +13,15 @@
 #include <QPluginLoader>
 #include <QApplication>
 #include <QMessageBox>
+#include <QtGlobal>
 
 #include "mainwindow.h"
 #include "mainmenu.h"
 #include "lists.h"
 #include "home.h"
 
-AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
-	setFixedSize(800, 600);
+AMainWindow::AMainWindow(QWidget *parent) {
+	resize(800, 600);
 
 	skinner = new ASkinner(this, "default");
 
@@ -120,7 +121,7 @@ bool AMainWindow::fillPanel() { // ** Finished **
 		m_int->setSkinner(skinner);
 		QWidget *applet = m_int->activateApplet(panel);
 		if(applet) {
-			((QBoxLayout*)panel->layout())->insertWidget(0, applet);
+			(qobject_cast<QBoxLayout *>(panel->layout()))->insertWidget(0, applet);
 			qDebug() << "Module" << moduleName << " added applet to panel";
 		} else {
 			qDebug() << "Module" << moduleName << "has no applet functionality";
@@ -132,15 +133,19 @@ bool AMainWindow::fillPanel() { // ** Finished **
 bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
 	QDir pluginDirectory("modules/"+moduleName);
 
-#ifdef Q_OS_WIN32
-	qDebug() << "Loading Windows plugins";
-	QString fileName = pluginDirectory.entryList(QStringList() << "*.dll").first();
-#endif
+   QString fileName;
 
-#ifdef Q_OS_UNIX
-	qDebug() << "Loading Unix plugins";
-	QString fileName = pluginDirectory.entryList(QStringList() << "*.so").first();
-#endif
+   // module path is modules/<moduleName>/<moduleName>.<platform-specific ext>
+   foreach (fileName, pluginDirectory.entryList(QStringList() << moduleName + ".*")) {
+      // check extension
+      if (QLibrary::isLibrary(fileName)) {
+         break;
+      }
+   }
+
+   if (fileName.isEmpty()) {
+      return false;
+   }
 
 	QPluginLoader pluginLoader(pluginDirectory.absoluteFilePath(fileName));
 	QObject *plugin = pluginLoader.instance();

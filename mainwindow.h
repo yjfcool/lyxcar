@@ -41,8 +41,8 @@ class AMainWindow : public QMainWindow {
 //		void	closeEvent(QCloseEvent *) {};
 
 	public slots:
-		//! \brief Call this if you want to display home page.
-		void goHome();
+//		//! \brief Call this if you want to display home page.
+//		void goHome();
 
 	private:
 		ALyxButton *homeBtn;

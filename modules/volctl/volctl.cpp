@@ -12,10 +12,10 @@
 
 #include "volctl.h"
 
-volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) {
+volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) : QWidget(parent) {
 	setFixedWidth(220);
 
-	QBoxLayout *layout = new QHBoxLayout();
+	QBoxLayout *layout = new QHBoxLayout(this);
 	setLayout(layout);
 
 	skinner = s; 
@@ -47,8 +47,8 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) {
 	layout->setSpacing(0);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addStretch(1);
-	layout->addWidget(vol_down_button);
 	layout->addWidget(vol_up_button);
+	layout->addWidget(vol_down_button);
 	layout->addWidget(vol_mute_button);
 	layout->addStretch(1);
 }

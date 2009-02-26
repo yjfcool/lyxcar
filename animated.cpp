@@ -33,7 +33,7 @@ void ALyxAnimation::start() {
 	// Transform control
 	ALyxAnimationStop stop = stops[0];
 	m_control->move(stop.x(), stop.y());
-	m_control->resize(stop.width(), stop.height());
+	m_control->setFixedSize(stop.width(), stop.height());
 	m_control->setOpacity(stop.opacity());
 
 	timer->start();
@@ -62,7 +62,7 @@ void ALyxAnimation::animateStep() {
 	
 	// Transform control
 	m_control->move(m_control->x() + x_diff, m_control->y() + y_diff);
-	m_control->resize(m_control->width() + w_diff, m_control->height() + h_diff);
+	m_control->setFixedSize(m_control->width() + w_diff, m_control->height() + h_diff);
 	m_control->setOpacity(m_control->opacity() + opa_diff);
 
 	m_currentTime++;
@@ -70,7 +70,7 @@ void ALyxAnimation::animateStep() {
 		timer->stop();
 		// Set last time stop animation step
 		m_control->move(n_stop.x(), n_stop.y());
-		m_control->resize(n_stop.width(), n_stop.height());
+		m_control->setFixedSize(n_stop.width(), n_stop.height());
 		m_control->setOpacity(n_stop.opacity());
 
 		//

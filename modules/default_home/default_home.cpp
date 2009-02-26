@@ -29,7 +29,14 @@ homeModuleWidget::~homeModuleWidget() {
 */
 
 homeModuleApplet::homeModuleApplet(QWidget *parent, ASkinner *s) {
-    m_skinner = s;
+	m_skinner = s;
+
+	ALyxButton *button = new ALyxButton(this);
+
+	button->setUpPixmap(QPixmap(m_skinner->skinModuleImage("default_home", "button", "released")));
+	button->setDownPixmap(QPixmap(m_skinner->skinModuleImage("default_home", "button", "pressed")));
+
+	setFixedWidth(button->width());
 }
 
 homeModuleApplet::~homeModuleApplet() {

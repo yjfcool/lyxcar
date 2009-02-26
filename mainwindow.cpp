@@ -48,17 +48,6 @@ AMainWindow::AMainWindow(QWidget *parent) : QMainWindow(parent, Qt::Dialog) {
 	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(1, mainArea, 1);
 	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(2, panel);
 
-	// Home button
-/*	homeBtn = new ALyxButton();
-	homeBtn->setUpPixmap(QPixmap("skins/default/button_66x70.png"));
-	homeBtn->setDownPixmap(QPixmap("skins/default/button_66x70.png"));
-	((QBoxLayout*)panel->layout())->insertWidget(0, homeBtn, Qt::AlignCenter);
-	((QBoxLayout*)panel->layout())->insertSpacing(1, 10);
-	connect(homeBtn, SIGNAL(clicked()), this, SLOT(goHome()));*/
-
-	// Home widget (create only)
-//	m_homeWidget = new ALyxHome();
-
 	// Load modules from configuration file
 	QSettings *modules_conf = new QSettings("conf/modules.conf", QSettings::IniFormat);
 	modulesList = modules_conf->childGroups();
@@ -93,31 +82,31 @@ AMainWindow::~AMainWindow() {
 
 }
 
-/*void AMainWindow::goHome() {
-	if(activeModuleName() != "home") {
-		qDebug() << "Going home...";
-		m_activeModuleName = "home";
-
-		clearMainArea(); // Clearing
-		mainArea->setLayout(new QVBoxLayout());
-		((QBoxLayout*)mainArea->layout())->addWidget(homeWidget());
-	} else {
-		qDebug() << "Already at home!..";
-	}
-}*/
-
 void AMainWindow::activateModule(QString moduleName) {
 	if(activeModuleName() != moduleName) {
 		qDebug() << "Activating module"	<< moduleName;
 		m_activeModuleName = moduleName;
 
 		clearMainArea(); // Clearing
+
+		// Activate module by moduleName.
+		m_interface = qobject_cast<M_Interface *>(modules[moduleName]);
+		if(m_interface) {
+			mainArea->setLayout(new QVBoxLayout());
+ 			qobject_cast<QBoxLayout*>(mainArea->layout())->addWidget(m_interface->activate());
+		}
 	} else {
 		qDebug() << "Already activated" << moduleName;
 	}
 }
 
-void AMainWindow::clearMainArea() {
+void AMainWindow::replyActivation(QString mname) {
+	qDebug() << "Replying activation demandance from" << mname;
+
+	activateModule(mname);
+}
+
+void AMainWindow::clearMainArea() { // ** Finished **
 		// We need to destroy boxLayout to clear main area and create it again.
 		if(mainArea->layout()) {
 			qDebug() << "Clearing main area's layout: mainArea->layout() destroyed";
@@ -125,7 +114,7 @@ void AMainWindow::clearMainArea() {
 		}
 }
 
-bool AMainWindow::fillPanel() {
+bool AMainWindow::fillPanel() { // ** Finished **
 	foreach (QString moduleName, modules.keys()) {
 		M_Interface *m_int = qobject_cast<M_Interface *>(modules[moduleName]);
 		m_int->setSkinner(skinner);
@@ -140,7 +129,7 @@ bool AMainWindow::fillPanel() {
 	return false;
 }
 
-bool AMainWindow::loadModule(QString moduleName) {
+bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
 	QDir pluginDirectory("modules/"+moduleName);
 
 #ifdef Q_OS_WIN32
@@ -160,6 +149,11 @@ bool AMainWindow::loadModule(QString moduleName) {
 	if (plugin != NULL) {
 		qDebug() << "Discovered plugin" << fileName;
 		modules[moduleName] = plugin;
+		qobject_cast<M_Interface *>(plugin)->setModuleName(moduleName);
+
+		// Connect module's activation demand signal
+		// to main window reply slot.
+		connect(plugin, SIGNAL(demandActivation(QString)), this, SLOT(replyActivation(QString)));
 	} else {
 	    qDebug() << "Plugin not loaded" << pluginDirectory.absoluteFilePath(fileName) << pluginLoader.errorString();
 	}

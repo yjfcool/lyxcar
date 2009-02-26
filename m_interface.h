@@ -47,9 +47,12 @@ class M_Interface {
 		//! \brief Sets the ASkinner object.
 		void setSkinner(ASkinner *skinnerObj) { qDebug() << "Skinner object set!"; skinner = skinnerObj; }
 
+		QString moduleName() { return m_moduleName; }
+		void setModuleName(QString name) { m_moduleName = name; }
+
 	protected:
 		ASkinner *skinner;
-
+		QString m_moduleName;
 };
 
 Q_DECLARE_INTERFACE(M_Interface, "com.trolltech.Lyxcar.M_Interface/1.0"); 

@@ -72,6 +72,7 @@ class AMainWindow : public QMainWindow {
 		bool fillPanel();
 
 	private slots:
+		void replyActivation(QString mname);
 };
 
 

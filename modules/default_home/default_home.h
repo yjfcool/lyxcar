@@ -19,6 +19,7 @@
 #include "../../panel.h"
 #include "../../buttons.h"
 #include "../../skinner.h"
+#include "../../animated.h"
 #include "../../m_interface.h"
 
 class homeModuleWidget : public QWidget {
@@ -51,9 +52,12 @@ class homeModuleApplet : public QWidget {
 		ASkinner * m_skinner;
 
 	private slots:
+
+	signals:
+		void buttonClicked();
 };
 
-class homeModule : public QObject, M_Interface {
+class homeModule : public QObject, public M_Interface {
 	Q_OBJECT
 	Q_INTERFACES(M_Interface)
 
@@ -64,6 +68,17 @@ class homeModule : public QObject, M_Interface {
 	private:
 		homeModuleApplet * appletWidget;
 		homeModuleWidget * moduleWidget;
+
+	signals:
+		void demandActivation(QString moduleName);
+
+	public slots:
+		//! \brief Module activation slot - creates and shows main module widget
+		void activateWidget() {
+			// Module emits signal demanding an activation.
+			emit demandActivation(m_moduleName);
+		}
+
 };
 
 #endif

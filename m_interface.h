@@ -35,6 +35,10 @@ class M_Interface {
 			\param parent specifies parent widget for module's widget.
 		*/
 		virtual QWidget * activate(QWidget * parent = 0) = 0;
+
+		//! \brief Pure virtual method. This must be implemented as needed to hide module's interface in main window.
+		virtual void deactivate() = 0;
+
 		//! \brief Pure virtual method. This must be implemented as needed to append module's control to panel.
 		/*!
 			Constructs and returns small applet widget to insert into panel. You need to call this if you need to create

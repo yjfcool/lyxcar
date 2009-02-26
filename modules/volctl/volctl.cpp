@@ -72,6 +72,8 @@ void volCtlModuleApplet::volume_down() {
 QWidget * volCtlModule::activate(QWidget *parent) {
 	return 0;
 }
+void volCtlModule::deactivate() {
+}
 
 QWidget * volCtlModule::activateApplet(QWidget *parent) {
 	qDebug() << "Appending volCtl plugin to panel";

@@ -23,6 +23,8 @@ QWidget *phononModule::activate(QWidget *parent) {
 
     return 0;
 }
+void phononModule::deactivate() {
+}
 
 QWidget *phononModule::activateApplet(QWidget *parent) {
 

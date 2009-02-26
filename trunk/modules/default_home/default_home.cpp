@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2008 Pavlov Denis
  *
- * Main home module.
+ * Default main home module.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -20,6 +20,7 @@ homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
 
 	ALyxButton *button1 = new ALyxButton(this);
+	button1->setObjectName("MP3");
 	button1->setUpPixmap(QPixmap("skins/default/default_home/mp3_btn_up.png"));
 	button1->setDownPixmap(QPixmap("skins/default/default_home/mp3_btn_down.png"));
 
@@ -28,6 +29,8 @@ homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 	anim1->stops << ALyxAnimationStop(0, -276, 20, 276, 94);
 	anim1->stops << ALyxAnimationStop(15, 10, 20, 276, 94);
 	anim1->stops << ALyxAnimationStop(20, 20, 20, 276, 94);
+
+	connect(button1, SIGNAL(clicked()), this, SLOT(activateModule()));
 
 	ALyxButton *button2 = new ALyxButton(this);
 	button2->setUpPixmap(QPixmap("skins/default/default_home/video_btn_up.png"));
@@ -55,7 +58,6 @@ homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 	anim1->start();
 	anim2->start();
 	anim3->start();
-
 }
 
 homeModuleWidget::~homeModuleWidget() {
@@ -63,21 +65,30 @@ homeModuleWidget::~homeModuleWidget() {
 }
 
 /*
+ * We use this function when we need to activate another module from current module.
+ * The name of module to be activated is defined by objectName of a caller.
+ * For example, if we have a button called "foo", and associated with module "bar"
+ * we need to use substitution table to access "bar".
+*/
+void homeModuleWidget::activateModule() {
+    qDebug() << "activateModule recieved objectName" << sender()->objectName();
+}
+
+/*
  * Applet class implementation
 */
-
 homeModuleApplet::homeModuleApplet(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
 
+	// This is a simple home button
 	ALyxButton *button = new ALyxButton(this);
-
 	button->setUpPixmap(QPixmap(m_skinner->skinModuleImage("default_home", "button", "released")));
 	button->setDownPixmap(QPixmap(m_skinner->skinModuleImage("default_home", "button", "pressed")));
 
+	setFixedWidth(button->width());
+
 	// When the button is clicked emit signal from an applet
 	connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClicked()));
-
-	setFixedWidth(button->width());
 }
 
 homeModuleApplet::~homeModuleApplet() {
@@ -90,6 +101,10 @@ QWidget *homeModule::activate(QWidget *parent) {
 	return moduleWidget;
 }
 
+void homeModule::deactivate() {
+
+}
+
 QWidget *homeModule::activateApplet(QWidget *parent) {
 	qDebug() << "Appending default_home plugin to panel";
 
@@ -99,7 +114,7 @@ QWidget *homeModule::activateApplet(QWidget *parent) {
 
 	// When signal from applet is recieved (button clicked)
 	// call activateWidget().
-	connect(appletWidget, SIGNAL(buttonClicked()), this, SLOT(activateWidget()));
+	connect(appletWidget, SIGNAL(buttonClicked()), this, SLOT(activateMyself()));
 
 	return appletWidget;
 }

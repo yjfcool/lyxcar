@@ -50,6 +50,7 @@ class volCtlModule : public QObject, M_Interface {
 
 	public:
 		QWidget * activate(QWidget * parent = 0);
+		void deactivate();
 		QWidget * activateApplet(QWidget * parent = 0);
 
 	private:

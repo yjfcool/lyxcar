@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2008 Pavlov Denis
  *
- * Main home module.
+ * Default main home module.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -36,6 +36,7 @@ class homeModuleWidget : public QWidget {
 	ASkinner * m_skinner;
 
     private slots:
+	void activateModule();
 };
 
 class homeModuleApplet : public QWidget {
@@ -53,6 +54,7 @@ class homeModuleApplet : public QWidget {
 
 	private slots:
 
+
 	signals:
 		void buttonClicked();
 };
@@ -63,6 +65,7 @@ class homeModule : public QObject, public M_Interface {
 
 	public:
 		QWidget * activate(QWidget * parent = 0);
+		void deactivate();
 		QWidget * activateApplet(QWidget * parent = 0);
 
 	private:
@@ -74,9 +77,15 @@ class homeModule : public QObject, public M_Interface {
 
 	public slots:
 		//! \brief Module activation slot - creates and shows main module widget
-		void activateWidget() {
+		void activateMyself() {
 			// Module emits signal demanding an activation.
 			emit demandActivation(m_moduleName);
+		}
+
+		//! \brief Module activation slot - creates and shows main module <mname> widget
+		void activateModuleWidget(QString mname) {
+			// Module emits signal demanding an activation.
+			emit demandActivation(mname);
 		}
 
 };

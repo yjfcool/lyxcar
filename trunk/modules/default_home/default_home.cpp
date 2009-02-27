@@ -19,48 +19,79 @@
 homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
 
-	ALyxButton *button1 = new ALyxButton(this);
-	button1->setObjectName("MP3");
-	button1->setUpPixmap(QPixmap("skins/default/default_home/mp3_btn_up.png"));
-	button1->setDownPixmap(QPixmap("skins/default/default_home/mp3_btn_down.png"));
+	// Construct menus from a skin defenition
+	QDomElement buttonsElement = m_skinner->skinModuleElement("default_home", "buttons");
+	QDomNodeList buttonsList = buttonsElement.elementsByTagName("button");
+	for(int i = 0; i < buttonsList.count(); i++) {
+		QDomElement buttonElement = buttonsList.at(i).toElement();
+		if(!buttonElement.isNull()) {
+			// Get button properties
+			QString bname = buttonElement.attribute("name");
+			QString value = buttonElement.attribute("value");
+			QString pressed = buttonElement.attribute("pressed");
+			QString released = buttonElement.attribute("released");
+			qDebug() << bname << value << pressed << released;
 
-	anim1 = new ALyxAnimation(this, button1);
-	anim1->setAnimationTime(20);
-	anim1->stops << ALyxAnimationStop(0, -276, 20, 276, 94);
-	anim1->stops << ALyxAnimationStop(15, 10, 20, 276, 94);
-	anim1->stops << ALyxAnimationStop(20, 20, 20, 276, 94);
+			// Append button to the buttons list,
+			// and create animation object for button.
+			buttons[bname] = new ALyxButton(this);
+			buttons[bname]->setObjectName(bname);
+			buttons[bname]->setUpPixmap(QPixmap(m_skinner->skinModuleImagePath("default_home")+released));
+			buttons[bname]->setDownPixmap(QPixmap(m_skinner->skinModuleImagePath("default_home")+pressed));
 
-	connect(button1, SIGNAL(clicked()), this, SLOT(activateModule()));
+			// Connect button to a module activation slot
+			// ONLY NOW BY DEFAULT, WE NEED TO CHANGE THIS IF
+			// WE HAVE BUTTON FUNCTIONS OTHER THAN JUST CALLING
+			// MODULES!
+			connect(buttons[bname], SIGNAL(clicked()), this, SLOT(activateModule()));
 
-	ALyxButton *button2 = new ALyxButton(this);
-	button2->setUpPixmap(QPixmap("skins/default/default_home/video_btn_up.png"));
-	button2->setDownPixmap(QPixmap("skins/default/default_home/video_btn_down.png"));
+			// Get button animations
+			QDomElement animationElement = buttonElement.firstChildElement("animation");
+			if(!animationElement.isNull()) {
+				QDomNodeList stopsList = animationElement.elementsByTagName("stop");
+				animations[bname] = new ALyxAnimation(this, buttons[bname]);
+				animations[bname]->setAnimationTime(animationElement.attribute("time").toInt());
+				for(int a = 0; a < stopsList.count(); a++) {
+					QDomElement stopElement = stopsList.at(a).toElement();
+					if(!stopElement.isNull()) {
+						int time = stopElement.attribute("time").toInt();
+						int x = stopElement.attribute("x").toInt();
+						int y = stopElement.attribute("y").toInt();
+						int width = stopElement.attribute("width").toInt();
+						int height = stopElement.attribute("height").toInt();
+						float opacity = stopElement.attribute("opacity").toFloat();
+						int acceleration = stopElement.attribute("acceleration").toInt();
+						animations[bname]->stops << ALyxAnimationStop(time, x, y, width, height, opacity);
+						qDebug() << bname << "stop at" << time << x << y << width << height << opacity;
+					}
+				}       
+			} else {
+				// Get button position and rectangle
+				QDomElement rectElement = buttonElement.firstChildElement("rect");
+				if(!rectElement.isNull()) {
+					int ini_x = rectElement.attribute("x").toInt();
+					int ini_y = rectElement.attribute("y").toInt();
+					int ini_width = rectElement.attribute("width").toInt();
+					int ini_height = rectElement.attribute("height").toInt();
+					buttons[bname]->move(ini_x, ini_y);
+					buttons[bname]->setFixedSize(ini_width, ini_height);
+				} else {
+				 	qDebug() << "Warning: no initial rectangle for" << bname << "defined";
+				}
+			}
+		}
+	}
 
-	ALyxAnimation *anim2 = new ALyxAnimation(this, button2);
-	anim2->setAnimationTime(30);
-	anim2->stops << ALyxAnimationStop(0, -276, 140, 276, 94);
-	anim2->stops << ALyxAnimationStop(10, -276, 140, 276, 94);
-	anim2->stops << ALyxAnimationStop(25, 10, 140, 276, 94);
-	anim2->stops << ALyxAnimationStop(30, 20, 140, 276, 94);
-
-	ALyxButton *button3 = new ALyxButton(this);
-	button3->setUpPixmap(QPixmap("skins/default/default_home/gps_btn_up.png"));
-	button3->setDownPixmap(QPixmap("skins/default/default_home/gps_btn_down.png"));
-
-	ALyxAnimation *anim3 = new ALyxAnimation(this, button3);
-	anim3->setAnimationTime(40);
-	anim3->stops << ALyxAnimationStop(0, -276, 260, 276, 94);
-	anim3->stops << ALyxAnimationStop(20, -276, 260, 276, 94);
-	anim3->stops << ALyxAnimationStop(30, -276, 260, 276, 94);
-	anim3->stops << ALyxAnimationStop(35, 10, 260, 276, 94);
-	anim3->stops << ALyxAnimationStop(40, 20, 260, 276, 94);
-
-	anim1->start();
-	anim2->start();
-	anim3->start();
+	foreach (QString anim, animations.keys()) {
+		animations[anim]->start();
+	}
 }
 
 homeModuleWidget::~homeModuleWidget() {
+
+}
+
+void homeModuleWidget::loadConfig() {
 
 }
 
@@ -73,7 +104,7 @@ homeModuleWidget::~homeModuleWidget() {
 void homeModuleWidget::activateModule() {
 	qDebug() << "activateModule recieved objectName" << sender()->objectName();
 
-	anim1->reverse();
+	animations["MP3"]->reverse();
 }
 
 /*

@@ -77,6 +77,20 @@ QString ASkinner::skinModuleValue(QString module, QString object, QString attrib
 	return QString("");
 }
 
+QDomElement ASkinner::skinModuleElement(QString module, QString elementName) {
+	QDomElement moduleRoot = modules.firstChildElement(module);
+	if(!moduleRoot.isNull()) {
+		QDomElement objectRoot = moduleRoot.firstChildElement(elementName);
+		if(!objectRoot.isNull()) {
+			qDebug() << "Loaded skin element: " << elementName;
+			return objectRoot;
+		} else {
+			qDebug() << "No such element in module" << module << "skin defenition:" << elementName;
+			return QDomElement();
+		}
+	}
+}
+
 QString ASkinner::skinModuleImage(QString module, QString object, QString attribute) {
 	QString attr = "./skins/"+skinName+"/"+module+"/"+skinModuleValue(module, object, attribute);;
 	return attr;
@@ -85,4 +99,9 @@ QString ASkinner::skinModuleImage(QString module, QString object, QString attrib
 QString ASkinner::skinImage(QString part, QString root, QString attribute) {
 	QString attr = "./skins/"+skinName+"/"+skinValue(part, root, attribute);;
 	return attr;
+}
+
+QString ASkinner::skinModuleImagePath(QString module) {
+	QString path = "./skins/"+skinName+"/"+module+"/";
+	return path;
 }

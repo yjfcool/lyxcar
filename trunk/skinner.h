@@ -51,7 +51,7 @@ class ASkinner : public QObject {
 		//! \brief Gets value from module-specific skin configuration file
 		/*!
 			The value is determined my three parameters.
-			\param module is a name of module
+			\param module is a name of module.
 			\param object is an object, e.g. "volume_up_button" or "background".
 			\param attribute determines the name of an attribute to read
 		*/
@@ -60,6 +60,14 @@ class ASkinner : public QObject {
 		QString	skinImage(QString part = "", QString root = "", QString attribute = "");
 		//! \brief Gets value from module-specific skin configuration file. The same as skinModuleValue but thinks that parameter is an image link.
 		QString	skinModuleImage(QString module = "", QString object = "", QString attribute = "");
+		//! \brief Gets skin images storage by module name \param module.
+		QString skinModuleImagePath(QString module = "");
+		//! \brief Gets value from module-specific skin configuration file. Gets a Dom element of module object's configuration.
+		/*!
+			\param module is a name of module.
+			\param elementName is a name of element to get.
+		*/
+		QDomElement skinModuleElement(QString module, QString elementName);
 
 	private:
 		QString	skinsPath;

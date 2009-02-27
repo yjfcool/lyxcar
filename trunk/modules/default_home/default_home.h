@@ -14,6 +14,7 @@
 #define __DEFAULT_HOME_H__
 
 #include <QtGui>
+#include <QtXml>
 #include <QPushButton>
 
 #include "../../panel.h"
@@ -34,7 +35,12 @@ class homeModuleWidget : public QWidget {
     private:
 	/* private members */
 	ASkinner * m_skinner;
-	ALyxAnimation *anim1;
+
+	// Buttons and animations in hashes with "button name" key.
+	QHash<QString, ALyxAnimation *> animations;
+	QHash<QString, ALyxButton *> buttons;
+
+	void loadConfig();
 
     private slots:
 	void activateModule();

@@ -51,7 +51,10 @@ class M_Interface {
 		//! \brief Sets the ASkinner object.
 		void setSkinner(ASkinner *skinnerObj) { qDebug() << "Skinner object set!"; skinner = skinnerObj; }
 
+		//! \brief Get module name
 		QString moduleName() { return m_moduleName; }
+		
+		//! \brief Set module name
 		void setModuleName(QString name) { m_moduleName = name; }
 
 	protected:

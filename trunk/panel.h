@@ -31,6 +31,7 @@ class APanel : public QWidget {
 		APanel(QWidget *parent = 0, ASkinner *s = 0);
 		~APanel();
 
+		//! \brief Fills panel with applets of modules that are configured to be inserted into panel and have applet functionality.
 		void fill();
 
 	protected:
@@ -50,6 +51,7 @@ class APanel : public QWidget {
 		void repaintModuleArea();
 
 	public slots:
+		//! \brief DEPRECATED
 		void popup();
 };
 

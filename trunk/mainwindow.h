@@ -35,8 +35,8 @@ class AMainWindow : public QMainWindow {
 		AMainWindow(QWidget *parent = 0);
 		~AMainWindow();
 		
+		//! \brief Returns current active module name.
 		QString activeModuleName() { return m_activeModuleName; }
-		ALyxHome *homeWidget() { return m_homeWidget; }
 
 //		void	closeEvent(QCloseEvent *) {};
 

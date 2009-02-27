@@ -21,6 +21,7 @@ ALyxAnimation::ALyxAnimation(QObject *parent, ALyxControl *control) : QObject(pa
 	m_currentTime = 0;
 	m_currentAnimationStop = 0;
 	m_totalAnimationTime = 0;
+	m_reverse = false;
 
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(animateStep()));
 }
@@ -39,22 +40,42 @@ void ALyxAnimation::start() {
 	timer->start();
 }
 
+void ALyxAnimation::reverse() {
+	m_reverse = true;
+	m_currentAnimationStop = stops.count()-1;
+	m_currentTime = m_totalAnimationTime;
+	ALyxAnimationStop stop = stops.last();
+	m_control->move(stop.x(), stop.y());
+	m_control->setFixedSize(stop.width(), stop.height());
+	m_control->setOpacity(stop.opacity());
+
+	timer->start();	
+}
+
 void ALyxAnimation::animateStep() {
 	// Get current animation stop
 	ALyxAnimationStop c_stop = stops[m_currentAnimationStop];
 
 	// Get next animation stop
-	ALyxAnimationStop n_stop = stops[m_currentAnimationStop+1];
+	ALyxAnimationStop n_stop = stops[m_currentAnimationStop];
+	if(m_reverse) { n_stop = stops[m_currentAnimationStop-1];	} else { n_stop = stops[m_currentAnimationStop+1]; }
 
 	// Calculate time difference between stops
 	int time_diff = n_stop.time() - c_stop.time();
+	if(m_reverse) { time_diff *= -1; }
 	if(m_currentTime == n_stop.time()) {
-		m_currentAnimationStop++;
-		qDebug() << "Current animation stop is" << m_currentAnimationStop;
+		if(m_reverse) {
+			m_currentAnimationStop--;
+		} else {
+			m_currentAnimationStop++;
+		}
 	}
+	qDebug() << "Current animation stop is" << m_currentAnimationStop;
+	qDebug() << "time_diff is" << time_diff;
 
 	// Calculate movement in one tick
 	qreal x_diff = (n_stop.x() - c_stop.x()) / time_diff;
+	qDebug() << x_diff;
 	qreal y_diff = (n_stop.y() - c_stop.y()) / time_diff;
 	qreal w_diff = (n_stop.width() - c_stop.width()) / time_diff;
 	qreal h_diff = (n_stop.height() - c_stop.height()) / time_diff;
@@ -65,8 +86,9 @@ void ALyxAnimation::animateStep() {
 	m_control->setFixedSize(m_control->width() + w_diff, m_control->height() + h_diff);
 	m_control->setOpacity(m_control->opacity() + opa_diff);
 
-	m_currentTime++;
-	if(m_currentTime > m_totalAnimationTime) {
+	if(m_reverse) { m_currentTime--; } else { m_currentTime++; }
+	if((m_currentTime >= m_totalAnimationTime) ||
+		 (m_currentTime == 0 && m_reverse)) {
 		timer->stop();
 		// Set last time stop animation step
 		m_control->move(n_stop.x(), n_stop.y());

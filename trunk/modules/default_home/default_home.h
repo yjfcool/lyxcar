@@ -34,6 +34,7 @@ class homeModuleWidget : public QWidget {
     private:
 	/* private members */
 	ASkinner * m_skinner;
+	ALyxAnimation *anim1;
 
     private slots:
 	void activateModule();

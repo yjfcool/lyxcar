@@ -24,7 +24,7 @@ homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 	button1->setUpPixmap(QPixmap("skins/default/default_home/mp3_btn_up.png"));
 	button1->setDownPixmap(QPixmap("skins/default/default_home/mp3_btn_down.png"));
 
-	ALyxAnimation *anim1 = new ALyxAnimation(this, button1);
+	anim1 = new ALyxAnimation(this, button1);
 	anim1->setAnimationTime(20);
 	anim1->stops << ALyxAnimationStop(0, -276, 20, 276, 94);
 	anim1->stops << ALyxAnimationStop(15, 10, 20, 276, 94);
@@ -71,7 +71,9 @@ homeModuleWidget::~homeModuleWidget() {
  * we need to use substitution table to access "bar".
 */
 void homeModuleWidget::activateModule() {
-    qDebug() << "activateModule recieved objectName" << sender()->objectName();
+	qDebug() << "activateModule recieved objectName" << sender()->objectName();
+
+	anim1->reverse();
 }
 
 /*

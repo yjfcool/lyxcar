@@ -79,13 +79,20 @@ class ALyxAnimation : public QObject {
 
 		ALyxAnimationStops	stops;
 
+		//! \brief Starts the animation.
 		void start();
+		
+		//! \brief Start the animation from the end to the begining.
+		void reverse();
+		
+		//! \brief Sets the animation time in ticks.
 		void setAnimationTime(int ticks) { m_totalAnimationTime = ticks; }
 
 	private:
 		ALyxControl *m_control;
 
 		int m_totalAnimationTime;
+		bool m_reverse;
 
 		int m_currentAnimationStop;
 		int m_currentTime;

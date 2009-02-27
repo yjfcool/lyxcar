@@ -20,7 +20,7 @@
 #include "control.h"
 
 //! \brief This is an animation stop point for ALyxAnimation object.
-//! It defines the state of a control (position, size and opacity) at time defined by <time>.
+//! It defines the state of a control (position, size and opacity) at time defined by \param time.
 //!
 //! It may also be defined an acceleration in percent that means that the last step state change of animation queue
 //! will be faster or slower than the first. Of course the acceleration is divided by number of steps in that queue.
@@ -43,11 +43,17 @@ class ALyxAnimationStop {
 		}
 		~ALyxAnimationStop() {}
 
+		//! \brief Returns X position of an animated widget at a time stop.
 		int x() { return m_x; }
+		//! \brief Returns Y position of an animated widget at a time stop.
 		int y() { return m_y; }
+		//! \brief Returns the width of an animated widget at a time stop.
 		int width() { return m_w; }
+		//! \brief Returns the height of an animated widget at a time stop.
 		int height() { return m_h; }
+		//! \brief Returns time of time stop.
 		int time() { return m_time; }
+		//! \brief Returns the opacity of an animated widget at a time stop.
 		qreal opacity() { return m_opacity; }
 
 	private:
@@ -65,7 +71,7 @@ typedef QList<ALyxAnimationStop> ALyxAnimationStops;
 
 //! \brief This class implements an animation of Lyx controls, such as buttons.
 //!
-//! Controls are animated through <ALyxAnimationStop> time stops.
+//! Controls are animated through ALyxAnimationStop time stops.
 //! There are two types of transformations of a control: moving and blending.
 //! Every animation going between two time stops goes as a linear transformation
 //! with a given velocity and coordinates. In other words, when the control transforms
@@ -77,6 +83,7 @@ class ALyxAnimation : public QObject {
 		ALyxAnimation(QObject * parent = 0, ALyxControl * control = 0);
 		~ALyxAnimation();
 
+		//! \brief QList of an animation stops.
 		ALyxAnimationStops	stops;
 
 		//! \brief Starts the animation.
@@ -100,6 +107,7 @@ class ALyxAnimation : public QObject {
 		QTimer *timer;
 
 	public slots:
+		//! \brief Goes animation one step forward or backward.
 		void animateStep();
 };
 

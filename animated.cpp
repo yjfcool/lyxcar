@@ -70,12 +70,12 @@ void ALyxAnimation::animateStep() {
 			m_currentAnimationStop++;
 		}
 	}
-	qDebug() << "Current animation stop is" << m_currentAnimationStop;
-	qDebug() << "time_diff is" << time_diff;
+//	qDebug() << "Current animation stop is" << m_currentAnimationStop;
+//	qDebug() << "time_diff is" << time_diff;
 
 	// Calculate movement in one tick
 	qreal x_diff = (n_stop.x() - c_stop.x()) / time_diff;
-	qDebug() << x_diff;
+//	qDebug() << "x_diff is" << x_diff;
 	qreal y_diff = (n_stop.y() - c_stop.y()) / time_diff;
 	qreal w_diff = (n_stop.width() - c_stop.width()) / time_diff;
 	qreal h_diff = (n_stop.height() - c_stop.height()) / time_diff;

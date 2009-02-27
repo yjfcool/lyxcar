@@ -1,5 +1,5 @@
 <skin resolution="800x600" background="background.png">
-	<font family="Calibri"/>
+	<font family="Calibri" size="12"/>
 	<panel
 	height="79"
 	position="bottom"
@@ -13,7 +13,53 @@
 			<button
 			released="button_up.png"
 			pressed="button_down.png"/>
+
+			<buttons>
+			<button name="MP3" value="MP3 Player"
+				appear-pause="0"
+				disappear-pause="0"
+				released="mp3_btn_up.png"
+				pressed="mp3_btn_down.png">
+
+				<rect x="20" y="20" width="276" height="94"/>
+				<animation velocity="1" time="20">
+				    	<stop time="0" x="-276" y="20" width="276" height="94" opacity="1" acceleration="1"/>
+					<stop time="15" x="10" y="20" width="276" height="94" opacity="1" acceleration="1"/>
+					<stop time="20" x="20" y="20" width="276" height="94" opacity="1" acceleration="1"/>
+				</animation>
+			</button>
+			<button name="video" value="Video player"
+				appear-pause="0"
+				disappear-pause="0"
+				released="video_btn_up.png"
+				pressed="video_btn_down.png">
+
+				<rect x="20" y="140" width="276" height="94"/>
+				<animation velocity="1" time="30">
+				    	<stop time="0" x="-276" y="140" width="276" height="94" opacity="1" acceleration="1"/>
+				    	<stop time="10" x="-276" y="140" width="276" height="94" opacity="1" acceleration="1"/>
+					<stop time="25" x="10" y="140" width="276" height="94" opacity="1" acceleration="1"/>
+					<stop time="30" x="20" y="140" width="276" height="94" opacity="1" acceleration="1"/>
+				</animation>
+			</button>
+			<button name="gps" value="GPS"
+				appear-pause="0"
+				disappear-pause="0"
+				released="gps_btn_up.png"
+				pressed="gps_btn_down.png">
+
+				<rect x="20" y="260" width="276" height="94"/>
+				<animation velocity="1" time="40">
+				    	<stop time="0" x="-276" y="260" width="276" height="94" opacity="1" acceleration="1"/>
+				    	<stop time="20" x="-276" y="260" width="276" height="94" opacity="1" acceleration="1"/>
+					<stop time="35" x="10" y="260" width="276" height="94" opacity="1" acceleration="1"/>
+					<stop time="40" x="20" y="260" width="276" height="94" opacity="1" acceleration="1"/>
+				</animation>
+			</button>
+
+ 			</buttons>
 		</default_home>
+
 		<volctl>
 			<panel background="volctl_panel_bg.png"/>
 			<volume_up_button
@@ -32,4 +78,3 @@
 	<home module="default_home">
 	</home>
 </skin>
-

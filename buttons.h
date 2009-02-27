@@ -65,8 +65,11 @@ class ALyxButton : public ALyxControl {
 	protected:
 
 	signals:
+		//! \brief Emits this signal when user press and then releases mouse button.
 		void clicked();
+		//! \brief Emits this signal when user press mouse button.
 		void pressed();
+		//! \brief Emits this signal when user releases pressed mouse button.
 		void released();
 };
 

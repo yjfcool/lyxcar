@@ -40,10 +40,11 @@ class homeModuleWidget : public QWidget {
 	QHash<QString, ALyxAnimation *> animations;
 	QHash<QString, ALyxButton *> buttons;
 
-	void loadConfig();
-
     private slots:
 	void activateModule();
+	
+    signals:
+	void activateClicked(QString);
 };
 
 class homeModuleApplet : public QWidget {
@@ -66,14 +67,17 @@ class homeModuleApplet : public QWidget {
 		void buttonClicked();
 };
 
-class homeModule : public QObject, public M_Interface {
+class homeModule : public QObject, M_Interface {
 	Q_OBJECT
 	Q_INTERFACES(M_Interface)
 
 	public:
 		QWidget * activate(QWidget * parent = 0);
-		void deactivate();
 		QWidget * activateApplet(QWidget * parent = 0);
+		void deactivate(QString deactivateFor) {
+		    qDebug() << "Deactivating current widget. The next module is" << deactivateFor;
+		    emit deactivated(deactivateFor);
+		}
 
 	private:
 		homeModuleApplet * appletWidget;
@@ -81,6 +85,8 @@ class homeModule : public QObject, public M_Interface {
 
 	signals:
 		void demandActivation(QString moduleName);
+		void deactivated(QString deactivateFor);
+
 
 	public slots:
 		//! \brief Module activation slot - creates and shows main module widget
@@ -94,7 +100,6 @@ class homeModule : public QObject, public M_Interface {
 			// Module emits signal demanding an activation.
 			emit demandActivation(mname);
 		}
-
 };
 
 #endif

@@ -21,7 +21,7 @@
 #include "home.h"
 
 AMainWindow::AMainWindow(QWidget *parent) {
-	resize(800, 600);
+	setFixedSize(800, 600);
 
 	skinner = new ASkinner(this, "default");
 
@@ -58,59 +58,72 @@ AMainWindow::AMainWindow(QWidget *parent) {
 	}
 	
 	fillPanel();
-	
-	// FOR TESTING ONLY!!!
-	
-	//connect(panel, SIGNAL(repaintModuleArea()), mainArea, SLOT(repaint()));
-
-	/*m_interface = qobject_cast<M_Interface *>(modules["volctl"]);
-	if(m_interface) {
-		m_interface->setSkinner(skinner);
- 		m_interface->activate(mainArea);
-		((QBoxLayout*)panel->layout())->insertWidget(0, m_interface->activateApplet(panel));
-	}
-
-	m_interface = qobject_cast<M_Interface *>(modules["mp3player"]);
-	if(m_interface) {
-		m_interface->setSkinner(skinner);
- 		m_interface->activate(mainArea);
-		((QBoxLayout*)panel->layout())->insertWidget(0, m_interface->activateApplet(panel));
-	}*/
-	// \FOR TESTING ONLY!!!
 }
 
 AMainWindow::~AMainWindow() {
 
 }
 
-void AMainWindow::activateModule(QString moduleName) {
+void AMainWindow::activateModuleDemand(QString moduleName) {
 	if(activeModuleName() != moduleName) {
-		qDebug() << "Activating module"	<< moduleName;
-		m_activeModuleName = moduleName;
+		qDebug() << "MainWidget says Got activateModuleDemand(" << moduleName << ")";
+		// Get current active module
+		M_Interface *prevModule = qobject_cast<M_Interface *>(modules[m_activeModuleName]);
+		qDebug() << "MainWidget says Interface created for" << moduleName;
 
-		clearMainArea(); // Clearing
-
-		// Activate module by moduleName.
-		m_interface = qobject_cast<M_Interface *>(modules[moduleName]);
-		if(m_interface) {
-			mainArea->setLayout(new QVBoxLayout());
- 			qobject_cast<QBoxLayout*>(mainArea->layout())->addWidget(m_interface->activate());
+		// Connect module activated signal to ...
+		// Connect module deactivated signal to activateModule(...)
+		if(prevModule) {
+			QString deactivateFor = moduleName; // Means "deactivate previous module and activate moduleName".
+		        connect(modules[m_activeModuleName], SIGNAL(deactivated(QString)), this, SLOT(activateModule(QString)));
+			qDebug() << "MainWidget says deactivated() signal connected for module" << m_activeModuleName;
+			qDebug() << "MainWidget says sending deactivation call for module" << prevModule->moduleName();
+			prevModule->deactivate(deactivateFor);
+		} else {
+			activateModule(moduleName);
+			connect(modules[m_activeModuleName], SIGNAL(deactivated(QString)), this, SLOT(activateModule(QString)));
+			qDebug() << "MainWidget says deactivated() signal connected for module" << m_activeModuleName;
 		}
 	} else {
-		qDebug() << "Already activated" << moduleName;
+		qDebug() << "Warning: Already activated" << moduleName;
+	}
+}
+
+void AMainWindow::activateModule(QString moduleName) {
+	qDebug() << "MainWidget says that deactivated() was recieved if it was possible. Activating" << moduleName;
+	clearMainArea(); // Clearing
+
+	// Activate module by moduleName.
+	m_interface = qobject_cast<M_Interface *>(modules[moduleName]);
+	if(m_interface) {
+		// Assume if there is module activated it has been connected to deactivation slot!
+		if(modules[m_activeModuleName]) {
+			qDebug() << "MainWidget says deactivated() signal disconnected from" << m_activeModuleName;
+			disconnect(modules[m_activeModuleName], SIGNAL(deactivated(QString)), this, SLOT(activateModule(QString)));
+		}
+		m_activeModuleName = moduleName;
+		mainArea->setLayout(new QVBoxLayout(mainArea));
+		qDebug() << "activate() for" << moduleName << "called";
+		((QBoxLayout*)mainArea->layout())->addWidget(m_interface->activate(mainArea));
+	} else {
+		qDebug() << "Error: Can't activate" << moduleName << "because module object is NULL!";
 	}
 }
 
 void AMainWindow::replyActivation(QString mname) {
-	qDebug() << "Replying activation demandance from" << mname;
-
-	activateModule(mname);
+	qDebug() << "MainWidget says Replying activation demandance from" << mname;
+	activateModuleDemand(mname);
 }
 
 void AMainWindow::clearMainArea() { // ** Finished **
 		// We need to destroy boxLayout to clear main area and create it again.
 		if(mainArea->layout()) {
-			qDebug() << "Clearing main area's layout: mainArea->layout() destroyed";
+			qDebug() << "MainWidget says Clearing main area's layout: mainArea->layout() destroyed";
+			foreach(QObject *child, mainArea->children()) {
+			    qDebug() << "Deleting" << child->objectName();
+			    child->deleteLater();
+			}
+			// CHECK IF the garbage collector destroys module widget?!
 			delete mainArea->layout();
 		}
 }
@@ -122,9 +135,9 @@ bool AMainWindow::fillPanel() { // ** Finished **
 		QWidget *applet = m_int->activateApplet(panel);
 		if(applet) {
 			(qobject_cast<QBoxLayout *>(panel->layout()))->insertWidget(0, applet);
-			qDebug() << "Module" << moduleName << " added applet to panel";
+			qDebug() << "MainWidget says Module" << moduleName << " added applet to panel";
 		} else {
-			qDebug() << "Module" << moduleName << "has no applet functionality";
+			qDebug() << "MainWidget says Module" << moduleName << "has no applet functionality";
 		}
 	}
 	return false;
@@ -150,10 +163,10 @@ bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
 
 	QPluginLoader pluginLoader(pluginDirectory.absoluteFilePath(fileName));
 	QObject *plugin = pluginLoader.instance();
-	qDebug() << "Trying plugin" << pluginDirectory.absoluteFilePath(fileName);
+	qDebug() << "MainWidget says Trying plugin" << pluginDirectory.absoluteFilePath(fileName);
 
 	if (plugin != NULL) {
-		qDebug() << "Discovered plugin" << fileName;
+		qDebug() << "MainWidget says Discovered plugin" << fileName;
 		modules[moduleName] = plugin;
 		qobject_cast<M_Interface *>(plugin)->setModuleName(moduleName);
 
@@ -161,7 +174,7 @@ bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
 		// to main window reply slot.
 		connect(plugin, SIGNAL(demandActivation(QString)), this, SLOT(replyActivation(QString)));
 	} else {
-	    qDebug() << "Plugin not loaded" << pluginDirectory.absoluteFilePath(fileName) << pluginLoader.errorString();
+	    qDebug() << "MainWidget says Plugin not loaded" << pluginDirectory.absoluteFilePath(fileName) << pluginLoader.errorString();
 	}
 	return false;
 } 

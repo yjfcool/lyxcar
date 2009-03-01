@@ -15,7 +15,7 @@
 			pressed="button_down.png"/>
 
 			<buttons>
-			<button name="MP3" value="MP3 Player"
+			<button name="mp3player" value="MP3 Player"
 				appear-pause="0"
 				disappear-pause="0"
 				released="mp3_btn_up.png"

@@ -85,17 +85,13 @@ homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 	foreach (QString anim, animations.keys()) {
 		animations[anim]->start();
 	}
-}
 
-homeModuleWidget::~homeModuleWidget() {
 
 }
 
-void homeModuleWidget::loadConfig() {
+homeModuleWidget::~homeModuleWidget() {}
 
-}
-
-/*
+/* SLOT
  * We use this function when we need to activate another module from current module.
  * The name of module to be activated is defined by objectName of a caller.
  * For example, if we have a button called "foo", and associated with module "bar"
@@ -104,7 +100,7 @@ void homeModuleWidget::loadConfig() {
 void homeModuleWidget::activateModule() {
 	qDebug() << "activateModule recieved objectName" << sender()->objectName();
 
-	animations["MP3"]->reverse();
+	emit activateClicked(sender()->objectName());
 }
 
 /*
@@ -122,6 +118,7 @@ homeModuleApplet::homeModuleApplet(QWidget *parent, ASkinner *s) {
 
 	// When the button is clicked emit signal from an applet
 	connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClicked()));
+
 }
 
 homeModuleApplet::~homeModuleApplet() {
@@ -131,11 +128,9 @@ homeModuleApplet::~homeModuleApplet() {
 QWidget *homeModule::activate(QWidget *parent) {
 	moduleWidget = new homeModuleWidget(parent, skinner);
 
+	connect(moduleWidget, SIGNAL(activateClicked(QString)), this, SLOT(activateModuleWidget(QString)));
+
 	return moduleWidget;
-}
-
-void homeModule::deactivate() {
-
 }
 
 QWidget *homeModule::activateApplet(QWidget *parent) {

@@ -69,8 +69,8 @@ QWidget * mp3playerModule::activate(QWidget *parent) {
 
 	return moduleWindow;
 }
-void mp3playerModule::deactivate() {
-
+void mp3playerModule::deactivate(QString deactivateFor) {
+    emit deactivated(deactivateFor);
 }
 
 QWidget * mp3playerModule::activateApplet(QWidget *parent) {

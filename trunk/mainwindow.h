@@ -41,8 +41,9 @@ class AMainWindow : public QMainWindow {
 //		void	closeEvent(QCloseEvent *) {};
 
 	public slots:
-//		//! \brief Call this if you want to display home page.
-//		void goHome();
+		//! \brief Activates a module named <moduleName>. Activation means the module widget is inserted into main area and
+		//! activeModuleName is set to <moduleName>.
+		void activateModule(QString moduleName);
 
 	private:
 		ALyxButton *homeBtn;
@@ -61,9 +62,8 @@ class AMainWindow : public QMainWindow {
 		//! \brief Loads plugin with name <moduleName>. Returns true if there was an error.
 		bool	loadModule(QString moduleName);
 		
-		//! \brief Activates a module named <moduleName>. Activation means the module widget is inserted into main area and
-		//! activeModuleName is set to <moduleName>.
-		void activateModule(QString moduleName);
+		void activateModuleDemand(QString moduleName);
+
 		
 		//! \brief Clears main area layout. NOTICE: Widgets inserted into that layout lose their parent, that's why we need
 		//! to destroy them properly on application quit.

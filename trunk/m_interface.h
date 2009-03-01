@@ -37,7 +37,11 @@ class M_Interface {
 		virtual QWidget * activate(QWidget * parent = 0) = 0;
 
 		//! \brief Pure virtual method. This must be implemented as needed to hide module's interface in main window.
-		virtual void deactivate() = 0;
+		/*!
+		    \param deactivateFor tells the module that it needs to be deactivated to allow another module take it's place
+		    this parameter is used by main window to gt to know which module must be activated after.
+		*/
+		virtual void deactivate(QString deactivateFor = "") = 0;
 
 		//! \brief Pure virtual method. This must be implemented as needed to append module's control to panel.
 		/*!

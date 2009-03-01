@@ -28,8 +28,12 @@ class mp3playerModule : public QObject, M_Interface {
 
 	public:
 		QWidget * activate(QWidget *parent = 0);
-		void deactivate();
 		QWidget * activateApplet(QWidget *parent = 0);
+		void deactivate(QString deactivateFor = "");
+
+	signals:
+		void demandActivation(QString moduleName);
+		void deactivated(QString deactivateFor);
 };
 
 class mp3playerWindow : public QWidget, private Ui_mp3player {

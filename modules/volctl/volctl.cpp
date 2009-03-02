@@ -18,10 +18,10 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) : QWidget(p
 	QBoxLayout *layout = new QHBoxLayout(this);
 	setLayout(layout);
 
-	skinner = s; 
+	m_skinner = s; 
 
 	QPalette pal = palette();
-	QPixmap bgImg(skinner->skinModuleImage("volctl", "panel", "background"));
+	QPixmap bgImg(m_skinner->skinModuleImage("volctl", "panel", "background"));
 	QBrush brush = QBrush();
 	brush.setTexture(bgImg);
 	pal.setBrush(QPalette::Window, brush);
@@ -32,13 +32,13 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) : QWidget(p
 	vol_down_button = new ALyxButton(this);
 	vol_mute_button = new ALyxButton(this);
 
-	vol_up_button->setUpPixmap(QPixmap(skinner->skinModuleImage("volctl", "volume_up_button", "released")));
-	vol_down_button->setUpPixmap(QPixmap(skinner->skinModuleImage("volctl", "volume_down_button", "released")));
-	vol_mute_button->setUpPixmap(QPixmap(skinner->skinModuleImage("volctl", "volume_mute_button", "released")));
+	vol_up_button->setUpPixmap(QPixmap(m_skinner->skinModuleImage("volctl", "volume_up_button", "released")));
+	vol_down_button->setUpPixmap(QPixmap(m_skinner->skinModuleImage("volctl", "volume_down_button", "released")));
+	vol_mute_button->setUpPixmap(QPixmap(m_skinner->skinModuleImage("volctl", "volume_mute_button", "released")));
 
-	vol_up_button->setDownPixmap(QPixmap(skinner->skinModuleImage("volctl", "volume_up_button", "pressed")));
-	vol_down_button->setDownPixmap(QPixmap(skinner->skinModuleImage("volctl", "volume_down_button", "pressed")));
-	vol_mute_button->setDownPixmap(QPixmap(skinner->skinModuleImage("volctl", "volume_mute_button", "pressed")));
+	vol_up_button->setDownPixmap(QPixmap(m_skinner->skinModuleImage("volctl", "volume_up_button", "pressed")));
+	vol_down_button->setDownPixmap(QPixmap(m_skinner->skinModuleImage("volctl", "volume_down_button", "pressed")));
+	vol_mute_button->setDownPixmap(QPixmap(m_skinner->skinModuleImage("volctl", "volume_mute_button", "pressed")));
 
 	connect(vol_up_button, SIGNAL(clicked()), this, SLOT(volume_up()));
 	connect(vol_down_button, SIGNAL(clicked()), this, SLOT(volume_down()));
@@ -77,8 +77,8 @@ QWidget * volCtlModule::activateApplet(QWidget *parent) {
 	qDebug() << "Appending volCtl plugin to panel";
 
 	// Create applet widget
-	appletWidget = new volCtlModuleApplet(NULL, skinner);	
-	appletWidget->setSkinner(skinner);
+	appletWidget = new volCtlModuleApplet(NULL, m_skinner);	
+	appletWidget->setSkinner(m_skinner);
 
 	return appletWidget;
 }

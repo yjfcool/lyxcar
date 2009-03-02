@@ -17,8 +17,10 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QTimer>
+#include <QtXml>
 
 #include "control.h"
+#include "skinner.h"
 
 //! \brief Picture buttons for LyxCar interface.
 /*!
@@ -43,6 +45,14 @@ class ALyxButton : public ALyxControl {
 			\param image is a QPixmap containing image.
 		*/
 		void setDownPixmap(QPixmap image);
+
+		//! \brief Configures button according to skin settings.
+		/*!
+			\param s is a skinner object
+			\param moduleName is a section of skin definition XML file containing the configuration of a module
+			\param buttonName is a name of a button
+		*/
+		void setSkin(ASkinner *s, QString moduleName, QString buttonName);
 
 	private:
 		QTimer *animationTimer;

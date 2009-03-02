@@ -59,7 +59,7 @@ class M_Interface {
 		virtual QWidget * activateApplet(QWidget * parent = 0) = 0;
 
 		//! \brief Sets the ASkinner object.
-		void setSkinner(ASkinner *skinnerObj) { qDebug() << "Skinner object set!"; skinner = skinnerObj; }
+		void setSkinner(ASkinner *skinnerObj) { qDebug() << "Skinner object set!"; m_skinner = skinnerObj; }
 
 		//! \brief Get module name
 		QString moduleName() { return m_moduleName; }
@@ -68,7 +68,7 @@ class M_Interface {
 		void setModuleName(QString name) { m_moduleName = name; }
 
 	protected:
-		ASkinner *skinner;
+		ASkinner *m_skinner;
 		QString m_moduleName;
 };
 

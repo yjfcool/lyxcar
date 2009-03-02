@@ -103,6 +103,8 @@ void AMainWindow::activateModule(QString moduleName) {
 		}
 		m_activeModuleName = moduleName;
 		mainArea->setLayout(new QVBoxLayout(mainArea));
+		qDebug() << "skinner object set for" << moduleName;
+		m_interface->setSkinner(skinner);
 		qDebug() << "activate() for" << moduleName << "called";
 		((QBoxLayout*)mainArea->layout())->addWidget(m_interface->activate(mainArea));
 	} else {

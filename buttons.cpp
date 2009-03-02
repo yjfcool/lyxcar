@@ -37,6 +37,19 @@ void ALyxButton::setDownPixmap(QPixmap image) {
 	repaint();
 }
 
+void ALyxButton::setSkin(ASkinner *s, QString moduleName, QString buttonName) {
+	QDomElement btnElement = s->skinModuleElementByName(moduleName, "button", buttonName);
+	setUpPixmap(QPixmap(s->skinModuleImagePath(moduleName)+btnElement.attribute("released")));
+	setDownPixmap(QPixmap(s->skinModuleImagePath(moduleName)+btnElement.attribute("pressed")));
+	QDomElement rectElement = btnElement.firstChildElement("rect");
+	if(!rectElement.isNull()) {
+		move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
+		setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
+	} else {
+	 	qDebug() << "Warning: no initial rectangle for" << objectName() << "defined";
+	}
+}
+
 void ALyxButton::mousePressEvent(QMouseEvent *e) {
 	currentState = true;
 	animationStep = 1;

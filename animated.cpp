@@ -37,6 +37,7 @@ void ALyxAnimation::start() {
 	m_control->setFixedSize(stop.width(), stop.height());
 	m_control->setOpacity(stop.opacity());
 
+	emit started();
 	timer->start();
 }
 
@@ -68,6 +69,7 @@ void ALyxAnimation::animateStep() {
 			m_currentAnimationStop--;
 		} else {
 			m_currentAnimationStop++;
+			emit stopReached(&stops[m_currentAnimationStop]);
 		}
 	}
 //	qDebug() << "Current animation stop is" << m_currentAnimationStop;
@@ -97,6 +99,7 @@ void ALyxAnimation::animateStep() {
 
 		//
 		m_currentTime = 0;
+		emit finished();
 		qDebug() << "Animation stopped";
 	}
 }

@@ -109,6 +109,11 @@ class ALyxAnimation : public QObject {
 	public slots:
 		//! \brief Goes animation one step forward or backward.
 		void animateStep();
+		
+	signals:
+		void started();
+		void finished();
+		void stopReached(ALyxAnimationStop *);
 };
 
 #endif

@@ -28,7 +28,7 @@ class volCtlModuleApplet : public QWidget {
 		volCtlModuleApplet(QWidget * parent = 0, ASkinner *s = 0);
 		~volCtlModuleApplet();
 
-		void setSkinner(ASkinner *s) { skinner = s; }
+		void setSkinner(ASkinner *s) { m_skinner = s; }
 
 	private:
 		/* private members */
@@ -36,7 +36,7 @@ class volCtlModuleApplet : public QWidget {
 		ALyxButton * vol_down_button;
 		ALyxButton * vol_mute_button;
 
-		ASkinner * skinner;
+		ASkinner * m_skinner;
 
 	private slots:
 		void	volume_up();

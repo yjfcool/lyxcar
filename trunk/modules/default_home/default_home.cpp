@@ -143,7 +143,7 @@ homeModuleApplet::~homeModuleApplet() {
 }
 
 QWidget *homeModule::activate(QWidget *parent) {
-	moduleWidget = new homeModuleWidget(parent, skinner);
+	moduleWidget = new homeModuleWidget(parent, m_skinner);
 
 	connect(moduleWidget, SIGNAL(activateClicked(QString)), this, SLOT(activateModuleWidget(QString)));
 
@@ -167,8 +167,8 @@ QWidget *homeModule::activateApplet(QWidget *parent) {
 	qDebug() << "Appending default_home plugin to panel";
 
 	// Create applet widget
-	appletWidget = new homeModuleApplet(NULL, skinner);
-	appletWidget->setSkinner(skinner);
+	appletWidget = new homeModuleApplet(NULL, m_skinner);
+	appletWidget->setSkinner(m_skinner);
 
 	// When signal from applet is recieved (button clicked)
 	// call activateWidget().

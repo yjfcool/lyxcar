@@ -36,14 +36,16 @@ class mp3playerModule : public QObject, M_Interface {
 		void deactivated(QString deactivateFor);
 };
 
-class mp3playerWindow : public QWidget, private Ui_mp3player {
+class mp3playerWindow : public QWidget {
 	Q_OBJECT
 	public:
-		mp3playerWindow(QWidget *parent = 0);
+		mp3playerWindow(QWidget *parent = 0, ASkinner *s = 0);
 
 		MPlayerProcess *player;
-
 		QSettings *settings;
+		
+		void createWindow();
+		void setSkinner(ASkinner *s) { m_skinner = s; }
 
 	public slots:
 		void	playCurrent();
@@ -55,8 +57,9 @@ class mp3playerWindow : public QWidget, private Ui_mp3player {
 		void	loadPlayList();
 
 	private:
+		ASkinner *m_skinner;
+
 		M_Interface *mInterface;
-		QLabel *label;
 
 		void	readCurrentMedia();	
 };

@@ -15,24 +15,65 @@
 #include <QDirModel>
 
 #include "mp3player.h"
+#include "../../skinner.h"
+#include "../../buttons.h"
 
-mp3playerWindow::mp3playerWindow(QWidget *parent) {
-	setupUi(this);
+mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
+	m_skinner = s;
+//	setupUi(this);
 
+	qDebug() << "mp3player is reading player settings";
 	settings = new QSettings("../conf/mp3player.conf", QSettings::IniFormat, this);
 
-	player = new MPlayerProcess(this);
-	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));
-	connect(playBtn, SIGNAL(clicked()), this, SLOT(pauseCurrent()));
+	qDebug() << "mp3player creates it's window";
+	createWindow();
 
-	readCurrentMedia();
-	loadPlayList();
+//	player = new MPlayerProcess(this);
+//	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));
+//	connect(playBtn, SIGNAL(clicked()), this, SLOT(pauseCurrent()));
 
-	playCurrent();
+//	readCurrentMedia();
+//	loadPlayList();
+
+//	playCurrent();
+}
+
+void mp3playerWindow::createWindow() {
+	ALyxButton *display = new ALyxButton(this);
+	ALyxButton *playBtn = new ALyxButton(this);
+	ALyxButton *firstBtn = new ALyxButton(this);
+	ALyxButton *backBtn = new ALyxButton(this);
+	ALyxButton *nextBtn = new ALyxButton(this);
+	ALyxButton *lastBtn = new ALyxButton(this);
+
+	QDomElement displayElement = m_skinner->skinModuleElement("mp3player", "display");
+	QString background = displayElement.attribute("background");
+	QString fontfamily = displayElement.attribute("font-family");
+	QString fontsize = displayElement.attribute("font-size");
+	qDebug() << "mp3player display background" << background << "font-family" << fontfamily << "font-size" << fontsize;
+
+	display->setObjectName("display");
+	display->setUpPixmap(QPixmap(m_skinner->skinModuleImagePath("mp3player")+background));
+	display->setDownPixmap(QPixmap(m_skinner->skinModuleImagePath("mp3player")+background));
+
+	QDomElement rectElement = displayElement.firstChildElement("rect");
+	if(!rectElement.isNull()) {
+		firstBtn->move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
+		firstBtn->setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
+	} else {
+	 	qDebug() << "Warning: no initial rectangle for" << display->objectName() << "defined";
+	}
+
+	playBtn->setSkin(m_skinner, "mp3player", "play");
+	firstBtn->setSkin(m_skinner, "mp3player", "first");
+	backBtn->setSkin(m_skinner, "mp3player", "back");
+	lastBtn->setSkin(m_skinner, "mp3player", "last");
+	nextBtn->setSkin(m_skinner, "mp3player", "next");
+
 }
 
 void mp3playerWindow::playerRead() {
-	testText->append(player->readAllStandardOutput());
+	//testText->append(player->readAllStandardOutput());
 }
 
 void mp3playerWindow::loadPlayList() {
@@ -40,13 +81,13 @@ void mp3playerWindow::loadPlayList() {
 }
 
 void mp3playerWindow::readCurrentMedia() {
-	QDirModel *model = new QDirModel;
+	/*QDirModel *model = new QDirModel;
 	mediaTree->setModel(model);
 
 	mediaTree->setRootIndex(model->index(QDir("/").absolutePath())); 
 	((QHeaderView*)mediaTree->header())->hideSection(1);
 	((QHeaderView*)mediaTree->header())->hideSection(2);
-	((QHeaderView*)mediaTree->header())->hideSection(3);
+	((QHeaderView*)mediaTree->header())->hideSection(3);*/
 }
 
 void mp3playerWindow::playCurrent() {
@@ -65,7 +106,7 @@ void mp3playerWindow::pauseCurrent() {
  * Module activation procedure
  */
 QWidget * mp3playerModule::activate(QWidget *parent) {
-	moduleWindow = new mp3playerWindow();
+	moduleWindow = new mp3playerWindow(parent, m_skinner);
 
 	return moduleWindow;
 }

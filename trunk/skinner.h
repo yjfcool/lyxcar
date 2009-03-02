@@ -68,6 +68,14 @@ class ASkinner : public QObject {
 			\param elementName is a name of element to get.
 		*/
 		QDomElement skinModuleElement(QString module, QString elementName);
+		
+		//! \brief Gets DOM container from module-specific skin configuration file by object type (tag name) and object name (the "name" attribute).
+		/*!
+			\param module is a name of module
+			\param element is a type of object (tag name)
+			\param elementName is a name of an element (the "name" attribute)
+		*/
+		QDomElement skinModuleElementByName(QString module, QString element, QString elemetName);
 
 	private:
 		QString	skinsPath;

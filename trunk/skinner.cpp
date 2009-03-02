@@ -88,6 +88,31 @@ QDomElement ASkinner::skinModuleElement(QString module, QString elementName) {
 			qDebug() << "No such element in module" << module << "skin defenition:" << elementName;
 			return QDomElement();
 		}
+	} else {
+		return QDomElement();
+	}
+}
+
+QDomElement ASkinner::skinModuleElementByName(QString module, QString element, QString elementName) {
+	QDomElement moduleRoot = modules.firstChildElement(module);
+	if(!moduleRoot.isNull()) {
+		QDomElement objectRoot;
+		QDomNodeList list = moduleRoot.elementsByTagName(element);
+		for(int i = 0; i < list.count(); i++) {
+			if(list.item(i).toElement().attribute("name") == elementName) {
+				objectRoot = list.item(i).toElement();
+			}
+		}
+		if(!objectRoot.isNull()) {
+			qDebug() << "Loaded skin element: " << elementName;
+			return objectRoot;
+		} else {
+			qDebug() << "ERROR: No such element in module" << module << "skin defenition:" << elementName;
+			return QDomElement();
+		}
+	} else {
+		qDebug() << "ERROR: No configuration for" << module << "in this skin!";
+		return QDomElement();
 	}
 }
 

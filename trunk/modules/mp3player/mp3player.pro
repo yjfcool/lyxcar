@@ -1,8 +1,8 @@
 TEMPLATE	= lib
 CONFIG		+= plugin release
 FORMS		= main.ui
-HEADERS		= mp3player.h mplayerprocess.h ../../skinner.h ../../buttons.h ../../control.h
-SOURCES		= mp3player.cpp mplayerprocess.cpp ../../skinner.cpp ../../buttons.cpp ../../control.cpp
+HEADERS		= mp3player.h mplayerprocess.h ../../skinner.h ../../buttons.h ../../control.h ../../lists.h ../../scrollbar.h
+SOURCES		= mp3player.cpp mplayerprocess.cpp ../../skinner.cpp ../../buttons.cpp ../../control.cpp ../../lists.cpp ../../scrollbar.cpp
 TARGET		= mp3player
 QT		+= xml
 OBJECTS_DIR	= ./libs

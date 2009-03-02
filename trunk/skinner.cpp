@@ -89,6 +89,7 @@ QDomElement ASkinner::skinModuleElement(QString module, QString elementName) {
 			return QDomElement();
 		}
 	} else {
+		qDebug() << "ERROR: No configuration for" << module << "in this skin!";
 		return QDomElement();
 	}
 }

@@ -41,8 +41,8 @@ class AMainWindow : public QMainWindow {
 //		void	closeEvent(QCloseEvent *) {};
 
 	public slots:
-		//! \brief Activates a module named <moduleName>. Activation means the module widget is inserted into main area and
-		//! activeModuleName is set to <moduleName>.
+		//! \brief Activates a module named "moduleName". Activation means the module widget is inserted into main area and
+		//! activeModuleName() is set to "moduleName".
 		void activateModule(QString moduleName);
 
 	private:

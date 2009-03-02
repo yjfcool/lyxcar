@@ -31,6 +31,19 @@
 //! According to this the animation goes in 30 ticks and accelerates by 50% from 1st step to 2nd one.
 class ALyxAnimationStop {
 	public:
+		//! \brief Creates new time stop for animation.
+		/*!
+			\param time is a time in ticks in which this animation time stop reaches. Other words this is a position of the stop in a timeline.
+			\param x is a left coordinate of a control.
+			\param y is a left coordinate of a control.
+			\param w is a width of a control.
+			\param h is a height of a control.
+			\param opacity is a total opacity of the control.
+			\param accel UNUSED YET
+			\param velo UNUSED YET
+
+			Size, position and opacity of a control at the time stop is set once when object is created.
+		*/
 		ALyxAnimationStop(int time, int x, int y, int w, int h, qreal opacity = 1.0, qreal accel = 1.0, int velo = 1) {
 			m_time = time;
 			m_w = w;
@@ -80,6 +93,12 @@ typedef QList<ALyxAnimationStop> ALyxAnimationStops;
 class ALyxAnimation : public QObject {
 	Q_OBJECT
 	public:
+		//! \brief Create new abstract animation object.
+		//! This object can animate any ALyxControl derived visual controls.
+		/*!
+			\param parent is a parent of this animation.
+			\param control is a pointer to Lyx control to animate.
+		*/
 		ALyxAnimation(QObject * parent = 0, ALyxControl * control = 0);
 		~ALyxAnimation();
 
@@ -111,8 +130,11 @@ class ALyxAnimation : public QObject {
 		void animateStep();
 		
 	signals:
+		//! \brief Emitted when the animation queue is started.
 		void started();
+		//! \brief Emitted when the animation queue is stopped.
 		void finished();
+		//! \brief Emitted every time the animation queue reaches next time stop.
 		void stopReached(ALyxAnimationStop *);
 };
 

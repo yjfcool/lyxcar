@@ -25,6 +25,8 @@ homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 	for(int i = 0; i < buttonsList.count(); i++) {
 		QDomElement buttonElement = buttonsList.at(i).toElement();
 		if(!buttonElement.isNull()) {
+			int tmp_at = 0;
+
 			// Get button properties
 			QString bname = buttonElement.attribute("name");
 			QString value = buttonElement.attribute("value");
@@ -51,6 +53,8 @@ homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 				QDomNodeList stopsList = animationElement.elementsByTagName("stop");
 				animations[bname] = new ALyxAnimation(this, buttons[bname]);
 				animations[bname]->setAnimationTime(animationElement.attribute("time").toInt());
+				// Detect the longest animation queue
+				if(tmp_at < animationElement.attribute("time").toInt()) { tmp_at = animationElement.attribute("time").toInt(); lastAnimation = animations[bname]; }
 				for(int a = 0; a < stopsList.count(); a++) {
 					QDomElement stopElement = stopsList.at(a).toElement();
 					if(!stopElement.isNull()) {
@@ -85,11 +89,24 @@ homeModuleWidget::homeModuleWidget(QWidget *parent, ASkinner *s) {
 	foreach (QString anim, animations.keys()) {
 		animations[anim]->start();
 	}
-
-
 }
 
-homeModuleWidget::~homeModuleWidget() {}
+void homeModuleWidget::animateReverse() {
+	if(animations.count() > 0) {
+		// If there is any animation object, connect the fin of it to animationFinished signal.
+		// Only for reverse animation which means deactivation of a module widget.
+		if(lastAnimation) {
+			connect(lastAnimation, SIGNAL(finished()), this, SIGNAL(animationFinished()));
+		}
+		foreach (QString anim, animations.keys()) {
+			animations[anim]->reverse();
+		}
+	}
+}
+
+homeModuleWidget::~homeModuleWidget() {
+	qDebug() << "homeModuleWidget destroyed";	
+}
 
 /* SLOT
  * We use this function when we need to activate another module from current module.
@@ -102,7 +119,7 @@ void homeModuleWidget::activateModule() {
 
 	emit activateClicked(sender()->objectName());
 }
-
+	
 /*
  * Applet class implementation
 */
@@ -122,7 +139,7 @@ homeModuleApplet::homeModuleApplet(QWidget *parent, ASkinner *s) {
 }
 
 homeModuleApplet::~homeModuleApplet() {
-
+	qDebug() << "homeModuleApplet destroyed";
 }
 
 QWidget *homeModule::activate(QWidget *parent) {
@@ -131,6 +148,19 @@ QWidget *homeModule::activate(QWidget *parent) {
 	connect(moduleWidget, SIGNAL(activateClicked(QString)), this, SLOT(activateModuleWidget(QString)));
 
 	return moduleWidget;
+}
+
+void homeModule::deactivate(QString deactivateFor) {
+	qDebug() << "Deactivating current widget. The next module is" << deactivateFor;
+
+	// It's needed to pass net module name to properly deactivate this and activate next module!
+	nextModuleName = deactivateFor;
+	connect(moduleWidget, SIGNAL(animationFinished()), this, SLOT(deactivationFinished()));
+	moduleWidget->animateReverse();
+}
+
+void homeModule::deactivationFinished() {
+	emit deactivated(nextModuleName);
 }
 
 QWidget *homeModule::activateApplet(QWidget *parent) {

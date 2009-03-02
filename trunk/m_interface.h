@@ -27,7 +27,7 @@ class M_Interface {
 		virtual ~M_Interface() {}
 
 		QWidget * moduleWindow;
-		//! \brief Pure virtual method. This must be implemented as needed to display module's interface in main window.
+		//! \brief This must be implemented as needed to display module's interface in main window.
 		/*!
 			Module's main widget isn't constructed after module's loaded. That's why you need to call activate() function
 			to create it's contents and fuctionality. This function returns QWidget * object.
@@ -36,10 +36,16 @@ class M_Interface {
 		*/
 		virtual QWidget * activate(QWidget * parent = 0) = 0;
 
-		//! \brief Pure virtual method. This must be implemented as needed to hide module's interface in main window.
+		//! \brief This must be implemented as needed to hide module's interface in main window.
 		/*!
 		    \param deactivateFor tells the module that it needs to be deactivated to allow another module take it's place
 		    this parameter is used by main window to gt to know which module must be activated after.
+
+			<b>ATTENTION: This method must emit deacivated(deactivateFor) to get main window to know
+			that module widget deactivation procedure has been completed.
+
+			That's why you need to declare signal deactivated(QString) in module implementation directly,
+			because Qt interfaces mechanisms do not support declaring signals in module interfaces.</b>
 		*/
 		virtual void deactivate(QString deactivateFor = "") = 0;
 

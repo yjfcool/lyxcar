@@ -24,27 +24,32 @@
 #include "../../m_interface.h"
 
 class homeModuleWidget : public QWidget {
-    Q_OBJECT
-    public:
-	/* public members */
-	homeModuleWidget(QWidget * parent = 0, ASkinner *s = 0);
-	~homeModuleWidget();
+	Q_OBJECT
+	public:
+		/* public members */
+		homeModuleWidget(QWidget * parent = 0, ASkinner *s = 0);
+		~homeModuleWidget();
 
-	void setSkinner(ASkinner *s) { m_skinner = s; }
+		void setSkinner(ASkinner *s) { m_skinner = s; }
+		
+		void animateReverse();
 
-    private:
-	/* private members */
-	ASkinner * m_skinner;
+	private:
+		/* private members */
+		ASkinner * m_skinner;
+		
+		ALyxAnimation *lastAnimation;
 
-	// Buttons and animations in hashes with "button name" key.
-	QHash<QString, ALyxAnimation *> animations;
-	QHash<QString, ALyxButton *> buttons;
+		// Buttons and animations in hashes with "button name" key.
+		QHash<QString, ALyxAnimation *> animations;
+		QHash<QString, ALyxButton *> buttons;
 
-    private slots:
-	void activateModule();
+	private slots:
+		void activateModule();
 	
-    signals:
-	void activateClicked(QString);
+	signals:
+		void activateClicked(QString);
+		void animationFinished();
 };
 
 class homeModuleApplet : public QWidget {
@@ -74,19 +79,20 @@ class homeModule : public QObject, M_Interface {
 	public:
 		QWidget * activate(QWidget * parent = 0);
 		QWidget * activateApplet(QWidget * parent = 0);
-		void deactivate(QString deactivateFor) {
-		    qDebug() << "Deactivating current widget. The next module is" << deactivateFor;
-		    emit deactivated(deactivateFor);
-		}
+		void deactivate(QString deactivateFor);
 
 	private:
 		homeModuleApplet * appletWidget;
 		homeModuleWidget * moduleWidget;
+		
+		QString nextModuleName;
+
+	private slots:
+		void deactivationFinished();
 
 	signals:
 		void demandActivation(QString moduleName);
 		void deactivated(QString deactivateFor);
-
 
 	public slots:
 		//! \brief Module activation slot - creates and shows main module widget

@@ -89,27 +89,27 @@
 			<button name="first"
 				released="first_btn_up.png"
 				pressed="first_btn_up.png">
-				<rect x="10" y="250" width="81" height="91"/>
+				<rect x="10" y="260" width="81" height="91"/>
 			</button>
 			<button name="back"
 				released="back_btn_up.png"
 				pressed="back_btn_up.png">
-				<rect x="88" y="250" width="81" height="91"/>
+				<rect x="88" y="260" width="81" height="91"/>
 			</button>
 			<button name="play"
 				released="play_btn_up.png"
 				pressed="play_btn_up.png">
-				<rect x="153" y="217" width="139" height="160"/>
+				<rect x="153" y="227" width="139" height="160"/>
 			</button>
 			<button name="next"
 				released="next_btn_up.png"
 				pressed="next_btn_up.png">
-				<rect x="275" y="250" width="81" height="91"/>
+				<rect x="275" y="260" width="81" height="91"/>
 			</button>
 			<button name="last"
 				released="last_btn_up.png"
 				pressed="last_btn_up.png">
-				<rect x="353" y="250" width="81" height="91"/>
+				<rect x="353" y="260" width="81" height="91"/>
 			</button>
 		</mp3player>
 	</modules>

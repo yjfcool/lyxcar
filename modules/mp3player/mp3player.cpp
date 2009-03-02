@@ -17,6 +17,7 @@
 #include "mp3player.h"
 #include "../../skinner.h"
 #include "../../buttons.h"
+#include "../../lists.h"
 
 mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
@@ -45,6 +46,10 @@ void mp3playerWindow::createWindow() {
 	ALyxButton *backBtn = new ALyxButton(this);
 	ALyxButton *nextBtn = new ALyxButton(this);
 	ALyxButton *lastBtn = new ALyxButton(this);
+	
+	ALyxListWidget *playList= new ALyxListWidget(this, m_skinner);
+	playList->move(450, 10);
+	playList->setFixedSize(330, 390);
 
 	QDomElement displayElement = m_skinner->skinModuleElement("mp3player", "display");
 	QString background = displayElement.attribute("background");
@@ -58,8 +63,8 @@ void mp3playerWindow::createWindow() {
 
 	QDomElement rectElement = displayElement.firstChildElement("rect");
 	if(!rectElement.isNull()) {
-		firstBtn->move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
-		firstBtn->setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
+		display->move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
+		display->setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
 	} else {
 	 	qDebug() << "Warning: no initial rectangle for" << display->objectName() << "defined";
 	}

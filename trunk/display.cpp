@@ -13,18 +13,17 @@
 #include "display.h"
 
 ALyxDisplay::ALyxDisplay(QWidget *parent) : ALyxControl(parent) {
+
 	ALyxScrollLabel *lbl = new ALyxScrollLabel(this);
 	lbl->setSpeed(980);
 	lbl->setStep(1);
-	lbl->setDelay(2);
+	lbl->setDelay(1000);
 	lbl->setTextColor(QColor("black"));
 	lbl->setFont(QFont("Calibri", 20));
 	lbl->setText("My favorite song - Song number one *** ");
-	lbl->move(50, 50);
-	lbl->setFixedWidth(170);
+	lbl->move(20, 10);
+	lbl->setFixedWidth(250);
 	lbl->startScroll();
-
-	qDebug() << "Font is" << lbl->font().family() << lbl->font().pointSize();
 
 	ALyxDisplayLayout layout1;
 	layout1 << lbl;

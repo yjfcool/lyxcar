@@ -26,6 +26,7 @@
 #include "../../skinner.h"
 #include "../../lists.h"
 #include "../../scrolllabel.h"
+#include "../../display.h"
 
 
 class mp3playerModule : public QObject, M_Interface {

@@ -15,8 +15,8 @@ Window::Window(QWidget *parent) {
 	lbl->setTextColor(QColor("grey"));
 	lbl->setFont(QFont("Calibri", 20));
 	lbl->setText("My favorite song - Song number one *** ");
-	lbl->setFixedWidth(200);
 	lbl->move(100, 100);
+	lbl->setFixedWidth(200);
 	lbl->startScroll();
 }
 

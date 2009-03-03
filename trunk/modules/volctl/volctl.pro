@@ -1,9 +1,10 @@
 TEMPLATE	= lib
 CONFIG		+= plugin release
-HEADERS		= volctl.h ../../buttons.h ../../skinner.h ../../control.h
-SOURCES		= volctl.cpp ../../buttons.cpp ../../skinner.cpp ../../control.cpp
+HEADERS		= volctl.h
+SOURCES		= volctl.cpp
 TARGET		= volctl
 QT		+= xml
+LIBS		+= -L../.. -llyxlib
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs
 

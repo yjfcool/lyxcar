@@ -15,13 +15,9 @@
 #include <QDirModel>
 
 #include "mp3player.h"
-#include "../../skinner.h"
-#include "../../buttons.h"
-#include "../../lists.h"
 
 mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
-//	setupUi(this);
 
 	qDebug() << "mp3player is reading player settings";
 	settings = new QSettings("../conf/mp3player.conf", QSettings::IniFormat, this);
@@ -41,11 +37,11 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 
 void mp3playerWindow::createWindow() {
 	ALyxButton *display = new ALyxButton(this);
-	ALyxButton *playBtn = new ALyxButton(this);
-	ALyxButton *firstBtn = new ALyxButton(this);
-	ALyxButton *backBtn = new ALyxButton(this);
-	ALyxButton *nextBtn = new ALyxButton(this);
-	ALyxButton *lastBtn = new ALyxButton(this);
+	playBtn = new ALyxButton(this);
+	firstBtn = new ALyxButton(this);
+	backBtn = new ALyxButton(this);
+	nextBtn = new ALyxButton(this);
+	lastBtn = new ALyxButton(this);
 	
 	ALyxListWidget *playList= new ALyxListWidget(this, m_skinner);
 	playList->move(450, 10);

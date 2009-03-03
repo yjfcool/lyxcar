@@ -9,11 +9,15 @@ Window::Window(QWidget *parent) {
 
 	ALyxScrollLabel *lbl = new ALyxScrollLabel(cw, "My favorite song - Song number one");
 //	lbl->setParent(cw);
+	lbl->setSpeed(980); // Max 1000
+	lbl->setStep(1);
+	lbl->setDelay(1000);
+	lbl->setTextColor(QColor("grey"));
 	lbl->setFont(QFont("Calibri", 20));
-	lbl->setText("My favorite song - Song number one");
+	lbl->setText("My favorite song - Song number one *** ");
 	lbl->setFixedWidth(200);
 	lbl->move(100, 100);
-	lbl->startScrollImmediate();
+	lbl->startScroll();
 }
 
 Window::~Window() {

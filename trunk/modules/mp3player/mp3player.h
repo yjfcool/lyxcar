@@ -19,8 +19,14 @@
 #include <QSettings>
 
 #include "ui_main.h"
-#include "../../m_interface.h"
 #include "mplayerprocess.h"
+
+#include "../../m_interface.h"
+#include "../../buttons.h"
+#include "../../skinner.h"
+#include "../../lists.h"
+#include "../../scrolllabel.h"
+
 
 class mp3playerModule : public QObject, M_Interface {
 	Q_OBJECT
@@ -58,8 +64,13 @@ class mp3playerWindow : public QWidget {
 
 	private:
 		ASkinner *m_skinner;
-
 		M_Interface *mInterface;
+
+		ALyxButton *firstBtn;
+		ALyxButton *backBtn;
+		ALyxButton *playBtn;
+		ALyxButton *nextBtn;
+		ALyxButton *lastBtn;
 
 		void	readCurrentMedia();	
 };

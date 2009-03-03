@@ -24,8 +24,18 @@ class ALyxControl : public QWidget {
 		void setOpacity(qreal opacity) { m_opacity = opacity; repaint(); }
 		qreal opacity() { return m_opacity; }
 
+		void setFixedSize(int w, int h) {
+		    QWidget::setFixedSize(w, h);
+		    repaint();
+		}
+
+		void setFixedSize(QSize s) {
+		    QWidget::setFixedSize(s);
+		    repaint();
+		}
+
 	protected:
 		qreal m_opacity;
-};	
+};
 
 #endif

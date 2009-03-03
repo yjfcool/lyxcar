@@ -27,6 +27,7 @@
 #include "../../lists.h"
 #include "../../scrolllabel.h"
 #include "../../display.h"
+#include "../../dialogs.h"
 
 
 class mp3playerModule : public QObject, M_Interface {

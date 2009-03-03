@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <QMainWindow>
 
-#include "../lists.h"
+#include "../../lists.h"
 
 class Window : public QMainWindow {
 	Q_OBJECT

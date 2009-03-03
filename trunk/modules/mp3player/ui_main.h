@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'main.ui'
 **
-** Created: Tue 3. Mar 17:02:42 2009
-**      by: Qt User Interface Compiler version 4.3.4
+** Created: Thu Mar 5 19:05:29 2009
+**      by: Qt User Interface Compiler version 4.4.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
@@ -27,6 +27,8 @@
 #include <QtGui/QTreeWidget>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
+
+QT_BEGIN_NAMESPACE
 
 class Ui_mp3player
 {
@@ -123,7 +125,8 @@ public:
 
     hboxLayout->addWidget(testText);
 
-    tabWidget->addTab(tab, QIcon(QString::fromUtf8("../skins/default/icons/office.png")), QString());
+    const QIcon icon = QIcon(QString::fromUtf8("../skins/default/icons/office.png"));
+    tabWidget->addTab(tab, icon, QString());
     tab_2 = new QWidget();
     tab_2->setObjectName(QString::fromUtf8("tab_2"));
     gridLayout = new QGridLayout(tab_2);
@@ -135,7 +138,8 @@ public:
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(toolButton->sizePolicy().hasHeightForWidth());
     toolButton->setSizePolicy(sizePolicy1);
-    toolButton->setIcon(QIcon(QString::fromUtf8("../skins/default/icons/cdplayer.png")));
+    const QIcon icon1 = QIcon(QString::fromUtf8("../skins/default/icons/cdplayer.png"));
+    toolButton->setIcon(icon1);
     toolButton->setIconSize(QSize(32, 32));
     toolButton->setCheckable(true);
     toolButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -158,7 +162,8 @@ public:
     toolButton_2->setObjectName(QString::fromUtf8("toolButton_2"));
     sizePolicy1.setHeightForWidth(toolButton_2->sizePolicy().hasHeightForWidth());
     toolButton_2->setSizePolicy(sizePolicy1);
-    toolButton_2->setIcon(QIcon(QString::fromUtf8("../skins/default/icons/mp3player.png")));
+    const QIcon icon2 = QIcon(QString::fromUtf8("../skins/default/icons/mp3player.png"));
+    toolButton_2->setIcon(icon2);
     toolButton_2->setIconSize(QSize(32, 32));
     toolButton_2->setCheckable(true);
     toolButton_2->setChecked(true);
@@ -170,7 +175,8 @@ public:
     toolButton_3->setObjectName(QString::fromUtf8("toolButton_3"));
     sizePolicy1.setHeightForWidth(toolButton_3->sizePolicy().hasHeightForWidth());
     toolButton_3->setSizePolicy(sizePolicy1);
-    toolButton_3->setIcon(QIcon(QString::fromUtf8("../skins/default/icons/usbflash.png")));
+    const QIcon icon3 = QIcon(QString::fromUtf8("../skins/default/icons/usbflash.png"));
+    toolButton_3->setIcon(icon3);
     toolButton_3->setIconSize(QSize(32, 32));
     toolButton_3->setCheckable(true);
     toolButton_3->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -181,10 +187,11 @@ public:
 
     gridLayout->addItem(spacerItem, 3, 0, 1, 1);
 
-    tabWidget->addTab(tab_2, QIcon(QString::fromUtf8("../skins/default/icons/www.png")), QString());
+    const QIcon icon4 = QIcon(QString::fromUtf8("../skins/default/icons/www.png"));
+    tabWidget->addTab(tab_2, icon4, QString());
     tab_3 = new QWidget();
     tab_3->setObjectName(QString::fromUtf8("tab_3"));
-    tabWidget->addTab(tab_3, QIcon(QString::fromUtf8("../skins/default/icons/cdplayer.png")), QString());
+    tabWidget->addTab(tab_3, icon1, QString());
 
     vboxLayout2->addWidget(tabWidget);
 
@@ -205,7 +212,8 @@ public:
     firstBtn->setObjectName(QString::fromUtf8("firstBtn"));
     sizePolicy.setHeightForWidth(firstBtn->sizePolicy().hasHeightForWidth());
     firstBtn->setSizePolicy(sizePolicy);
-    firstBtn->setIcon(QIcon(QString::fromUtf8("../skins/default/mp3player/player_start.png")));
+    const QIcon icon5 = QIcon(QString::fromUtf8("../skins/default/mp3player/player_start.png"));
+    firstBtn->setIcon(icon5);
     firstBtn->setIconSize(QSize(32, 32));
     firstBtn->setAutoRaise(true);
 
@@ -215,7 +223,8 @@ public:
     prevBtn->setObjectName(QString::fromUtf8("prevBtn"));
     sizePolicy.setHeightForWidth(prevBtn->sizePolicy().hasHeightForWidth());
     prevBtn->setSizePolicy(sizePolicy);
-    prevBtn->setIcon(QIcon(QString::fromUtf8("../skins/default/mp3player/player_rew.png")));
+    const QIcon icon6 = QIcon(QString::fromUtf8("../skins/default/mp3player/player_rew.png"));
+    prevBtn->setIcon(icon6);
     prevBtn->setIconSize(QSize(32, 32));
     prevBtn->setAutoRaise(true);
 
@@ -225,7 +234,8 @@ public:
     playBtn->setObjectName(QString::fromUtf8("playBtn"));
     sizePolicy.setHeightForWidth(playBtn->sizePolicy().hasHeightForWidth());
     playBtn->setSizePolicy(sizePolicy);
-    playBtn->setIcon(QIcon(QString::fromUtf8("../skins/default/mp3player/player_play.png")));
+    const QIcon icon7 = QIcon(QString::fromUtf8("../skins/default/mp3player/player_play.png"));
+    playBtn->setIcon(icon7);
     playBtn->setIconSize(QSize(32, 32));
     playBtn->setAutoRaise(true);
 
@@ -235,7 +245,8 @@ public:
     nextBtn->setObjectName(QString::fromUtf8("nextBtn"));
     sizePolicy.setHeightForWidth(nextBtn->sizePolicy().hasHeightForWidth());
     nextBtn->setSizePolicy(sizePolicy);
-    nextBtn->setIcon(QIcon(QString::fromUtf8("../skins/default/mp3player/player_fwd.png")));
+    const QIcon icon8 = QIcon(QString::fromUtf8("../skins/default/mp3player/player_fwd.png"));
+    nextBtn->setIcon(icon8);
     nextBtn->setIconSize(QSize(32, 32));
     nextBtn->setAutoRaise(true);
 
@@ -245,7 +256,8 @@ public:
     lastBtn->setObjectName(QString::fromUtf8("lastBtn"));
     sizePolicy.setHeightForWidth(lastBtn->sizePolicy().hasHeightForWidth());
     lastBtn->setSizePolicy(sizePolicy);
-    lastBtn->setIcon(QIcon(QString::fromUtf8("../skins/default/mp3player/player_end.png")));
+    const QIcon icon9 = QIcon(QString::fromUtf8("../skins/default/mp3player/player_end.png"));
+    lastBtn->setIcon(icon9);
     lastBtn->setIconSize(QSize(32, 32));
     lastBtn->setAutoRaise(true);
 
@@ -255,7 +267,8 @@ public:
     ejectBtn->setObjectName(QString::fromUtf8("ejectBtn"));
     sizePolicy.setHeightForWidth(ejectBtn->sizePolicy().hasHeightForWidth());
     ejectBtn->setSizePolicy(sizePolicy);
-    ejectBtn->setIcon(QIcon(QString::fromUtf8("../skins/default/mp3player/player_eject.png")));
+    const QIcon icon10 = QIcon(QString::fromUtf8("../skins/default/mp3player/player_eject.png"));
+    ejectBtn->setIcon(icon10);
     ejectBtn->setIconSize(QSize(32, 32));
     ejectBtn->setAutoRaise(true);
 
@@ -299,5 +312,7 @@ public:
 namespace Ui {
     class mp3player: public Ui_mp3player {};
 } // namespace Ui
+
+QT_END_NAMESPACE
 
 #endif // UI_MAIN_H

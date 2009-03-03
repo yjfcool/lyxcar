@@ -24,6 +24,11 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 
 	qDebug() << "mp3player creates it's window";
 	createWindow();
+	
+	ALyxDialog *dialog = new ALyxDialog(this);
+	dialog->move(100, 100);
+	dialog->setFixedSize(500, 300);
+	dialog->raise();
 
 //	player = new MPlayerProcess(this);
 //	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));

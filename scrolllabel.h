@@ -108,6 +108,8 @@ class ALyxScrollLabel : public ALyxControl {
 	QTimer *delayTimer;
 
 	bool isNoRoom() { return m_noRoom; }
+
+    protected:
 	void paintEvent(QPaintEvent *e);
 	
     private slots:

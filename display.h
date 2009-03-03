@@ -17,18 +17,29 @@
 #include "scrolllabel.h"
 #include "buttons.h"
 
+//! \brief Provided for convinience.
 typedef QList<ALyxControl *> ALyxDisplayLayout;
 
 //! \brief ALyxDisplay implements display widget which can contain
 //! labels, icons, animations etc.
+/*!
+	ALyxDisplay is based on layouts. Display layout is a set of controls,
+	labels etc. displayed at the same time. You may call it the page.
+
+	Each layout has a name of QString. Display layout object itself is of 
+	QList&lt;ALyxControl *&gt;.
+*/
 class ALyxDisplay : public ALyxControl {
 	Q_OBJECT
 	public:
+		//! \brief Constructs display layout object.
 		ALyxDisplay(QWidget *parent = 0);
 		~ALyxDisplay();
 
-		ALyxDisplayLayout getLayout(QString layoutName);
+		//! \brief Get named display layout of type ALyxDisplayLayout
+		ALyxDisplayLayout displayLayout(QString layoutName);
 
+		//! \brief Set display background pixmap
 		void setBackgroundPixmap(QPixmap pixmap) { m_background = pixmap; repaint(); }
 
 	private:
@@ -41,6 +52,7 @@ class ALyxDisplay : public ALyxControl {
 	private slots:
 
 	public slots:
+		//! \brief Shows specified layout.
 		void activateLayout(QString layoutName);
 };
 

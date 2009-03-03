@@ -1,9 +1,10 @@
 TEMPLATE	= lib
 CONFIG		+= plugin release
-HEADERS		= default_home.h ../../animated.h ../../buttons.h ../../skinner.h ../../control.h ../../m_interface.h
-SOURCES		= default_home.cpp ../../animated.cpp ../../buttons.cpp ../../skinner.cpp ../../control.cpp
+HEADERS		= default_home.h
+SOURCES		= default_home.cpp
 TARGET		= default_home
 QT		+= xml
+LIBS		+= -L../.. -llyxlib
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs
 

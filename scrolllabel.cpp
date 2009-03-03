@@ -15,20 +15,24 @@
 #include <QDebug>
 
 ALyxScrollLabel::ALyxScrollLabel(QWidget *parent, QString text) : ALyxControl(parent) {
-    m_speed = 0;
-    m_step = 2;
-    m_delay = 0;
-    m_scrollPosition = 0;
-    m_scrollable = false;
-    m_textColor = QColor("red");
-    m_blendSize = 40;
+	m_speed = 960;
+	m_step = 3;
+	m_delay = 0;
+	m_scrollPosition = 0;
+	m_scrollable = false;
+	m_textColor = QColor("red");
+	m_blendSize = 40;
 
-    scrollTimer = new QTimer(this);
-    scrollTimer->setInterval(30);
-    connect(scrollTimer, SIGNAL(timeout()), this, SLOT(scrollStep()));
+	delayTimer = new QTimer(this);
+	delayTimer->setInterval(m_delay);
+	connect(delayTimer, SIGNAL(timeout()), this, SLOT(startScrollImmediate()));
 
-    setText(text);
-    setOpacity(1.0);
+	scrollTimer = new QTimer(this);
+	scrollTimer->setInterval(1000-m_speed);
+	connect(scrollTimer, SIGNAL(timeout()), this, SLOT(scrollStep()));
+
+	setText(text);
+	setOpacity(m_opacity);
 }
 
 ALyxScrollLabel::~ALyxScrollLabel() {
@@ -73,10 +77,18 @@ void ALyxScrollLabel::paintEvent(QPaintEvent *e) {
 
     if(m_noRoom) {
 	temp.setPen(m_textColor);
-        temp.drawText(m_scrollPosition, height()-fontMetrics().lineSpacing(), m_text);
+
+	int text1_x = m_scrollPosition;
+	int text2_x = fontMetrics().boundingRect(0, 0, width(), height(), Qt::AlignLeft | Qt::AlignVCenter, m_text).width() + m_scrollPosition;
+
+	if(text2_x <= 0) {
+		m_scrollPosition = 0;
+	}
+
+        temp.drawText(text1_x, height()-fontMetrics().lineSpacing(), m_text);
 	// Add second instance of a text
-	if(fontMetrics().boundingRect(0, 0, width(), height(), Qt::AlignLeft | Qt::AlignVCenter, m_text).width() + m_scrollPosition < width()) {
-	    temp.drawText(fontMetrics().boundingRect(0, 0, width(), height(), Qt::AlignLeft | Qt::AlignVCenter, m_text).width() + m_scrollPosition, height()-fontMetrics().lineSpacing(), m_text);
+	if(text2_x < width()) {
+	    temp.drawText(text2_x, height()-fontMetrics().lineSpacing(), m_text);
 	}
 
         temp.setCompositionMode(QPainter::CompositionMode_DestinationIn);
@@ -105,18 +117,19 @@ void ALyxScrollLabel::paintEvent(QPaintEvent *e) {
 }
 
 void ALyxScrollLabel::scrollStep() {
-    m_scrollPosition-=m_step;
-    update();
+	m_scrollPosition-=m_step;
+	update();
 }
 
 void ALyxScrollLabel::startScroll() {
-
+	delayTimer->start();
 }
 
 void ALyxScrollLabel::startScrollImmediate() {
-    if(isScrollable()) { scrollTimer->start(); }
+	if(isScrollable()) { delayTimer->stop(); scrollTimer->start(); }
 }
 
 void ALyxScrollLabel::stopScroll() {
-    scrollTimer->stop();
+	delayTimer->stop();
+	scrollTimer->stop();
 }

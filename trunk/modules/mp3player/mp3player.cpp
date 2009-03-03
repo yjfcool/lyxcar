@@ -70,7 +70,6 @@ void mp3playerWindow::createWindow() {
 	backBtn->setSkin(m_skinner, "mp3player", "back");
 	lastBtn->setSkin(m_skinner, "mp3player", "last");
 	nextBtn->setSkin(m_skinner, "mp3player", "next");
-
 }
 
 void mp3playerWindow::playerRead() {

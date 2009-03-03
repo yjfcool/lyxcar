@@ -18,7 +18,6 @@
 #include "mainwindow.h"
 #include "mainmenu.h"
 #include "lists.h"
-#include "home.h"
 
 AMainWindow::AMainWindow(QWidget *parent) {
 	setFixedSize(800, 600);

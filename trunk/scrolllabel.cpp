@@ -31,7 +31,8 @@ ALyxScrollLabel::ALyxScrollLabel(QWidget *parent, QString text) : ALyxControl(pa
 	scrollTimer->setInterval(1000-m_speed);
 	connect(scrollTimer, SIGNAL(timeout()), this, SLOT(scrollStep()));
 
-	setText(text);
+	if(text != "") { setText(text); }
+
 	setOpacity(m_opacity);
 }
 
@@ -45,17 +46,22 @@ void ALyxScrollLabel::setText(QString text) {
     QRect rect(0, 0, width(), height());
     rect = fontMetrics().boundingRect(rect, Qt::AlignLeft | Qt::AlignVCenter, m_text);
     if((minimumWidth() == maximumWidth()) && (maximumWidth() < rect.width())) {
+	qDebug() << "Setting scrollable label, cos there is no room for text" << m_text;
 	m_noRoom = true;	// There is no room for text
 	setScrollable(true);	// Allow scrolling
 	startScroll();
     } else {
+	qDebug() << "Stopping scrollable label";
 	stopScroll();
     	m_noRoom = false;	// Widget has enough room for text
 	setScrollable(false);	// Disallow scrolling
-	resize(rect.width(), rect.height()+fontMetrics().lineSpacing()); // Text is fully suitable for width of a widget
+	if(minimumWidth() != maximumWidth()) {
+		qDebug() << "Resizing label to" << rect.width();
+		resize(rect.width(), rect.height()+fontMetrics().lineSpacing()); // Text is fully suitable for width of a widget
+	}
     }
-
-    repaint();
+	qDebug() << "Font is" << font().family() << font().pointSize();
+	update();
 }
 
 void ALyxScrollLabel::setFixedWidth(int w) { ALyxControl::setFixedWidth(w); setText(text()); }
@@ -63,21 +69,21 @@ void ALyxScrollLabel::setFixedSize(int w, int h) { ALyxControl::setFixedSize(w, 
 void ALyxScrollLabel::setFixedSize(QSize size) { ALyxControl::setFixedSize(size); setText(text()); }
 
 void ALyxScrollLabel::paintEvent(QPaintEvent *e) {
+
     QPainter p(this);
 
     QImage *temporaryImage = new QImage(width(), height(), QImage::Format_ARGB32_Premultiplied);
     QPainter temp(temporaryImage);
-    temp.setFont(font());
+    temp.setFont(QFont(font()));
 
     // Clear transparency
     temp.setBrush(QColor("white"));
     temp.setCompositionMode(QPainter::CompositionMode_Clear);
     temp.drawRect(0, 0, width(), height());
     temp.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    temp.setPen(m_textColor);
 
     if(m_noRoom) {
-	temp.setPen(m_textColor);
-
 	int text1_x = m_scrollPosition;
 	int text2_x = fontMetrics().boundingRect(0, 0, width(), height(), Qt::AlignLeft | Qt::AlignVCenter, m_text).width() + m_scrollPosition;
 
@@ -118,7 +124,7 @@ void ALyxScrollLabel::paintEvent(QPaintEvent *e) {
 
 void ALyxScrollLabel::scrollStep() {
 	m_scrollPosition-=m_step;
-	update();
+	repaint();
 }
 
 void ALyxScrollLabel::startScroll() {

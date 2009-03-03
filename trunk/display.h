@@ -14,6 +14,10 @@
 #define __DISPLAY_H__
 
 #include "control.h"
+#include "scrolllabel.h"
+#include "buttons.h"
+
+typedef QList<ALyxControl *> ALyxDisplayLayout;
 
 //! \brief ALyxDisplay implements display widget which can contain
 //! labels, icons, animations etc.
@@ -22,11 +26,22 @@ class ALyxDisplay : public ALyxControl {
 	public:
 		ALyxDisplay(QWidget *parent = 0);
 		~ALyxDisplay();
+
+		ALyxDisplayLayout getLayout(QString layoutName);
+
+		void setBackgroundPixmap(QPixmap pixmap) { m_background = pixmap; repaint(); }
+
 	private:
+		QMap<QString, ALyxDisplayLayout> m_layouts;
+
+		QPixmap m_background;
+
+		void paintEvent(QPaintEvent *e);
 
 	private slots:
 
 	public slots:
+		void activateLayout(QString layoutName);
 };
 
 #endif

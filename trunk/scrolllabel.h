@@ -90,6 +90,9 @@ class ALyxScrollLabel : public ALyxControl {
 	//! \brief Derived from ALyxControl
 	void setFixedSize(QSize size);
 
+//	//! \brief Sets font of a label
+//	void setFont(QFont font) { ALyxControl::setFont(font); update(); }
+
     private:
 	QString m_text;
 	int m_delay;

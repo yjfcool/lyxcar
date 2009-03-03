@@ -36,7 +36,8 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 }
 
 void mp3playerWindow::createWindow() {
-	ALyxButton *display = new ALyxButton(this);
+	ALyxDisplay *display = new ALyxDisplay(this);
+
 	playBtn = new ALyxButton(this);
 	firstBtn = new ALyxButton(this);
 	backBtn = new ALyxButton(this);
@@ -54,8 +55,7 @@ void mp3playerWindow::createWindow() {
 	qDebug() << "mp3player display background" << background << "font-family" << fontfamily << "font-size" << fontsize;
 
 	display->setObjectName("display");
-	display->setUpPixmap(QPixmap(m_skinner->skinModuleImagePath("mp3player")+background));
-	display->setDownPixmap(QPixmap(m_skinner->skinModuleImagePath("mp3player")+background));
+	display->setBackgroundPixmap(QPixmap(m_skinner->skinModuleImagePath("mp3player")+background));
 
 	QDomElement rectElement = displayElement.firstChildElement("rect");
 	if(!rectElement.isNull()) {

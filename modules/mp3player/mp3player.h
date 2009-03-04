@@ -18,7 +18,6 @@
 #include <QProcess>
 #include <QSettings>
 
-#include "ui_main.h"
 #include "mplayerprocess.h"
 
 #include "../../m_interface.h"

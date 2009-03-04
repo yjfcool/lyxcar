@@ -25,7 +25,9 @@
 class ALyxListWidgetItem : public QObject {
 	Q_OBJECT
 	public:
-		ALyxListWidgetItem(QObject *parent = 0) {}
+		ALyxListWidgetItem(QObject *parent = 0) {
+			m_visible = true;
+		}
 		~ALyxListWidgetItem() {}
 
 		QString text() { return m_text; }
@@ -37,11 +39,17 @@ class ALyxListWidgetItem : public QObject {
 		int height() { return m_height; }
 		void setHeight(int h) { m_height = h; }
 
+		void setVisible(bool visible) {
+			m_visible = visible;
+		}
+		bool visible() { return m_visible; }
+
 		QRect rect;
 	private:
 		QString m_text;
 		QPixmap m_pixmap;
 		int m_height;
+		bool m_visible;
 };
 
 typedef QList<ALyxListWidgetItem *> ALyxListWidgetItems;

@@ -54,6 +54,16 @@ void mp3playerWindow::createWindow() {
 	playList->move(450, 10);
 	playList->setFixedSize(330, 390);
 
+	ALyxListWidgetItem *item = new ALyxListWidgetItem(playList);
+	item->setText("Guano Apes\nDon't give me names");
+	item->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
+	playList->addItem(item);
+
+	ALyxListWidgetItem *item2 = new ALyxListWidgetItem(playList);
+	item2->setText("Rammstein\nMutter");
+	item2->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
+	playList->addItem(item2);
+
 	QDomElement displayElement = m_skinner->skinModuleElement("mp3player", "display");
 	QString background = displayElement.attribute("background");
 	QString fontfamily = displayElement.attribute("font-family");

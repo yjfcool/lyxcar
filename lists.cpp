@@ -16,7 +16,7 @@
  
 */
 
-#define MIN_ACCELERATION 7
+#define MIN_ACCELERATION 6
 
 #include "lists.h"
 #include <QPushButton>
@@ -39,7 +39,7 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(paren
 	m_selectorPosition.setX(l_paddingSelector);
 	m_selectorPosition.setY(0);
 	m_selectedItem = 0;
-	m_selectedIndex = 0;
+	m_selectedIndex = -1;
 	animationStep = 0;
 
 	m_scrollBar = new ALyxScrollBar(this, s);
@@ -151,18 +151,29 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	int cpos = l_paddingTop;
 	foreach (ALyxListWidgetItem *item, items()) {
 //		qDebug() << "Painted item" << item->text() << "at" << l_paddingLeft << "x" << cpos << "width" << width() << "height" << item->height();
-		temporary.drawText(l_paddingLeft,
-			   cpos, 
-			   width(),
-			   item->height(),
-			   Qt::AlignVCenter,
-			   item->text()
-		);
-		item->rect.setX(l_paddingLeft);
-		item->rect.setY(cpos);
-		item->rect.setWidth(width());
-		item->rect.setHeight(item->height());
-		cpos+=l_verticalSpacing+item->height();
+		if(item->visible()) {
+			int pixmap_offset = 0;
+			if(!item->pixmap().isNull()) {
+				temporary.drawPixmap(l_paddingLeft,
+				   cpos+(item->height()-item->pixmap().height()) / 2, 
+				   item->pixmap()
+				);
+				pixmap_offset = item->pixmap().width()+l_paddingLeft;
+			}
+
+			temporary.drawText(l_paddingLeft+pixmap_offset,
+				   cpos, 
+				   width(),
+				   item->height(),
+				   Qt::AlignVCenter,
+				   item->text()
+			);
+			item->rect.setX(l_paddingLeft);
+			item->rect.setY(cpos);
+			item->rect.setWidth(width());
+			item->rect.setHeight(item->height());
+			cpos+=l_verticalSpacing+item->height();
+		}
 	}
 
 	temporary.setCompositionMode(QPainter::CompositionMode_DestinationIn);

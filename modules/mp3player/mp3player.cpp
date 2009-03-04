@@ -26,6 +26,7 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 	createWindow();
 	
 	ALyxDialog *dialog = new ALyxDialog(this);
+	dialog->setWindowTitle(tr("Common dialog"));
 	dialog->move(100, 100);
 	dialog->setFixedSize(500, 300);
 	dialog->raise();

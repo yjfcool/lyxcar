@@ -47,6 +47,7 @@ class mp3playerWindow : public QWidget {
 	Q_OBJECT
 	public:
 		mp3playerWindow(QWidget *parent = 0, ASkinner *s = 0);
+		~mp3playerWindow() { qDebug() << "mp3player window destroyed"; }
 
 		MPlayerProcess *player;
 		QSettings *settings;

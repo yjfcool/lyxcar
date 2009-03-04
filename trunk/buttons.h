@@ -67,6 +67,8 @@ class ALyxButton : public ALyxControl {
 		void mousePressEvent(QMouseEvent *e);
 		void mouseReleaseEvent(QMouseEvent *e);
 		void resizeEvent(QResizeEvent *e);
+
+	protected:
 		void paintEvent(QPaintEvent *event);
 	
 	private slots:
@@ -81,6 +83,21 @@ class ALyxButton : public ALyxControl {
 		void pressed();
 		//! \brief Emits this signal when user releases pressed mouse button.
 		void released();
+};
+
+class ALyxPushButton : public ALyxButton {
+	Q_OBJECT
+	public:
+		ALyxPushButton(QWidget *parent = 0, QString text = "");
+		~ALyxPushButton();
+
+		void setText(QString text);
+		QString text() { return m_text; }
+
+	private:
+		QString m_text;
+
+		void paintEvent(QPaintEvent *e);
 };
 
 #endif

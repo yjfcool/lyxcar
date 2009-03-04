@@ -13,6 +13,8 @@
 #ifndef __DIALOGS_H__
 #define __DIALOGS_H__
 
+#include <QPainter>
+
 #include "control.h"
 #include "buttons.h"
 
@@ -32,4 +34,3 @@ class ALyxDialog : public ALyxControl {
 };
 
 #endif
-

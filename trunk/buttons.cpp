@@ -70,16 +70,20 @@ void ALyxButton::mouseReleaseEvent(QMouseEvent *e) {
 void ALyxButton::paintEvent(QPaintEvent *e)  {
 	QPainter painter(this);
 	painter.setOpacity(opacity());
-	if(width() != buttonUpImage.width()) {
-	    painter.drawPixmap(0, 0, buttonUpImage.scaled(width(), height()));
-	} else {
-	    painter.drawPixmap(0, 0, buttonUpImage);
+	if(!buttonUpImage.isNull()) {
+		if(width() != buttonUpImage.width()) {
+			painter.drawPixmap(0, 0, buttonUpImage.scaled(width(), height()));
+		} else {
+			painter.drawPixmap(0, 0, buttonUpImage);
+		}
 	}
 	painter.setOpacity(currentOpacity);
-	if(width() != buttonDownImage.width()) {
-	    painter.drawPixmap(0, 0, buttonDownImage.scaled(width(), height()));
-	} else {
-	    painter.drawPixmap(0, 0, buttonDownImage);
+	if(!buttonDownImage.isNull()) {
+		if(width() != buttonDownImage.width()) {
+			painter.drawPixmap(0, 0, buttonDownImage.scaled(width(), height()));
+		} else {
+			painter.drawPixmap(0, 0, buttonDownImage);
+		}
 	}
 	painter.setOpacity(opacity());
 }
@@ -104,4 +108,28 @@ void ALyxButton::animate() {
 
 void ALyxButton::resizeEvent(QResizeEvent *e) {
 	repaint();
+}
+
+ALyxPushButton::ALyxPushButton(QWidget *parent, QString text) : ALyxButton(parent) {
+	m_text = text;
+}
+
+ALyxPushButton::~ALyxPushButton() {
+
+}
+
+void ALyxPushButton::setText(QString text) {
+	m_text = text;
+	repaint();
+}
+
+void ALyxPushButton::paintEvent(QPaintEvent *e) {
+	ALyxButton::paintEvent(e);
+
+	QPainter p(this);
+
+	QRect textRect(0, 0, width(), height());
+	p.drawText(textRect, Qt::AlignCenter, m_text);
+
+	p.end();
 }

@@ -12,23 +12,22 @@
 
 #include "dialogs.h"
 
-ALyxDialog::ALyxDialog(QWidget *parent) : ALyxControl(parent) {
+ALyxDialog::ALyxDialog(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
 
 	setOpacity(0.9);
 
 	ALyxPushButton *btn = new ALyxPushButton(this, "OK");
-	btn->move(100, 240);
 	btn->setFont(QFont("Calibri", 16));
 	btn->setUpPixmap(QPixmap("./skins/default/button.png"));
 	btn->setDownPixmap(QPixmap("./skins/default/button_pushed.png"));
-	btn->setFixedSize(140, 48);
 
 	ALyxPushButton *btn2 = new ALyxPushButton(this, tr("Cancel"));
-	btn2->move(250, 240);
 	btn2->setFont(QFont("Calibri", 16));
 	btn2->setUpPixmap(QPixmap("./skins/default/button.png"));
 	btn2->setDownPixmap(QPixmap("./skins/default/button_pushed.png"));
-	btn2->setFixedSize(140, 48);
+
+	addButton(btn);
+	addButton(btn2);
 
 	raise();
 }
@@ -47,7 +46,7 @@ void ALyxDialog::paintEvent(QPaintEvent *e) {
 	p.setBrush(QColor("white"));
 
 	p.setOpacity(1);
-	p.drawText(10, 20, "Dialog title");
+	p.drawText(10, 20, windowTitle());
 
 	// Draw frame
 	p.setOpacity(m_opacity);
@@ -65,4 +64,15 @@ void ALyxDialog::paintEvent(QPaintEvent *e) {
 #endif
 
 	p.end();
+}
+
+void ALyxDialog::resizeEvent(QResizeEvent *e) {
+	int index = 0;
+	foreach(ALyxButton *btn, m_buttons) {
+		m_buttons[index]->move(
+			index * (m_buttons[index]->width() + 10) + 10, 
+			height() - m_buttons[index]->height() - 10
+		);
+		index++;
+	}
 }

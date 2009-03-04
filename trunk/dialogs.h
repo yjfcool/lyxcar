@@ -17,20 +17,28 @@
 
 #include "control.h"
 #include "buttons.h"
+#include "skinner.h"
 
 class ALyxDialog : public ALyxControl {
-    Q_OBJECT
-    public:
-	ALyxDialog(QWidget *parent = 0);
-	~ALyxDialog();
+	Q_OBJECT
+	public:
+		ALyxDialog(QWidget *parent = 0, ASkinner *s = 0);
+		~ALyxDialog();
 
-	void setTitle(QString title) { m_title = title; }
-	QString title() { return m_title; }
+		void setTitle(QString title) { m_title = title; }
+		QString title() { return m_title; }
 
-    private:
-	QString m_title;
+		QList<ALyxButton *> buttons() { return m_buttons; }
 
-	void paintEvent(QPaintEvent *e);
+		void addButton(ALyxButton *button) { m_buttons << qobject_cast<ALyxButton*>(button); } 
+
+	private:
+		QString m_title;
+		QList<ALyxButton *> m_buttons;
+
+	protected:
+		void paintEvent(QPaintEvent *e);
+		void resizeEvent(QResizeEvent *e);
 };
 
 #endif

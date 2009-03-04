@@ -69,8 +69,8 @@ void ALyxScrollLabel::setFixedSize(int w, int h) { ALyxControl::setFixedSize(w, 
 void ALyxScrollLabel::setFixedSize(QSize size) { ALyxControl::setFixedSize(size); setText(text()); }
 
 void ALyxScrollLabel::paintEvent(QPaintEvent *e) {
-    QImage *temporaryImage = new QImage(width(), height(), QImage::Format_ARGB32_Premultiplied);
-    QPainter temp(temporaryImage);
+    QImage temporaryImage(width(), height(), QImage::Format_ARGB32_Premultiplied);
+    QPainter temp(&temporaryImage);
     temp.setFont(font());
 
     // Clear transparency
@@ -115,7 +115,7 @@ void ALyxScrollLabel::paintEvent(QPaintEvent *e) {
     }
 
     QPainter p(this);    
-    p.drawImage(0, 0, *temporaryImage, 0, 0, width(), height());
+    p.drawImage(0, 0, temporaryImage, 0, 0, width(), height());
     p.end();
 }
 

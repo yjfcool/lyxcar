@@ -35,6 +35,7 @@ AMainWindow::AMainWindow(QWidget *parent) {
 	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
 	layout->setSpacing(0);
 	layout->setMargin(0);
+	layout->setContentsMargins(0,0,0,0);
 	mainWidget->setLayout(layout);
 	mainWidget->setPalette(pal);
 	mainWidget->setAutoFillBackground(true);
@@ -103,6 +104,8 @@ void AMainWindow::activateModule(QString moduleName) {
 		m_activeModuleName = moduleName;
 		mainArea->setLayout(new QVBoxLayout(mainArea));
 		((QBoxLayout*)mainArea->layout())->setContentsMargins(0, 0, 0, 0);
+		((QBoxLayout*)mainArea->layout())->setMargin(0);
+		((QBoxLayout*)mainArea->layout())->setSpacing(0);
 		qDebug() << "skinner object set for" << moduleName;
 		m_interface->setSkinner(skinner);
 		qDebug() << "activate() for" << moduleName << "called";

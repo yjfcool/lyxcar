@@ -1,10 +1,10 @@
 TEMPLATE	= lib
-HEADERS		= ../animated.h ../display.h ../osd.h ../lists.h \
-		  ../buttons.h ../control.h ../skinner.h ../scrollbar.h \
-		  ../scrolllabel.h ../dialogs.h ../devicesdlg.h
-SOURCES		= ../animated.cpp ../display.cpp ../osd.cpp ../lists.cpp \
-		  ../buttons.cpp ../control.cpp ../skinner.cpp ../scrollbar.cpp \
-		  ../scrolllabel.cpp ../dialogs.cpp ../devicesdlg.cpp
+HEADERS		= animated.h display.h osd.h lists.h \
+		  buttons.h control.h skinner.h scrollbar.h \
+		  scrolllabel.h dialogs.h devicesdlg.h
+SOURCES		= animated.cpp display.cpp osd.cpp lists.cpp \
+		  buttons.cpp control.cpp skinner.cpp scrollbar.cpp \
+		  scrolllabel.cpp dialogs.cpp devicesdlg.cpp
 CONFIG		+= release
 QT		+= xml sql
 OBJECTS_DIR	= ./libs

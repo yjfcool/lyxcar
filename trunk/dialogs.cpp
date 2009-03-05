@@ -15,20 +15,6 @@
 ALyxDialog::ALyxDialog(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
 
 	setOpacity(0.9);
-
-	ALyxPushButton *btn = new ALyxPushButton(this, "OK");
-	btn->setFont(QFont("Calibri", 16));
-	btn->setUpPixmap(QPixmap("./skins/default/button.png"));
-	btn->setDownPixmap(QPixmap("./skins/default/button_pushed.png"));
-
-	ALyxPushButton *btn2 = new ALyxPushButton(this, tr("Cancel"));
-	btn2->setFont(QFont("Calibri", 16));
-	btn2->setUpPixmap(QPixmap("./skins/default/button.png"));
-	btn2->setDownPixmap(QPixmap("./skins/default/button_pushed.png"));
-
-	addButton(btn);
-	addButton(btn2);
-
 	setModal(true);
 
 	hide();
@@ -36,7 +22,8 @@ ALyxDialog::ALyxDialog(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
 }
 
 ALyxDialog::~ALyxDialog() {
-
+	// Restore accessibility before deletion
+	//setModal(false);
 }
 
 void ALyxDialog::setModal(bool modality) {
@@ -87,4 +74,9 @@ void ALyxDialog::resizeEvent(QResizeEvent *e) {
 		);
 		index++;
 	}
+}
+
+void ALyxDialog::buttonReaction() {
+	QString name = sender()->objectName();
+ 	emit buttonClicked(name);
 }

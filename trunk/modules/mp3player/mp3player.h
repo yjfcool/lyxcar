@@ -65,6 +65,9 @@ class mp3playerWindow : public QWidget {
 		void	loadPlayList();
 		void	selectDevice();
 
+	private slots:
+		void	deviceSelection(QString operation);
+
 	private:
 		ASkinner *m_skinner;
 		M_Interface *m_Interface;
@@ -77,7 +80,7 @@ class mp3playerWindow : public QWidget {
 		ALyxButton *nextBtn;
 		ALyxButton *lastBtn;
 
-		void	readCurrentMedia();	
+		void	readCurrentMedia();
 };
 
 #endif

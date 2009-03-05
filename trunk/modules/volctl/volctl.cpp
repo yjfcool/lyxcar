@@ -47,8 +47,8 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) : QWidget(p
 	layout->setSpacing(0);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addStretch(1);
-	layout->addWidget(vol_up_button);
 	layout->addWidget(vol_down_button);
+	layout->addWidget(vol_up_button);
 	layout->addWidget(vol_mute_button);
 	layout->addStretch(1);
 }

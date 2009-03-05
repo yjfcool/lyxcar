@@ -29,6 +29,7 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 
 	qDebug() << "mp3player creates it's window";
 	createWindow();
+	setContentsMargins(0, 0, 0, 0);
 	
 //	player = new MPlayerProcess(this);
 //	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));

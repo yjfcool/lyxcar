@@ -8,9 +8,8 @@ LIBS				+= -L../ -llyxlib
 OBJECTS_DIR			= ./libs
 MOC_DIR				= ./libs
 TARGET				= lyxcar
-
+DESTDIR				= ../
 win32:release {
 	RC_FILE		= ../lyxcar.rc
 	CONFIG		+= console
-	DESTDIR		= ../
 } 

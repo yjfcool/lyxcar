@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Pavlov Denis
+ * Copyright (C) 2008-2009 Pavlov Denis
  *
  * Comments unavailable.
  *
@@ -20,17 +20,16 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
 
 	qDebug() << "mp3player is reading player settings";
-	settings = new QSettings("../conf/mp3player.conf", QSettings::IniFormat, this);
+	settings = new QSettings("./conf/mp3player.conf", QSettings::IniFormat, this);
+	settings->beginGroup("Devices");
+	QStringList devs = settings->childKeys();
+	foreach(QString dev, devs) {
+		m_devices[dev] = settings->value(dev).toString();
+	}
 
 	qDebug() << "mp3player creates it's window";
 	createWindow();
 	
-	ALyxDialog *dialog = new ALyxDialog(this);
-	dialog->setWindowTitle(tr("Common dialog"));
-	dialog->move(100, 100);
-	dialog->setFixedSize(500, 300);
-	dialog->raise();
-
 //	player = new MPlayerProcess(this);
 //	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));
 //	connect(playBtn, SIGNAL(clicked()), this, SLOT(pauseCurrent()));
@@ -39,6 +38,19 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 //	loadPlayList();
 
 //	playCurrent();
+}
+
+// SLOT
+void mp3playerWindow::selectDevice() {
+	ALyxDevicesDialog *dialog = new ALyxDevicesDialog(this, m_skinner);
+	dialog->setWindowTitle(tr("Device selection"));
+	dialog->move(150, 90);
+	dialog->setFixedSize(500, 300);
+	dialog->raise();
+	dialog->show();
+/*	if(dialog->execute()) {
+	
+	}*/
 }
 
 void mp3playerWindow::createWindow() {
@@ -56,6 +68,8 @@ void mp3playerWindow::createWindow() {
 	selectDeviceBtn->setText("Device");
 	selectDeviceBtn->setFont(QFont("Calibri", 12));
 	selectDeviceBtn->move(60, 410);
+
+	connect(selectDeviceBtn, SIGNAL(clicked()), this, SLOT(selectDevice()));
 
 	ALyxPushButton *settingsBtn = new ALyxPushButton(this);
 	settingsBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_mid_up.png"));

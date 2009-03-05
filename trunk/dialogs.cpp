@@ -29,11 +29,23 @@ ALyxDialog::ALyxDialog(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
 	addButton(btn);
 	addButton(btn2);
 
+	setModal(true);
+
+	hide();
 	raise();
 }
 
 ALyxDialog::~ALyxDialog() {
 
+}
+
+void ALyxDialog::setModal(bool modality) {
+	QObjectList ch = parent()->children();
+	for(int i = 0; i < ch.count(); i++) {
+		if((ch[i]->isWidgetType()) && ch[i] != this) {
+			qobject_cast<QWidget *>(ch[i])->setEnabled(!modality);
+		}
+	}
 }
 
 void ALyxDialog::paintEvent(QPaintEvent *e) {

@@ -36,6 +36,8 @@ class ALyxDialog : public ALyxControl {
 		QString m_title;
 		QList<ALyxButton *> m_buttons;
 
+		void setModal(bool modality);
+
 	protected:
 		void paintEvent(QPaintEvent *e);
 		void resizeEvent(QResizeEvent *e);

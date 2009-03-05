@@ -30,7 +30,11 @@ class ALyxDialog : public ALyxControl {
 
 		QList<ALyxButton *> buttons() { return m_buttons; }
 
-		void addButton(ALyxButton *button) { m_buttons << qobject_cast<ALyxButton*>(button); } 
+		void addButton(ALyxButton *button, QString buttonName) { 
+			button->setObjectName(buttonName);
+			m_buttons << qobject_cast<ALyxButton*>(button);
+			connect(button, SIGNAL(clicked()), this, SLOT(buttonReaction()));
+		}
 
 	private:
 		QString m_title;
@@ -41,6 +45,13 @@ class ALyxDialog : public ALyxControl {
 	protected:
 		void paintEvent(QPaintEvent *e);
 		void resizeEvent(QResizeEvent *e);
+
+	signals:
+		void buttonClicked(QString buttonName);
+
+	private slots:
+		void buttonReaction();
+
 };
 
 #endif

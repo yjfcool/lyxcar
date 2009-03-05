@@ -46,11 +46,16 @@ void mp3playerWindow::selectDevice() {
 	dialog->setWindowTitle(tr("Device selection"));
 	dialog->move(150, 90);
 	dialog->setFixedSize(500, 300);
-	dialog->raise();
 	dialog->show();
+
+	connect(dialog, SIGNAL(buttonClicked(QString)), this, SLOT(deviceSelection(QString)));
 /*	if(dialog->execute()) {
 	
 	}*/
+}
+
+void mp3playerWindow::deviceSelection(QString operation) {
+	qDebug() << "Device selected:" << operation;
 }
 
 void mp3playerWindow::createWindow() {

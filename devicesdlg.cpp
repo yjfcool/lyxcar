@@ -13,7 +13,21 @@
 #include "devicesdlg.h"
 
 ALyxDevicesDialog::ALyxDevicesDialog(QWidget *parent, ASkinner *s) :
-	ALyxDialog(parent, s) {}
+	ALyxDialog(parent, s) {
+
+	ALyxPushButton *btn = new ALyxPushButton(this, "OK");
+	btn->setFont(QFont("Calibri", 16));
+	btn->setUpPixmap(QPixmap("./skins/default/button.png"));
+	btn->setDownPixmap(QPixmap("./skins/default/button_pushed.png"));
+
+	ALyxPushButton *btn2 = new ALyxPushButton(this, tr("Cancel"));
+	btn2->setFont(QFont("Calibri", 16));
+	btn2->setUpPixmap(QPixmap("./skins/default/button.png"));
+	btn2->setDownPixmap(QPixmap("./skins/default/button_pushed.png"));
+
+	addButton(btn, "ok");
+	addButton(btn2, "cancel");
+}
 
 void ALyxDevicesDialog::setDevices(ALyxDevicesList devices) {
 	m_devices = devices;

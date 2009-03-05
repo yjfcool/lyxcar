@@ -49,6 +49,40 @@ void mp3playerWindow::createWindow() {
 	backBtn = new ALyxButton(this);
 	nextBtn = new ALyxButton(this);
 	lastBtn = new ALyxButton(this);
+
+	ALyxPushButton *selectDeviceBtn = new ALyxPushButton(this);
+	selectDeviceBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
+	selectDeviceBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
+	selectDeviceBtn->setText("Device");
+	selectDeviceBtn->setFont(QFont("Calibri", 12));
+	selectDeviceBtn->move(60, 410);
+
+	ALyxPushButton *settingsBtn = new ALyxPushButton(this);
+	settingsBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_mid_up.png"));
+	settingsBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_mid_up.png"));
+	settingsBtn->setText("Settings");
+	settingsBtn->setFont(QFont("Calibri", 12));
+	settingsBtn->move(176, 410);
+
+	ALyxPushButton *testBtn = new ALyxPushButton(this);
+	testBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
+	testBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
+	testBtn->setText("Test");
+	testBtn->setFont(QFont("Calibri", 12));
+	testBtn->move(292, 410);
+
+	ALyxPushButton *repeatModeBtn = new ALyxPushButton(this);
+	repeatModeBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
+	repeatModeBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
+	repeatModeBtn->setText("Repeat all");
+	repeatModeBtn->setFont(QFont("Calibri", 12));
+	repeatModeBtn->move(488, 410);
+	ALyxPushButton *displayModeBtn = new ALyxPushButton(this);
+	displayModeBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
+	displayModeBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
+	displayModeBtn->setText("Albums");
+	displayModeBtn->setFont(QFont("Calibri", 12));
+	displayModeBtn->move(604, 410);
 	
 	ALyxListWidget *playList= new ALyxListWidget(this, m_skinner);
 	playList->move(450, 10);

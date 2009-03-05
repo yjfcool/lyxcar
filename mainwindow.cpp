@@ -102,6 +102,7 @@ void AMainWindow::activateModule(QString moduleName) {
 		}
 		m_activeModuleName = moduleName;
 		mainArea->setLayout(new QVBoxLayout(mainArea));
+		((QBoxLayout*)mainArea->layout())->setContentsMargins(0, 0, 0, 0);
 		qDebug() << "skinner object set for" << moduleName;
 		m_interface->setSkinner(skinner);
 		qDebug() << "activate() for" << moduleName << "called";

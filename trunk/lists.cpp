@@ -126,8 +126,8 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 		width() - corner_ul.width() - corner_ur.width() -l_paddingRight, 
 		height() - corner_ur.height() - corner_br.height());
 
-	QImage *temporaryImage = new QImage(width(), height(), QImage::Format_ARGB32_Premultiplied);
-	QPainter temporary(temporaryImage);
+	QImage temporaryImage(width(), height(), QImage::Format_ARGB32_Premultiplied);
+	QPainter temporary(&temporaryImage);
 
 	// Clear transparency
 	temporary.setBrush(QColor("white"));
@@ -198,7 +198,7 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 
 	temporary.end();
 
-	p.drawImage(0, 0, *temporaryImage);
+	p.drawImage(0, 0, temporaryImage);
 	p.end();
 
 	m_scrollBar->setFixedSize(60, height()-m_scrollBarPaddingTop-m_scrollBarPaddingBottom);

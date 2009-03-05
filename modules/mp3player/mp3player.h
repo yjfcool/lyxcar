@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Pavlov Denis
+ * Copyright (C) 2008-2009 Pavlov Denis
  *
  * Comments unavailable.
  *
@@ -20,16 +20,16 @@
 
 #include "mplayerprocess.h"
 
-#include "../../m_interface.h"
-#include "../../buttons.h"
-#include "../../skinner.h"
-#include "../../lists.h"
-#include "../../scrolllabel.h"
-#include "../../display.h"
-#include "../../dialogs.h"
+#include "m_interface.h"
+#include "buttons.h"
+#include "skinner.h"
+#include "lists.h"
+#include "scrolllabel.h"
+#include "display.h"
+#include "devicesdlg.h"
 
 
-class mp3playerModule : public QObject, M_Interface {
+class mp3playerModule : public QObject, public M_Interface {
 	Q_OBJECT
 	Q_INTERFACES(M_Interface)
 
@@ -63,10 +63,13 @@ class mp3playerWindow : public QWidget {
 		void	playerRead();
 
 		void	loadPlayList();
+		void	selectDevice();
 
 	private:
 		ASkinner *m_skinner;
-		M_Interface *mInterface;
+		M_Interface *m_Interface;
+
+		QMap<QString, QString> m_devices; // Devices list from conf file
 
 		ALyxButton *firstBtn;
 		ALyxButton *backBtn;

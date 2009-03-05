@@ -16,3 +16,17 @@ ALyxControl::ALyxControl(QWidget * parent) :
 	QWidget(parent) {
 	m_opacity = 1.0;
 }
+
+void ALyxControl::setFixedSize(int w, int h) {
+	QWidget::setFixedSize(w, h);
+	repaint();
+}
+
+void ALyxControl::setFixedSize(QSize s) {
+	QWidget::setFixedSize(s);
+	repaint();
+}
+
+ALyxControl::~ALyxControl() {
+	qDebug() << "ALyxControl destroyed";
+}

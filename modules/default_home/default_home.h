@@ -17,11 +17,11 @@
 #include <QtXml>
 #include <QPushButton>
 
-#include "../../panel.h"
-#include "../../buttons.h"
-#include "../../skinner.h"
-#include "../../animated.h"
-#include "../../m_interface.h"
+#include "panel.h"
+#include "buttons.h"
+#include "skinner.h"
+#include "animated.h"
+#include "m_interface.h"
 
 class homeModuleWidget : public QWidget {
 	Q_OBJECT

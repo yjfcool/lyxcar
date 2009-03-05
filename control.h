@@ -10,29 +10,23 @@
  *
 */
 
-#ifndef __CONTROL_H__
-#define __CONTROL_H__
+#ifndef __LYXCONTROL_H__
+#define __LYXCONTROL_H__
 
 #include <QWidget>
+#include <QDebug>
 
 class ALyxControl : public QWidget {
 	Q_OBJECT
 	public:
 		ALyxControl(QWidget *parent = 0);
-		~ALyxControl() {}
+		~ALyxControl();
 
 		void setOpacity(qreal opacity) { m_opacity = opacity; repaint(); }
 		qreal opacity() { return m_opacity; }
 
-		void setFixedSize(int w, int h) {
-		    QWidget::setFixedSize(w, h);
-		    repaint();
-		}
-
-		void setFixedSize(QSize s) {
-		    QWidget::setFixedSize(s);
-		    repaint();
-		}
+		void setFixedSize(int w, int h);
+		void setFixedSize(QSize s);
 
 	protected:
 		qreal m_opacity;

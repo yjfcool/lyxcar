@@ -36,15 +36,23 @@ class ALyxJogdial : public ALyxControl {
 	ALyxListWidgetItems m_items;
 	int m_activeItemIndex;
 	float m_scalePercent;
+
 	int m_animationStep;
+	int m_animationPosition;
+	int m_animationPositionChange;
+	float m_animationScaleChange;
+	float m_animationScale;
+	int m_animationDirection;
 	
 	QTimer *animationTimer;
 	
-	void animate();
 	
 	void paintEvent(QPaintEvent *e);
 	void mousePressEvent(QMouseEvent *e);
-	
+
+    private slots:
+	void animate();
+
     signals:
 	void activated(ALyxListWidgetItem *);
 };

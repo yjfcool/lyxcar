@@ -15,11 +15,12 @@
 ALyxJogdial::ALyxJogdial(QWidget *parent, ASkinner *s) : 
     ALyxControl(parent) {
     m_activeItemIndex = -1;
-    m_scalePercent = 0.8;
+    m_scalePercent = 0.7;
     m_animationStep = 0;
-    
+    m_animationPosition = 0;
+
     animationTimer = new QTimer(this);
-    animationTimer->setInterval(10);
+    animationTimer->setInterval(20);
     
     connect(animationTimer, SIGNAL(timeout()), this, SLOT(animate()));
 }
@@ -78,39 +79,56 @@ void ALyxJogdial::setActiveItem(ALyxListWidgetItem *item) {
 void ALyxJogdial::paintEvent(QPaintEvent *e) {
     QPainter p(this);
 
+    int aw = 0, ah = 0, ax = 0, ay = 0;
+    int nw = 0, nh = 0, nx = 0, ny = 0;
+    int pw = 0, ph = 0, px = 0, py = 0;
+
     // Draw active item
     qDebug() << "Current active item is" << m_activeItemIndex;
     if(m_activeItemIndex >= 0) {
 	ALyxListWidgetItem *ai = m_items[m_activeItemIndex];
-	int ax = (int)((float)width() / 2 - (float)ai->width() / 2);
-	int ay = (int)((float)height() / 2 - (float)ai->height() / 2);
+	aw = (int)((float)ai->width() * (1.0 - m_animationScale));
+	ah = (int)((float)ai->height() * (1.0 - m_animationScale));
+	ax = (int)((float)width() / 2 - (float)aw / 2) + (m_animationPosition * m_animationDirection);
+	ay = (int)((float)height() / 2 - (float)ah / 2);
     	p.drawText(ax, ay-10, ai->text());
-    	p.drawPixmap(ax, ay, ai->pixmap());
+    	p.drawPixmap(ax, ay, ai->pixmap().scaled(QSize(aw, ah), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	ai->setRect(QRect(ax, ay, ai->pixmap().width(), ai->pixmap().height()));
+
+        // Draw inactive items from the left and the right
+	if(m_activeItemIndex-1 >= 0) {
+		ALyxListWidgetItem *pi = m_items[m_activeItemIndex-1];
+		if(m_animationDirection > 0) {
+		    pw = (int)(pi->width() * (m_scalePercent + m_animationScale));
+		    ph = (int)(pi->height() * (m_scalePercent + m_animationScale));
+		} else {
+		    pw = (int)(pi->width() * m_scalePercent);
+		    ph = (int)(pi->height() * m_scalePercent);
+		}
+		px = (int)((float)width() / 2 - (float)pw / 2) - aw + (m_animationPosition * m_animationDirection);
+		py = (int)((float)height() / 2 - (float)ph / 2);
+		p.drawText(px, py-10, pi->text());
+    		p.drawPixmap(px, py, pi->pixmap().scaled(QSize(pw, ph), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		pi->setRect(QRect(px, py, pw, ph));
+	}
+
+	if(m_activeItemIndex+1 < m_items.count()) {
+		ALyxListWidgetItem *ni = m_items[m_activeItemIndex+1];
+		if(m_animationDirection < 0) {
+		    nw = (int)(ni->width() * (m_scalePercent + m_animationScale));
+		    nh = (int)(ni->height() * (m_scalePercent + m_animationScale));
+		} else {
+		    nw = (int)(ni->width() * m_scalePercent);
+		    nh = (int)(ni->height() * m_scalePercent);
+		}
+		nx = (int)((float)width() / 2 - (float)nw / 2) + aw + (m_animationPosition * m_animationDirection);
+		ny = (int)((float)height() / 2 - (float)nh / 2);
+		p.drawText(nx, ny-10, ni->text());
+		p.drawPixmap(nx, ny, ni->pixmap().scaled(QSize(nw, nh), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		ni->setRect(QRect(nx, ny, nw, nh));
+	}
     }
     
-    // Draw inactive items from the left and the right
-    if(m_activeItemIndex-1 >= 0) {
-	ALyxListWidgetItem *ai = m_items[m_activeItemIndex-1];
-	int ax = (int)((float)width() / 2 - (float)ai->width() / 2) - ai->width() - 20;
-	int ay = (int)((float)height() / 2 - (float)ai->height() / 2);
-	int aw = (int)(ai->width() * m_scalePercent);
-	int ah = (int)(ai->height() * m_scalePercent);
-    	p.drawText(ax, ay-10, ai->text());
-    	p.drawPixmap(ax, ay, ai->pixmap().scaled(QSize(aw, ah), Qt::KeepAspectRatio));
-	ai->setRect(QRect(ax, ay, aw, ah));
-    }
-
-    if(m_activeItemIndex+1 < m_items.count()) {
-	ALyxListWidgetItem *ai = m_items[m_activeItemIndex+1];
-	int ax = (int)((float)width() / 2 - (float)ai->width() / 2) + ai->width() + 20;
-	int ay = (int)((float)height() / 2 - (float)ai->height() / 2);
-	int aw = (int)(ai->width() * m_scalePercent);
-	int ah = (int)(ai->height() * m_scalePercent);
-    	p.drawText(ax, ay-10, ai->text());
-    	p.drawPixmap(ax, ay, ai->pixmap().scaled(QSize(aw, ah), Qt::KeepAspectRatio));
-	ai->setRect(QRect(ax, ay, aw, ah));
-    }
     
     p.end();
 }
@@ -127,17 +145,33 @@ void ALyxJogdial::mousePressEvent(QMouseEvent *e) {
 	}
 	if(ai != NULL) {
 		int prev_selectedIndex = m_activeItemIndex;
-		setActiveItem(ai);
+		m_activeItemIndex = m_items.indexOf(ai);
+		if(m_activeItemIndex > prev_selectedIndex) { m_animationDirection = 1; } else { m_animationDirection = -1; }
 		emit activated(ai);
-		if(prev_selectedIndex < m_activeItemIndex) {
-			m_animationStep = 1;
-		} else if(prev_selectedIndex > m_activeItemIndex) {
-			m_animationStep = -1;
-		}
+		m_animationStep = 0;
+
+		m_animationPosition = m_items[prev_selectedIndex]->width();
+		m_animationPositionChange = m_animationPosition / 10;
+		m_animationScale = 0.3;
+		m_animationScaleChange = 0.03;
+
 		animationTimer->start();
 	}
 }
 
 void ALyxJogdial::animate() {
-    animationTimer->stop();
+    if(m_animationStep >= 10) {
+        animationTimer->stop();
+	m_animationPosition = 0;
+	m_animationStep = 0;
+	m_animationScaleChange = 0.0;
+	m_animationDirection = 0;
+    } else {
+	qDebug() << "Animation position is" << m_animationPosition;
+	m_animationPosition-=m_animationPositionChange;
+	m_animationScale-=m_animationScaleChange;
+	m_animationStep++;
+	
+    }
+    repaint();
 }

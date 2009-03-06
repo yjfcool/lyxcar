@@ -78,7 +78,7 @@ void ALyxListWidget::setSelectedItem(ALyxListWidgetItem *item) {
 
 void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
 	foreach (ALyxListWidgetItem *item, items()) {
-		if(item->rect.contains(e->pos())) {
+		if(item->rect().contains(e->pos())) {
 			int prev_selectedIndex = m_selectedIndex;
 			setSelectedItem(item);
 			emit selected(item);
@@ -96,11 +96,11 @@ void ALyxListWidget::animateSelector() {
 	if(animationStep != 0) {
 		m_selectorPosition.setY(m_selectorPosition.y()+(m_acceleration*animationStep));
 		m_acceleration++;
-		if(((m_selectorPosition.y() <= m_selectedItem->rect.y() && animationStep < 0)) || 
-		   ((m_selectorPosition.y() >= m_selectedItem->rect.y() && animationStep > 0))) {
+		if(((m_selectorPosition.y() <= m_selectedItem->rect().y() && animationStep < 0)) || 
+		   ((m_selectorPosition.y() >= m_selectedItem->rect().y() && animationStep > 0))) {
 			animationTimer->stop();
 			m_acceleration = MIN_ACCELERATION;
-			m_selectorPosition.setY(m_selectedItem->rect.y());
+			m_selectorPosition.setY(m_selectedItem->rect().y());
 		}
 		repaint();
 	}
@@ -168,10 +168,7 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 				   Qt::AlignVCenter,
 				   item->text()
 			);
-			item->rect.setX(l_paddingLeft);
-			item->rect.setY(cpos);
-			item->rect.setWidth(width());
-			item->rect.setHeight(item->height());
+			item->setRect(QRect(l_paddingLeft, cpos, width(), item->height()));
 			cpos+=l_verticalSpacing+item->height();
 		}
 	}

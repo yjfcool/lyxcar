@@ -38,17 +38,23 @@ class ALyxListWidgetItem : public QObject {
 
 		int height() { return m_height; }
 		void setHeight(int h) { m_height = h; }
+		
+		int width() { return m_width; }
+		void setWidth(int w) { m_width = w; }
 
 		void setVisible(bool visible) {
 			m_visible = visible;
 		}
 		bool visible() { return m_visible; }
 
-		QRect rect;
+		QRect rect() { return m_rect; }
+		void setRect(QRect rect) { m_rect = rect; }
 	private:
+		QRect m_rect;
 		QString m_text;
 		QPixmap m_pixmap;
 		int m_height;
+		int m_width;
 		bool m_visible;
 };
 

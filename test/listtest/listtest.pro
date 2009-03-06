@@ -7,7 +7,7 @@ INCLUDEPATH		+= ./include
 LIBS					+= -L../../ -llyxlib
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs
-DESTDIR		= ../
+DESTDIR		= ../../
 TARGET		= lt
 
 

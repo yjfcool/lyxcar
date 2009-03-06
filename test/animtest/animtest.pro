@@ -3,11 +3,11 @@ HEADERS			= animtest.h
 SOURCES			= animtest.cpp
 CONFIG			+= release config qt
 QT			+= xml
-INCLUDEPATH		+= ./include
+INCLUDEPATH		+= ./include ../../lyxlib
 LIBS			+= -L../.. -llyxlib
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs
-DESTDIR		= ../
+DESTDIR		= ../../
 TARGET		= at
 
 

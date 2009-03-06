@@ -89,15 +89,19 @@ void ALyxJogdial::paintEvent(QPaintEvent *e) {
 	ALyxListWidgetItem *ai = m_items[m_activeItemIndex];
 	aw = (int)((float)ai->width() * (1.0 - m_animationScale));
 	ah = (int)((float)ai->height() * (1.0 - m_animationScale));
-	ax = (int)((float)width() / 2 - (float)aw / 2) + (m_animationPosition * m_animationDirection);
+	ax = (int)((float)(width() - ai->width()) / 2) + (m_animationPosition * m_animationDirection);
 	ay = (int)((float)height() / 2 - (float)ah / 2);
     	p.drawText(ax, ay-10, ai->text());
-    	p.drawPixmap(ax, ay, ai->pixmap().scaled(QSize(aw, ah), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    	p.drawPixmap(ax + (int)((ai->width() - aw) / 2), ay, ai->pixmap().scaled(QSize(aw, ah), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 	ai->setRect(QRect(ax, ay, ai->pixmap().width(), ai->pixmap().height()));
+
+	ALyxListWidgetItem *ni = NULL;
+	ALyxListWidgetItem *pi = NULL;
+
 
         // Draw inactive items from the left and the right
 	if(m_activeItemIndex-1 >= 0) {
-		ALyxListWidgetItem *pi = m_items[m_activeItemIndex-1];
+		pi = m_items[m_activeItemIndex-1];
 		if(m_animationDirection > 0) {
 		    pw = (int)(pi->width() * (m_scalePercent + m_animationScale));
 		    ph = (int)(pi->height() * (m_scalePercent + m_animationScale));
@@ -105,15 +109,15 @@ void ALyxJogdial::paintEvent(QPaintEvent *e) {
 		    pw = (int)(pi->width() * m_scalePercent);
 		    ph = (int)(pi->height() * m_scalePercent);
 		}
-		px = (int)((float)width() / 2 - (float)pw / 2) - aw + (m_animationPosition * m_animationDirection);
+		px = (int)((float)(width() - ai->width()) / 2) - ai->width() + (m_animationPosition * m_animationDirection);
 		py = (int)((float)height() / 2 - (float)ph / 2);
 		p.drawText(px, py-10, pi->text());
-    		p.drawPixmap(px, py, pi->pixmap().scaled(QSize(pw, ph), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    		p.drawPixmap(px + (int)((pi->width() - pw) / 2), py, pi->pixmap().scaled(QSize(pw, ph), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		pi->setRect(QRect(px, py, pw, ph));
 	}
 
 	if(m_activeItemIndex+1 < m_items.count()) {
-		ALyxListWidgetItem *ni = m_items[m_activeItemIndex+1];
+		ni = m_items[m_activeItemIndex+1];
 		if(m_animationDirection < 0) {
 		    nw = (int)(ni->width() * (m_scalePercent + m_animationScale));
 		    nh = (int)(ni->height() * (m_scalePercent + m_animationScale));
@@ -121,15 +125,42 @@ void ALyxJogdial::paintEvent(QPaintEvent *e) {
 		    nw = (int)(ni->width() * m_scalePercent);
 		    nh = (int)(ni->height() * m_scalePercent);
 		}
-		nx = (int)((float)width() / 2 - (float)nw / 2) + aw + (m_animationPosition * m_animationDirection);
+		nx = (int)((float)(width() - ai->width()) / 2) + ai->width() + (m_animationPosition * m_animationDirection);
 		ny = (int)((float)height() / 2 - (float)nh / 2);
 		p.drawText(nx, ny-10, ni->text());
-		p.drawPixmap(nx, ny, ni->pixmap().scaled(QSize(nw, nh), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		p.drawPixmap(nx + (int)((ni->width() - nw) / 2), ny, ni->pixmap().scaled(QSize(nw, nh), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 		ni->setRect(QRect(nx, ny, nw, nh));
 	}
+
+	if(m_animationDirection < 0) {
+	    if(m_activeItemIndex+2 < m_items.count()) {
+		ALyxListWidgetItem *nni = m_items[m_activeItemIndex+2];
+		int nnx = 0, nny = 0, nnw = 0, nnh = 0;
+		nnw = (int)(nni->width() * m_scalePercent);
+		nnh = (int)(nni->height() * m_scalePercent);
+		nnx = (int)((float)(width() - ai->width()) / 2) + ai->width() + ni->width() + (m_animationPosition * m_animationDirection);
+		nny = (int)((float)height() / 2 - (float)nnh / 2);
+		p.drawText(nnx, nny-10, nni->text());
+		p.drawPixmap(nnx + (int)((nni->width() - nnw) / 2), nny, nni->pixmap().scaled(QSize(nnw, nnh), Qt::KeepAspectRatio));
+		nni->setRect(QRect(nnx, nny, nnw, nnh));
+	    }
+	} else {
+	    if(m_activeItemIndex-2 >= 0) {
+		ALyxListWidgetItem *ppi = m_items[m_activeItemIndex-2];
+		int ppx = 0, ppy = 0, ppw = 0, pph = 0;
+		ppw = (int)(ppi->width() * m_scalePercent);
+		pph = (int)(ppi->height() * m_scalePercent);
+		ppx = (int)((float)(width() - ai->width()) / 2) - ai->width() - pi->width() + (m_animationPosition * m_animationDirection);
+		ppy = (int)((float)height() / 2 - (float)pph / 2);
+		p.drawText(ppx, ppy-10, ppi->text());
+		p.drawPixmap(ppx + (int)((ppi->width() - ppw) / 2), ppy, ppi->pixmap().scaled(QSize(ppw, pph), Qt::KeepAspectRatio));
+		ppi->setRect(QRect(ppx, ppy, ppw, pph));
+	    }
+	}
     }
-    
-    
+
+
+
     p.end();
 }
 

@@ -16,10 +16,10 @@
 #include <QtGui>
 #include <QPushButton>
 
-#include "../../panel.h"
-#include "../../buttons.h"
-#include "../../skinner.h"
-#include "../../m_interface.h"
+#include "panel.h"
+#include "buttons.h"
+#include "skinner.h"
+#include "m_interface.h"
 
 class volCtlModuleApplet : public QWidget {
 	Q_OBJECT

@@ -19,17 +19,23 @@
 #include "buttons.h"
 #include "skinner.h"
 
+//! Common class for Lyx dialog window creation.
+
 class ALyxDialog : public ALyxControl {
 	Q_OBJECT
 	public:
 		ALyxDialog(QWidget *parent = 0, ASkinner *s = 0);
 		~ALyxDialog();
 
+		//! Set dialog window title
 		void setTitle(QString title) { m_title = title; }
+		//! Get dialog window title
 		QString title() { return m_title; }
 
+		//! Returns dialog buttons list
 		QList<ALyxButton *> buttons() { return m_buttons; }
 
+		//! Add ALyxButton to dialog buttons list
 		void addButton(ALyxButton *button, QString buttonName) { 
 			button->setObjectName(buttonName);
 			m_buttons << qobject_cast<ALyxButton*>(button);
@@ -47,6 +53,7 @@ class ALyxDialog : public ALyxControl {
 		void resizeEvent(QResizeEvent *e);
 
 	signals:
+		//! Emits when dialog button clicked
 		void buttonClicked(QString buttonName);
 
 	private slots:

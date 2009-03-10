@@ -17,13 +17,14 @@ ALyxDialog::ALyxDialog(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
 	setOpacity(0.9);
 	setModal(true);
 
-	hide();
 	raise();
+//	hide();
 }
 
 ALyxDialog::~ALyxDialog() {
 	// Restore accessibility before deletion
 	//setModal(false);
+	qDebug() << "ALyxDialog desroyed";
 }
 
 void ALyxDialog::setModal(bool modality) {
@@ -45,6 +46,7 @@ void ALyxDialog::paintEvent(QPaintEvent *e) {
 	p.setBrush(QColor("white"));
 
 	p.setOpacity(1);
+	p.setPen(QColor("white"));
 	p.drawText(10, 20, windowTitle());
 
 	// Draw frame

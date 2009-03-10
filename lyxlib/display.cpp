@@ -13,7 +13,6 @@
 #include "display.h"
 
 ALyxDisplay::ALyxDisplay(QWidget *parent) : ALyxControl(parent) {
-
 	ALyxScrollLabel *lbl = new ALyxScrollLabel(this);
 	lbl->setSpeed(980);
 	lbl->setStep(1);
@@ -33,7 +32,7 @@ ALyxDisplay::ALyxDisplay(QWidget *parent) : ALyxControl(parent) {
 }
 
 ALyxDisplay::~ALyxDisplay() {
-
+	qDebug() << "ALyxDialog destroyed";
 }
 
 void ALyxDisplay::activateLayout(QString layoutName) {

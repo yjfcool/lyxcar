@@ -16,6 +16,7 @@
 #include <QWidget>
 
 #include "dialogs.h"
+#include "jogdial.h"
 
 typedef QMap<QString,QString> ALyxDevicesList;
 

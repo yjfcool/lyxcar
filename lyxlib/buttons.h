@@ -33,7 +33,9 @@ class ALyxButton : public ALyxControl {
 		/*!
 			\param parent specifies parent widget for the button.
 		*/
-		ALyxButton(QWidget *parent = 0);
+        	ALyxButton(QWidget *parent = 0);
+
+		~ALyxButton();
 		
 		//! \brief Sets released or unchecked button picture.
 		/*!

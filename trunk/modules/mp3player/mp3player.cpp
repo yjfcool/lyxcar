@@ -45,8 +45,8 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 void mp3playerWindow::selectDevice() {
 	ALyxDevicesDialog *dialog = new ALyxDevicesDialog(this, m_skinner);
 	dialog->setWindowTitle(tr("Device selection"));
-	dialog->move(150, 90);
-	dialog->setFixedSize(500, 300);
+	dialog->move(200, 150);
+	dialog->setFixedSize(400, 250);
 	dialog->show();
 
 	connect(dialog, SIGNAL(buttonClicked(QString)), this, SLOT(deviceSelection(QString)));

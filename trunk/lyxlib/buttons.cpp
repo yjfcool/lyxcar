@@ -25,6 +25,10 @@ ALyxButton::ALyxButton(QWidget *parent) : ALyxControl(parent) {
 	connect(animationTimer, SIGNAL(timeout()), this, SLOT(animate()));
 }
 
+ALyxButton::~ALyxButton() {
+	qDebug() << "ALyxButton destroyed";
+}
+
 void ALyxButton::setUpPixmap(QPixmap image) {
 	buttonUpImage = image;
 	setFixedSize(image.rect().size());

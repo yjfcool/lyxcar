@@ -10,6 +10,9 @@
  *
 */
 
+#ifndef __LISTS_H__
+#define __LISTS_H__
+
 #include <QWidget>
 #include <QStringList>
 #include <QLabel>
@@ -25,10 +28,14 @@
 class ALyxListWidgetItem : public QObject {
 	Q_OBJECT
 	public:
-		ALyxListWidgetItem(QObject *parent = 0) {
+		ALyxListWidgetItem(QObject *parent = 0, QString text = "", QPixmap pixmap = 0) :
+			QObject(parent) {
 			m_visible = true;
+			m_text = text;
+			m_pixmap = pixmap;
+			m_textColor = QColor("black");
 		}
-		~ALyxListWidgetItem() {}
+		~ALyxListWidgetItem() { qDebug() << "ALyxListWidgetItem destroyed"; }
 
 		QString text() { return m_text; }
 		void setText(QString t) { m_text = t; }
@@ -49,6 +56,9 @@ class ALyxListWidgetItem : public QObject {
 
 		QRect rect() { return m_rect; }
 		void setRect(QRect rect) { m_rect = rect; }
+
+		QColor textColor() { return m_textColor; }
+		void setTextColor(QColor color) { m_textColor = color; }
 	private:
 		QRect m_rect;
 		QString m_text;
@@ -56,6 +66,7 @@ class ALyxListWidgetItem : public QObject {
 		int m_height;
 		int m_width;
 		bool m_visible;
+		QColor m_textColor;
 };
 
 typedef QList<ALyxListWidgetItem *> ALyxListWidgetItems;
@@ -140,3 +151,6 @@ class ALyxListWidget : public ALyxControl {
 		void paintEvent(QPaintEvent *e);
 		void mousePressEvent(QMouseEvent *e);
 };
+
+#endif
+

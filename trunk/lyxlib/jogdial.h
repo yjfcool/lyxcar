@@ -32,10 +32,13 @@ class ALyxJogdial : public ALyxControl {
 	void setActiveItem(int);
 	void setActiveItem(ALyxListWidgetItem *item);
 
+	void setScaleRatio(float ratio) { m_scale = ratio; repaint(); }
+	float scaleRatio() { return m_scale;  }
+
     private:
 	ALyxListWidgetItems m_items;
 	int m_activeItemIndex;
-	float m_scalePercent;
+	float m_scale;
 
 	int m_animationStep;
 	int m_animationPosition;
@@ -43,6 +46,7 @@ class ALyxJogdial : public ALyxControl {
 	float m_animationScaleChange;
 	float m_animationScale;
 	int m_animationDirection;
+	int m_itemSpacing;
 	
 	QTimer *animationTimer;
 	

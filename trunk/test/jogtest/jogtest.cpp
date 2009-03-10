@@ -9,7 +9,7 @@ Window::Window(QWidget *parent) {
 	
 	ALyxJogdial *jog = new ALyxJogdial(this);
 	jog->move(100, 100);
-	jog->setFixedSize(170, 200);
+	jog->setFixedSize(210, 200);
 	jog->addItem("Harddisk", QPixmap("./skins/default/mp3player/icons/drive-harddisk.png"));
 	jog->addItem("USB disk", QPixmap("./skins/default/mp3player/icons/drive-removable-media-usb.png"));
 	jog->addItem("CD disc", QPixmap("./skins/default/mp3player/icons/media-optical.png"));

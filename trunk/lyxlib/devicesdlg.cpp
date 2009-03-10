@@ -27,6 +27,18 @@ ALyxDevicesDialog::ALyxDevicesDialog(QWidget *parent, ASkinner *s) :
 
 	addButton(btn, "ok");
 	addButton(btn2, "cancel");
+
+	ALyxJogdial *jog = new ALyxJogdial(this);
+	jog->move(95, 60);
+	jog->setFixedSize(210, 130);
+
+	ALyxListWidgetItem *item = new ALyxListWidgetItem(jog, "Harddisk", QPixmap("./skins/default/mp3player/icons/drive-harddisk.png"));
+	item->setTextColor(QColor("white"));
+	jog->addItem(item);
+	jog->addItem("USB disk", QPixmap("./skins/default/mp3player/icons/drive-removable-media-usb.png"));
+	jog->addItem("CD disc", QPixmap("./skins/default/mp3player/icons/media-optical.png"));
+	jog->addItem("Phone", QPixmap("./skins/default/mp3player/icons/phone.png"));
+	jog->show();
 }
 
 void ALyxDevicesDialog::setDevices(ALyxDevicesList devices) {

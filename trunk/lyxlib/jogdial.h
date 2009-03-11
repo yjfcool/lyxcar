@@ -35,6 +35,8 @@ class ALyxJogdial : public ALyxControl {
 	void setScaleRatio(float ratio) { m_scale = ratio; repaint(); }
 	float scaleRatio() { return m_scale;  }
 
+	void clear();
+
     private:
 	ALyxListWidgetItems m_items;
 	int m_activeItemIndex;

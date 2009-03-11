@@ -28,23 +28,43 @@ ALyxDevicesDialog::ALyxDevicesDialog(QWidget *parent, ASkinner *s) :
 	addButton(btn, "ok");
 	addButton(btn2, "cancel");
 
-	ALyxJogdial *jog = new ALyxJogdial(this);
-	jog->move(95, 60);
-	jog->setFixedSize(210, 130);
-
-	ALyxListWidgetItem *item = new ALyxListWidgetItem(jog, "Harddisk", QPixmap("./skins/default/mp3player/icons/drive-harddisk.png"));
-	item->setTextColor(QColor("white"));
-	jog->addItem(item);
-	jog->addItem("USB disk", QPixmap("./skins/default/mp3player/icons/drive-removable-media-usb.png"));
-	jog->addItem("CD disc", QPixmap("./skins/default/mp3player/icons/media-optical.png"));
-	jog->addItem("Phone", QPixmap("./skins/default/mp3player/icons/phone.png"));
-	jog->show();
+	m_jogdial = new ALyxJogdial(this);
+	m_jogdial->move(95, 60);
+	m_jogdial->setFixedSize(210, 130);
+	m_jogdial->show();
 }
 
-void ALyxDevicesDialog::setDevices(ALyxDevicesList devices) {
-	m_devices = devices;
+void ALyxDevicesDialog::clear() {
+ 	m_devices.clear();
+	m_jogdial->clear();
+}
 
-	return;
+ALyxListWidgetItem * ALyxDevicesDialog::activeDeviceItem() {
+        return m_jogdial->activeItem();
+}
+
+QString ALyxDevicesDialog::activeDevicePath() {
+	return m_devices.value(m_jogdial->activeItem());
+}
+
+QString ALyxDevicesDialog::activeDeviceName() {
+	return m_jogdial->activeItem()->text();
+}
+
+void ALyxDevicesDialog::setActiveDeviceByPath(QString path) {
+	ALyxListWidgetItem *item = m_devices.key(path);
+	m_jogdial->setActiveItem(item);
+}
+
+void ALyxDevicesDialog::setActiveDeviceByName(QString name) {
+
+}
+
+void ALyxDevicesDialog::addDevice(QString path, QString name, QPixmap icon) {
+	ALyxListWidgetItem *item = new ALyxListWidgetItem(m_jogdial, name, icon);
+	item->setTextColor(QColor("white"));
+	m_jogdial->addItem(item);
+	m_devices.insert(item, path);
 }
 
 ALyxDevicesDialog::~ALyxDevicesDialog() {

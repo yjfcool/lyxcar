@@ -213,6 +213,7 @@ void ALyxListWidget::selectItem(ALyxListWidgetItem *item) {
 }
 
 void ALyxListWidget::clear() {
+	setSelectedItem(NULL);
 	l_items.clear();
 	repaint();
 }

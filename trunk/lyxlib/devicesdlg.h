@@ -28,8 +28,31 @@ class ALyxDevicesDialog : public ALyxDialog {
 
 		void setDevices(ALyxDevicesList devices);
 
+		//! Adds a device entry to devices list.
+		void addDevice(QString path, QString name, QPixmap icon);
+
+		//! Get active device item.
+		ALyxListWidgetItem * activeDeviceItem();
+
+		//! Get active device filesystem path
+		QString activeDevicePath();
+
+		//! Get active device title
+		QString activeDeviceName();
+
+		//! Sets active device by filesystem path
+		void setActiveDeviceByPath(QString path);
+
+		//! Sets active device by device name. <b>UNIMPLEMENTED</b>
+		void setActiveDeviceByName(QString name);
+
+		//! Clears devices list in dialog
+		void clear();
 	private:
-		QMap<QString,QString>	m_devices;
+		// Device name - Device path
+		QMap<ALyxListWidgetItem *, QString>	m_devices;
+
+		ALyxJogdial *m_jogdial;
 };
 
 #endif

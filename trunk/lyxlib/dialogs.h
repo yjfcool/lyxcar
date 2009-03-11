@@ -42,11 +42,12 @@ class ALyxDialog : public ALyxControl {
 			connect(button, SIGNAL(clicked()), this, SLOT(buttonReaction()));
 		}
 
+		//! Sets dialog modality
+		void setModal(bool modality);
+
 	private:
 		QString m_title;
 		QList<ALyxButton *> m_buttons;
-
-		void setModal(bool modality);
 
 	protected:
 		void paintEvent(QPaintEvent *e);

@@ -31,6 +31,12 @@ ALyxJogdial::~ALyxJogdial() {
 	qDebug() << "ALyxJogdial destroyed";
 }
 
+void ALyxJogdial::clear() {
+	m_items.clear();
+	m_activeItemIndex = -1;
+	repaint();
+}
+
 void ALyxJogdial::addItem(QString text, QPixmap pixmap) {
 	ALyxListWidgetItem *i = new ALyxListWidgetItem(this, text, pixmap);
 	addItem(i);  
@@ -57,7 +63,7 @@ void ALyxJogdial::addItem(ALyxListWidgetItem *item) {
 }
 
 ALyxListWidgetItem *ALyxJogdial::activeItem() {
-	if(m_activeItemIndex > 0) {
+	if(m_activeItemIndex > -1) {
         	return m_items[m_activeItemIndex];
 	} else {
 		return NULL;

@@ -84,6 +84,8 @@ class mp3playerWindow : public QWidget {
 
 		QMap<QString, QString> m_devices; // Devices list from conf file
 
+		QString	m_device; // Currently selected device
+
 		ALyxListWidget *playList;
 		ALyxButton *firstBtn;
 		ALyxButton *backBtn;

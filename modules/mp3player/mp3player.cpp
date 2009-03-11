@@ -21,17 +21,25 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 
 	qDebug() << "mp3player is reading player settings";
 	settings = new QSettings("./conf/mp3player.conf", QSettings::IniFormat, this);
+
+	// Loading devices list
 	settings->beginGroup("Devices");
 	QStringList devs = settings->childKeys();
 	foreach(QString dev, devs) {
 		m_devices[dev] = settings->value(dev).toString();
 	}
 
-	qDebug() << "mp3player creates it's window";
-	createWindow();
 	setContentsMargins(0, 0, 0, 0);
 
-	loadDeviceContents();
+	createWindow();
+
+	// If there is no device selected,
+	// go to device selection dialog!
+	if(m_device != "") {
+		loadDeviceContents();
+	} else {
+		selectDevice();
+	}
 	
 //	player = new MPlayerProcess(this);
 //	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));
@@ -51,14 +59,28 @@ void mp3playerWindow::selectDevice() {
 	dialog->setFixedSize(400, 250);
 	dialog->show();
 
+	dialog->addDevice(QString("C:/USB"), QString("USB Image"), QString("./skins/default/mp3player/icons/usb.png"));
+	dialog->addDevice(QString("C:/Music"), QString("Music folder"), QString("./skins/default/mp3player/icons/folder.png"));
+
+	if(m_device != "") {
+		dialog->setActiveDeviceByPath(m_device);
+	}
+
 	connect(dialog, SIGNAL(buttonClicked(QString)), this, SLOT(deviceSelection(QString)));
-/*	if(dialog->execute()) {
-	
-	}*/
 }
 
 void mp3playerWindow::deviceSelection(QString operation) {
-	qDebug() << "Device selected:" << operation;
+	qDebug() << "Active device is:" << qobject_cast<ALyxDevicesDialog *>(sender())->activeDevicePath();
+	if((operation == "ok") &&
+	   (qobject_cast<ALyxDevicesDialog *>(sender())->activeDevicePath() != m_device)) {
+		m_device = qobject_cast<ALyxDevicesDialog *>(sender())->activeDevicePath();
+		qDebug() << "Device selected:" << m_device;
+		loadDeviceContents();
+	}
+	qobject_cast<ALyxDevicesDialog *>(sender())->setModal(false);
+	qobject_cast<ALyxDevicesDialog *>(sender())->hide();
+
+	delete sender();
 }
 
 void mp3playerWindow::createWindow() {
@@ -143,7 +165,7 @@ void mp3playerWindow::playerRead() {
 // collect ID3 information and fill playlist.
 //
 void mp3playerWindow::loadDeviceContents() {
-	QString device = "C:/USB";
+	QString device = m_device;
 	qDebug() << "Loading device contents";
 
 	QDirIterator it(device, QDirIterator::Subdirectories);

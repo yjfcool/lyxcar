@@ -30,6 +30,8 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 	qDebug() << "mp3player creates it's window";
 	createWindow();
 	setContentsMargins(0, 0, 0, 0);
+
+	loadDeviceContents();
 	
 //	player = new MPlayerProcess(this);
 //	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));
@@ -104,19 +106,9 @@ void mp3playerWindow::createWindow() {
 	displayModeBtn->setFont(QFont("Calibri", 12));
 	displayModeBtn->move(604, 410);
 	
-	ALyxListWidget *playList= new ALyxListWidget(this, m_skinner);
+	playList= new ALyxListWidget(this, m_skinner);
 	playList->move(450, 10);
 	playList->setFixedSize(330, 390);
-
-	ALyxListWidgetItem *item = new ALyxListWidgetItem(playList);
-	item->setText("Guano Apes\nDon't give me names");
-	item->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
-	playList->addItem(item);
-
-	ALyxListWidgetItem *item2 = new ALyxListWidgetItem(playList);
-	item2->setText("Rammstein\nMutter");
-	item2->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
-	playList->addItem(item2);
 
 	QDomElement displayElement = m_skinner->skinModuleElement("mp3player", "display");
 	QString background = displayElement.attribute("background");
@@ -146,8 +138,54 @@ void mp3playerWindow::playerRead() {
 	//testText->append(player->readAllStandardOutput());
 }
 
-void mp3playerWindow::loadPlayList() {
-	
+//
+// Scan current selected device for media files
+// collect ID3 information and fill playlist.
+//
+void mp3playerWindow::loadDeviceContents() {
+	QString device = "C:/USB";
+	qDebug() << "Loading device contents";
+
+	QDirIterator it(device, QDirIterator::Subdirectories);
+
+//
+// For Russian windows users whose tags are in cp-1251
+//
+#ifdef Q_OS_WIN32
+	QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
+#endif
+
+	playList->clear();
+	while (it.hasNext()) {
+		QString fullFilePath = it.next().toLocal8Bit();
+		if((it.fileInfo().suffix() == "mp3") ||
+		(it.fileInfo().suffix() == "ogg") ||
+		(it.fileInfo().suffix() == "flac")) {
+			TagLib::FileRef f(fullFilePath.toAscii().constData());
+
+			QString artist = TStringToQString(f.tag()->artist());
+			QString album = TStringToQString(f.tag()->album());
+			QString title= TStringToQString(f.tag()->title());
+
+//
+// For Russian windows users whose tags are in cp-1251
+//
+#ifdef Q_OS_WIN32
+			artist = codec->toUnicode(artist.toAscii());
+			album = codec->toUnicode(album.toAscii());
+			title = codec->toUnicode(title.toAscii());
+#endif
+			albums[artist+"\n"+album].insert(title, fullFilePath);
+		}
+	} 
+
+	// Fill the playlist with album entries
+	foreach(QString albumName, albums.keys()) {
+		ALyxListWidgetItem *item = new ALyxListWidgetItem(playList);
+		item->setText(albumName);
+		item->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
+		playList->addItem(item);
+	}
 }
 
 void mp3playerWindow::readCurrentMedia() {

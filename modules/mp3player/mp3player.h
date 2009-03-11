@@ -17,6 +17,7 @@
 #include <QObject>
 #include <QProcess>
 #include <QSettings>
+#include <QTextCodec>
 
 #include "mplayerprocess.h"
 
@@ -28,6 +29,12 @@
 #include "display.h"
 #include "devicesdlg.h"
 
+#include <taglib.h>
+#include <fileref.h>
+#include <tag.h>
+#include <id3v1tag.h>
+#include <id3v2tag.h>
+#include <tstring.h>
 
 class mp3playerModule : public QObject, public M_Interface {
 	Q_OBJECT
@@ -42,6 +49,9 @@ class mp3playerModule : public QObject, public M_Interface {
 		void demandActivation(QString moduleName);
 		void deactivated(QString deactivateFor);
 };
+
+// File name - track name
+typedef QHash<QString,QString> mp3playerAlbumContents;
 
 class mp3playerWindow : public QWidget {
 	Q_OBJECT
@@ -62,7 +72,7 @@ class mp3playerWindow : public QWidget {
 
 		void	playerRead();
 
-		void	loadPlayList();
+		void	loadDeviceContents();
 		void	selectDevice();
 
 	private slots:
@@ -74,11 +84,15 @@ class mp3playerWindow : public QWidget {
 
 		QMap<QString, QString> m_devices; // Devices list from conf file
 
+		ALyxListWidget *playList;
 		ALyxButton *firstBtn;
 		ALyxButton *backBtn;
 		ALyxButton *playBtn;
 		ALyxButton *nextBtn;
 		ALyxButton *lastBtn;
+
+		// Album name - tracks
+		QHash<QString, mp3playerAlbumContents> albums;
 
 		void	readCurrentMedia();
 };

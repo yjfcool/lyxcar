@@ -91,7 +91,9 @@ class ALyxListWidget : public ALyxControl {
 		void addItem(ALyxListWidgetItem *item);
 		//! \brief Sets item specified as a currently selected item
 		void setSelectedItem(ALyxListWidgetItem *item);
-	
+
+		//! \brief Clears the list widget
+		void clear();	
 	private:
 		QTimer	*animationTimer;
 

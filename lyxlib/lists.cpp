@@ -211,3 +211,8 @@ void ALyxListWidget::selectItem(int itemIndex) {
 void ALyxListWidget::selectItem(ALyxListWidgetItem *item) {
 	setSelectedItem(item);
 }
+
+void ALyxListWidget::clear() {
+	l_items.clear();
+	repaint();
+}

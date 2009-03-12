@@ -29,9 +29,10 @@ ALyxDevicesDialog::ALyxDevicesDialog(QWidget *parent, ASkinner *s) :
 	addButton(btn2, "cancel");
 
 	m_jogdial = new ALyxJogdial(this);
+	clear();
 	m_jogdial->move(95, 60);
 	m_jogdial->setFixedSize(210, 130);
-	m_jogdial->show();
+//	m_jogdial->show();
 }
 
 void ALyxDevicesDialog::clear() {

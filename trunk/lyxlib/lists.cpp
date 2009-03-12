@@ -205,7 +205,7 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 }
 
 void ALyxListWidget::selectItem(int itemIndex) {
-
+	setSelectedItem(l_items[itemIndex]);
 }
 
 void ALyxListWidget::selectItem(ALyxListWidgetItem *item) {

@@ -18,6 +18,9 @@
 
 mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
+	m_device = QString();
+
+	setContentsMargins(0, 0, 0, 0);
 
 	qDebug() << "mp3player is reading player settings";
 	settings = new QSettings("./conf/mp3player.conf", QSettings::IniFormat, this);
@@ -25,11 +28,17 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 	// Loading devices list
 	settings->beginGroup("Devices");
 	QStringList devs = settings->childKeys();
+	// Parse [Devices]
 	foreach(QString dev, devs) {
 		m_devices[dev] = settings->value(dev).toString();
+		QStringList dev_params = m_devices[dev].split("#");
+		// Get active device sign
+		if(dev_params.count() > 2) {
+			if(dev_params[2] == "1") {
+				m_device = dev_params[0];
+			}
+		}
 	}
-
-	setContentsMargins(0, 0, 0, 0);
 
 	createWindow();
 
@@ -40,7 +49,7 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 	} else {
 		selectDevice();
 	}
-	
+
 //	player = new MPlayerProcess(this);
 //	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));
 //	connect(playBtn, SIGNAL(clicked()), this, SLOT(pauseCurrent()));
@@ -53,22 +62,56 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 
 // SLOT
 void mp3playerWindow::selectDevice() {
+
+	// Create dialog
 	ALyxDevicesDialog *dialog = new ALyxDevicesDialog(this, m_skinner);
 	dialog->setWindowTitle(tr("Device selection"));
 	dialog->move(200, 150);
 	dialog->setFixedSize(400, 250);
-	dialog->show();
 
-	dialog->addDevice(QString("C:/USB"), QString("USB Image"), QString("./skins/default/mp3player/icons/usb.png"));
-	dialog->addDevice(QString("C:/Music"), QString("Music folder"), QString("./skins/default/mp3player/icons/folder.png"));
+	// Parse m_devices (list from config)
+	foreach(QString dev, m_devices.keys()) {
+		qDebug() << "Device in config" << dev;
+		QStringList dev_params = m_devices[dev].split("#");
+		QString point;
+		QString icon;
+		if(dev_params.count() > 0) {
+			point = dev_params[0];
+			if(dev_params.count() > 1) {
+				icon = dev_params[1]; // Device icon
+			} else {
+			 	icon = "folder.png"; // Default icon
+			}
+			// Adding device to dialog's jogdial
+			dialog->addDevice(point, dev, QString("./skins/default/mp3player/icons/")+icon);
+			qDebug() << "Added to dialog" << point << dev;
+			// Detecting active device
+			if(dev_params.count() > 2) {
+				if(dev_params[2] == "1" && m_device == "") { m_device = dev_params[0]; }
+			}
+		}
+	}
 
+	// Setting current active device by device PATH!
 	if(m_device != "") {
+		qDebug() << "Setting active device by path" << m_device;
 		dialog->setActiveDeviceByPath(m_device);
 	}
 
+	dialog->show();
+
+	// Connecting button actions to deviceSelection(QString operation)
+	// There are two operations - "ok" and "cancel".
+	// Te operation is passed to slot and will be processed there.
 	connect(dialog, SIGNAL(buttonClicked(QString)), this, SLOT(deviceSelection(QString)));
 }
 
+
+// SLOT
+// Processes device selection from ALyxDevicesDialog.
+// If the operation is "ok", which means the "OK" button clicked,
+// it changes active device and reloads a playlist.
+// Any operation hides dialog and sets it's modality to false.
 void mp3playerWindow::deviceSelection(QString operation) {
 	qDebug() << "Active device is:" << qobject_cast<ALyxDevicesDialog *>(sender())->activeDevicePath();
 	if((operation == "ok") &&
@@ -84,8 +127,7 @@ void mp3playerWindow::deviceSelection(QString operation) {
 }
 
 void mp3playerWindow::createWindow() {
-	ALyxDisplay *display = new ALyxDisplay(this);
-
+	display = new ALyxDisplay(this);
 	playBtn = new ALyxButton(this);
 	firstBtn = new ALyxButton(this);
 	backBtn = new ALyxButton(this);
@@ -128,7 +170,7 @@ void mp3playerWindow::createWindow() {
 	displayModeBtn->setFont(QFont("Calibri", 12));
 	displayModeBtn->move(604, 410);
 	
-	playList= new ALyxListWidget(this, m_skinner);
+	playList = new ALyxListWidget(this, m_skinner);
 	playList->move(450, 10);
 	playList->setFixedSize(330, 390);
 
@@ -166,7 +208,7 @@ void mp3playerWindow::playerRead() {
 //
 void mp3playerWindow::loadDeviceContents() {
 	QString device = m_device;
-	qDebug() << "Loading device contents";
+	qDebug() << "Loading device contents from" << device;
 
 	QDirIterator it(device, QDirIterator::Subdirectories);
 
@@ -178,6 +220,7 @@ void mp3playerWindow::loadDeviceContents() {
 #endif
 
 	playList->clear();
+	albums.clear();
 	while (it.hasNext()) {
 		QString fullFilePath = it.next().toLocal8Bit();
 		if((it.fileInfo().suffix() == "mp3") ||
@@ -203,6 +246,7 @@ void mp3playerWindow::loadDeviceContents() {
 
 	// Fill the playlist with album entries
 	foreach(QString albumName, albums.keys()) {
+		qDebug() << albumName;
 		ALyxListWidgetItem *item = new ALyxListWidgetItem(playList);
 		item->setText(albumName);
 		item->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));

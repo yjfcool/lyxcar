@@ -53,9 +53,15 @@ class ALyxScrollBar : public QWidget {
 		bool tmp_sliderPressed;
 		QPoint tmp_sliderPressPos;
 		int tmp_sliderInitialPos;
+
+		QTimer *scrollRepeatTimer;
+		int scrollRepeatDirection;
+
+	private slots:
+		void scrollRepeat();
 		
 	signals:
-		void changed();
+		void changed(int position);
 
 	protected:
 		void resizeEvent(QResizeEvent *e);

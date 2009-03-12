@@ -28,7 +28,7 @@
 class ALyxListWidgetItem : public QObject {
 	Q_OBJECT
 	public:
-		ALyxListWidgetItem(QObject *parent = 0, QString text = "", QPixmap pixmap = 0) :
+		ALyxListWidgetItem(QObject *parent = 0, QString text = "", QPixmap pixmap = QPixmap()) :
 			QObject(parent) {
 			m_visible = true;
 			m_text = text;

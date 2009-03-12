@@ -191,6 +191,8 @@ void ALyxJogdial::paintEvent(QPaintEvent *e) {
 	}
 
 	p.end();
+
+	ALyxControl::paintEvent(e);
 }
 
 void ALyxJogdial::mousePressEvent(QMouseEvent *e) {

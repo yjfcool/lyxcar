@@ -65,6 +65,8 @@ void ALyxDialog::paintEvent(QPaintEvent *e) {
 #endif
 
 	p.end();
+
+	ALyxControl::paintEvent(e);
 }
 
 void ALyxDialog::resizeEvent(QResizeEvent *e) {

@@ -12,6 +12,9 @@
 
 #include "scrollbar.h"
 
+#define FAST_INTERVAL 25
+#define SLOW_INTERVAL 250
+
 ALyxScrollBar::ALyxScrollBar(QWidget *parent, ASkinner *s) : QWidget(parent) {
 	m_skinner = s;
 	
@@ -24,8 +27,12 @@ ALyxScrollBar::ALyxScrollBar(QWidget *parent, ASkinner *s) : QWidget(parent) {
 
 	tmp_sliderPressed = false;
 	
-	m_position = 50;
+	m_position = 0;
 	m_maximumPosition = 100;
+
+	scrollRepeatTimer = new QTimer(this);
+	scrollRepeatTimer->setInterval(SLOW_INTERVAL);
+	connect(scrollRepeatTimer, SIGNAL(timeout()), this, SLOT(scrollRepeat()));
 	
 	setAttribute(Qt::WA_NoSystemBackground, true);	
 }
@@ -57,6 +64,9 @@ void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 		qDebug() << "Back button pressed!";
 		if(m_position > 0) {
 			m_position--;
+			emit changed(m_position);
+			scrollRepeatDirection = -1;
+			scrollRepeatTimer->start();
 		}
 		repaint();
 	} else if(QRect(0, height()-forwardbtn_up.height(), forwardbtn_up.width(), forwardbtn_up.height()).contains(e->pos())) {
@@ -64,6 +74,9 @@ void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 		qDebug() << "Forward button pressed!";
 		if(m_position < m_maximumPosition) {
 			m_position++;
+			emit changed(m_position);
+			scrollRepeatDirection = 1;
+			scrollRepeatTimer->start();
 		}
 		repaint();
 	} else if(QRect(0, tmp_sliderMin+(int)(tmp_sliderStep*m_position), slider_up.width(), slider_up.height()).contains(e->pos())) {
@@ -79,6 +92,8 @@ void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 
 void ALyxScrollBar::mouseReleaseEvent(QMouseEvent *e) {
 	if(tmp_sliderPressed) { tmp_sliderPressed = false; }
+	scrollRepeatTimer->setInterval(SLOW_INTERVAL);
+	scrollRepeatTimer->stop();
 }
 
 void ALyxScrollBar::mouseMoveEvent(QMouseEvent *e) {
@@ -91,5 +106,15 @@ void ALyxScrollBar::mouseMoveEvent(QMouseEvent *e) {
 				m_position = m_maximumPosition;
 			}
 			repaint();
+	}
+}
+
+void ALyxScrollBar::scrollRepeat() {
+	if((m_position > 0) && (m_position < m_maximumPosition)) {
+		if(scrollRepeatTimer->interval() == SLOW_INTERVAL) {
+			scrollRepeatTimer->setInterval(FAST_INTERVAL);
+		}
+		m_position+=scrollRepeatDirection;
+		emit changed(m_position);
 	}
 }

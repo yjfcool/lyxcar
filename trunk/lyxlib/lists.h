@@ -147,7 +147,10 @@ class ALyxListWidget : public ALyxControl {
 
 	private slots:
 		void animateSelector();
-
+		void scroll(int position) {
+			m_scrollPosition = position;
+			repaint();
+		}
 		
 	protected:
 		void paintEvent(QPaintEvent *e);

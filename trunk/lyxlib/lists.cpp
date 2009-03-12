@@ -33,6 +33,7 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(paren
 	m_scrollBarPaddingTop = 15;
 	m_scrollBarPaddingBottom = 15;
 	m_scrollBarPaddingEdge = 15;
+	m_scrollPosition = 0;
 
 	m_defaultItemHeight = 65;
 	m_acceleration = MIN_ACCELERATION;
@@ -43,6 +44,8 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(paren
 	animationStep = 0;
 
 	m_scrollBar = new ALyxScrollBar(this, s);
+
+	connect(m_scrollBar, SIGNAL(changed(int)), this, SLOT(scroll(int)));
 	
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
@@ -119,6 +122,7 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	p.drawPixmap(width()-corner_ur.width()-l_paddingRight, corner_ur.height(), right.scaled(corner_ur.width(), height() - corner_ur.height() - corner_br.height())); // Right
 	p.drawPixmap(0, corner_ul.height(), left.scaled(corner_ur.width(), height() - corner_ur.height() - corner_br.height())); // Left
 
+	// Fill the center of a rect
 	p.setBrush(QBrush(QColor("white")));
 	p.setPen(QColor("white"));
 	p.drawRect(corner_ul.width(),
@@ -138,20 +142,31 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 
 	// Draw selector
 	if(m_selectedItem) {
-		temporary.drawPixmap(m_selectorPosition, selector);
-		temporary.drawTiledPixmap(m_selectorPosition.x()+selector.width(),
-				  m_selectorPosition.y(),
-				  width()-m_selectorPosition.x()-selector.width()-l_paddingSelector-l_paddingRight,
+		QPoint position = m_selectorPosition;
+		position.setY(m_selectorPosition.y());
+		temporary.drawPixmap(position, selector);
+		temporary.drawTiledPixmap(position.x()+selector.width(),
+				  position.y(),
+				  width()-position.x()-selector.width()-l_paddingSelector-l_paddingRight,
 				  selector.height(),
 				  selector_fill);
 	}
-	
+
+	//	
 	// Draw items
+	//
 	temporary.setPen(QColor("black"));
-	int cpos = l_paddingTop;
+	int cpos = l_paddingTop-m_scrollPosition;
 	foreach (ALyxListWidgetItem *item, items()) {
+
 //		qDebug() << "Painted item" << item->text() << "at" << l_paddingLeft << "x" << cpos << "width" << width() << "height" << item->height();
-		if(item->visible()) {
+
+		// Set item rect to real item position in list
+		item->setRect(QRect(l_paddingLeft, cpos, width(), item->height()));
+		if(item->visible() && (item->rect().intersects(rect()))) {
+			//
+			// Draw item pixmap
+			//
 			int pixmap_offset = 0;
 			if(!item->pixmap().isNull()) {
 				temporary.drawPixmap(l_paddingLeft,
@@ -160,7 +175,9 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 				);
 				pixmap_offset = item->pixmap().width()+l_paddingLeft;
 			}
-
+			//
+			// Draw item text
+			//
 			temporary.drawText(l_paddingLeft+pixmap_offset,
 				   cpos, 
 				   width(),
@@ -168,11 +185,13 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 				   Qt::AlignVCenter,
 				   item->text()
 			);
-			item->setRect(QRect(l_paddingLeft, cpos, width(), item->height()));
 			cpos+=l_verticalSpacing+item->height();
 		}
 	}
 
+	//
+	// Start blending
+	//
 	temporary.setCompositionMode(QPainter::CompositionMode_DestinationIn);
 	temporary.setPen(QColor(0, 255, 0, 255));
 	
@@ -190,9 +209,8 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	temporary.setBrush(QBrush(linearGrad2));
 	temporary.drawRect(0, 0, width(), 30);
 
-	// Restore composition
+	// Restore composition mode
 	temporary.setCompositionMode(QPainter::CompositionMode_SourceOver);
-
 	temporary.end();
 
 	p.drawImage(0, 0, temporaryImage);
@@ -200,8 +218,6 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 
 	m_scrollBar->setFixedSize(60, height()-m_scrollBarPaddingTop-m_scrollBarPaddingBottom);
 	m_scrollBar->move(width()-m_scrollBar->width(), m_scrollBarPaddingTop);
-
-	//m_scrollBar->repaint();
 }
 
 void ALyxListWidget::selectItem(int itemIndex) {

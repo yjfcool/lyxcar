@@ -19,49 +19,20 @@
 #include "mainmenu.h"
 #include "lists.h"
 
-AMainWindow::AMainWindow(QWidget *parent) {
-	setFixedSize(800, 600);
-
-	skinner = new ASkinner(this, "default");
-
-	// Create main widget background palette
-	QPalette pal = palette();
-	QPixmap bgImg(skinner->skinImage("", "", "background"));
-	QBrush brush = QBrush();
-	brush.setTexture(bgImg);
-	pal.setBrush(QPalette::Window, brush);
-
-	QWidget *mainWidget = new QWidget(this);
-	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
-	layout->setSpacing(0);
-	layout->setMargin(0);
-	layout->setContentsMargins(0,0,0,0);
-	mainWidget->setLayout(layout);
-	mainWidget->setPalette(pal);
-	mainWidget->setAutoFillBackground(true);
-
-	setCentralWidget(mainWidget);
-
-	panel = new APanel(mainWidget, skinner);
-	mainArea = new QWidget();
-	
-	qobject_cast<QBoxLayout *>(mainWidget->layout())->addSpacing(64); // Space for header
-	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(1, mainArea, 1);
-	qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(2, panel);
-
-	// Load modules from configuration file
-	QSettings *modules_conf = new QSettings("conf/modules.conf", QSettings::IniFormat);
-	modulesList = modules_conf->childGroups();
-	// Then load all modules into QHash - create objects
-	foreach (QString mod, modulesList) {
-		loadModule(mod);
-	}
-	
-	fillPanel();
+AMainWindow::AMainWindow(QWidget *parent) :
+   QMainWindow(parent)
+{
+   init("default");
 }
 
-AMainWindow::~AMainWindow() {
+AMainWindow::AMainWindow(const QString & skinName, QWidget * parent) :
+   QMainWindow(parent)
+{
+   init(skinName);
+}
 
+AMainWindow::~AMainWindow()
+{
 }
 
 void AMainWindow::activateModuleDemand(QString moduleName) {
@@ -183,3 +154,50 @@ bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
 	}
 	return false;
 } 
+   
+void AMainWindow::init(const QString & skin_name)
+{
+   skinner = new ASkinner(this, skin_name);
+   
+   int headerSpace = skinner->skinValue("", "", "header_space").toInt();
+   int width = skinner->skinValue("", "", "width").toInt();
+   int height = skinner->skinValue("", "", "height").toInt();
+   setFixedSize(width, height);
+
+   // Create main widget background palette
+   QPalette pal = palette();
+   QPixmap bgImg(skinner->skinImage("", "", "background"));
+   QBrush brush = QBrush();
+   brush.setTexture(bgImg);
+   pal.setBrush(QPalette::Window, brush);
+
+   QWidget *mainWidget = new QWidget(this);
+   QVBoxLayout *layout = new QVBoxLayout(mainWidget);
+   layout->setSpacing(0);
+   layout->setMargin(0);
+   layout->setContentsMargins(0,0,0,0);
+   mainWidget->setLayout(layout);
+   mainWidget->setPalette(pal);
+   mainWidget->setAutoFillBackground(true);
+
+   setCentralWidget(mainWidget);
+
+   panel = new APanel(mainWidget, skinner);
+   mainArea = new QWidget();
+
+   qobject_cast<QBoxLayout *>(mainWidget->layout())->addSpacing(headerSpace); // Space for header
+   qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(1, mainArea, 1);
+   qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(2, panel);
+
+   // Load modules from configuration file
+   QSettings *modules_conf = new QSettings("conf/modules.conf", QSettings::IniFormat);
+   modulesList = modules_conf->childGroups();
+   // Then load all modules into QHash - create objects
+   foreach (QString mod, modulesList) 
+   {
+      loadModule(mod);
+   }
+
+   fillPanel();
+}
+

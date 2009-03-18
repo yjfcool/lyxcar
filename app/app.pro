@@ -1,7 +1,7 @@
-TEMPLATE			= app
+TEMPLATE			   = app
 HEADERS				= ../main.h ../mainwindow.h ../mainmenu.h ../panel.h
 SOURCES				= ../main.cpp ../mainwindow.cpp ../mainmenu.cpp ../panel.cpp
-CONFIG				+= release config qt
+CONFIG				+= config qt
 QT				+= network xml sql
 INCLUDEPATH			+= ./include ../lyxlib
 LIBS				+= -L../ -llyxlib

@@ -31,13 +31,18 @@ class AMainWindow : public QMainWindow {
 		Q_OBJECT
 	public:
 		//! Constructs main window
-		AMainWindow(QWidget *parent = 0);
+		explicit AMainWindow(QWidget * parent = 0);
+      AMainWindow(const QString & skinName, QWidget * parent = 0);
+      //! Destructor
 		~AMainWindow();
 		
 		//! \brief Returns current active module name.
 		QString activeModuleName() { return m_activeModuleName; }
 
 //		void	closeEvent(QCloseEvent *) {};
+
+   private:
+      void init(const QString & skin_name);
 
 	public slots:
 		//! \brief Activates a module named "moduleName". Activation means the module widget is inserted into main area and

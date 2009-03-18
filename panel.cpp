@@ -18,22 +18,20 @@ APanel::APanel(QWidget *parent, ASkinner *s) {
 	skinner = s;
 
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-	setFixedHeight(79);
+	setFixedHeight(skinner->skinValue("", "panel", "height").toInt());
 
 	QHBoxLayout *layout = new QHBoxLayout(this); setLayout(layout);
 	infoBar = new QWidget(this);
 
 	QPalette pal = palette();
 	QPixmap bgImg(skinner->skinImage("", "panel", "background"));
-	QBrush brush = QBrush();
-	brush.setTexture(bgImg);
-	pal.setBrush(QPalette::Window, brush);
+	pal.setBrush(QPalette::Window, QBrush(bgImg));
 	setPalette(pal);
 	setAutoFillBackground(true);
 
 	layout->setSpacing(0);
 	layout->setContentsMargins(skinner->skinValue("", "panel", "padding-left").toInt(), 0,
-				skinner->skinValue("", "panel", "padding-right").toInt(), 0);
+         skinner->skinValue("", "panel", "padding-right").toInt(), 0);
 //        layout->insertWidget(0, new QWidget(), 5);
         layout->insertStretch(0, 5);
 

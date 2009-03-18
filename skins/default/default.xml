@@ -1,4 +1,4 @@
-<skin resolution="800x600" background="background.png">
+<skin width="800" height="600" background="background.png" header_space="64">
 	<font family="Calibri" size="12"/>
 	<panel
 	height="79"

@@ -12,7 +12,8 @@
 
 #include "main.h"
 
-int main(int argc, char * argv[]) {
+int main(int argc, char * argv[])
+{
 	QApplication app(argc, argv);
 	
 //	QTranslator translator;
@@ -21,7 +22,18 @@ int main(int argc, char * argv[]) {
 	
 //	Q_INIT_RESOURCE(docstyle);
 
-	AMainWindow window(qobject_cast<QWidget *>(QApplication::desktop()));
+   // TODO: change to normal args parser
+   QString skin("default");
+   for (int i = 0; i < argc; ++i)
+   {
+      if ((QString(argv[i]) == "-skin") && (i + 1 < argc))
+      {
+         skin = QString(argv[i + 1]);
+         break;
+      }
+   }
+
+	AMainWindow window(skin, qobject_cast<QWidget *>(QApplication::desktop()));
 	window.show();
 
 	return app.exec();

@@ -71,6 +71,7 @@ ALyxListWidget::~ALyxListWidget() {}
 void ALyxListWidget::addItem(ALyxListWidgetItem *item) {
 	item->setHeight(m_defaultItemHeight);
 	l_items << item; 
+	m_scrollBar->setMaximumPosition(m_scrollBar->maximumPosition()+item->height());
 	repaint();
 }
 

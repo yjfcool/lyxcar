@@ -27,7 +27,13 @@ class ALyxScrollBar : public QWidget {
 
 		void setSingleStep(int step) { m_singleStep = step; }
 		int singleStep() { return m_singleStep; }
+
+		void setPosition(int position) { m_position = position; repaint(); }
 		int position() { return m_position; }
+
+		void setMaximumPosition(int position) { m_maximumPosition = position; repaint(); }
+		int maximumPosition() { return m_maximumPosition; }
+
 
 	private:
 		ASkinner *m_skinner;

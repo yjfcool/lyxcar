@@ -25,6 +25,10 @@ class ALyxScrollBar : public QWidget {
 		ALyxScrollBar(QWidget *parent = 0, ASkinner *s = 0);
 		~ALyxScrollBar();
 
+		void setSingleStep(int step) { m_singleStep = step; }
+		int singleStep() { return m_singleStep; }
+		int position() { return m_position; }
+
 	private:
 		ASkinner *m_skinner;
 		
@@ -44,7 +48,7 @@ class ALyxScrollBar : public QWidget {
 		int m_sliderOffset; // Current slider position in pixels
 		int m_sliderStep;	// Slider one step (when pressing forward or backward button) in items
 		int m_sliderPage; // Slider page step (when pressing on a slider bar above or below the slider) in items
-
+		int m_singleStep; // Button press causes scroll to <step> position steps
 
 		int tmp_sliderMin;
 		int tmp_sliderLength;
@@ -61,7 +65,8 @@ class ALyxScrollBar : public QWidget {
 		void scrollRepeat();
 		
 	signals:
-		void changed(int position);
+		// Position it was changed to and number of steps to reach this position.
+		void changed(int position, int steps);
 
 	protected:
 		void resizeEvent(QResizeEvent *e);

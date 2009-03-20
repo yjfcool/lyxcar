@@ -29,6 +29,7 @@ ALyxScrollBar::ALyxScrollBar(QWidget *parent, ASkinner *s) : QWidget(parent) {
 	
 	m_position = 0;
 	m_maximumPosition = 100;
+	m_singleStep = 1;
 
 	scrollRepeatTimer = new QTimer(this);
 	scrollRepeatTimer->setInterval(SLOW_INTERVAL);
@@ -63,8 +64,9 @@ void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 		// Pressed backward button
 		qDebug() << "Back button pressed!";
 		if(m_position > 0) {
-			m_position--;
-			emit changed(m_position);
+			m_position-=m_singleStep;
+			if(m_position < 0) { m_position = 0; }
+			emit changed(m_position, -1);
 			scrollRepeatDirection = -1;
 			scrollRepeatTimer->start();
 		}
@@ -73,8 +75,9 @@ void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 		// Pressed forward button
 		qDebug() << "Forward button pressed!";
 		if(m_position < m_maximumPosition) {
-			m_position++;
-			emit changed(m_position);
+			m_position+=m_singleStep;
+			if(m_position > m_maximumPosition) { m_position = m_maximumPosition; }
+			emit changed(m_position, 1);
 			scrollRepeatDirection = 1;
 			scrollRepeatTimer->start();
 		}
@@ -84,6 +87,7 @@ void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 		tmp_sliderPressed = true;
 		tmp_sliderPressPos = e->pos();
 		tmp_sliderInitialPos = m_position;
+		emit changed(m_position, 0);
 		qDebug() << "Slider button pressed!";
 	} else {
 		// Pressed slider bar
@@ -114,7 +118,9 @@ void ALyxScrollBar::scrollRepeat() {
 		if(scrollRepeatTimer->interval() == SLOW_INTERVAL) {
 			scrollRepeatTimer->setInterval(FAST_INTERVAL);
 		}
-		m_position+=scrollRepeatDirection;
-		emit changed(m_position);
+		m_position+=scrollRepeatDirection*m_singleStep;
+		if(m_position < 0) { m_position = 0; }
+		else if(m_position > m_maximumPosition) { m_position = m_maximumPosition; }
+		emit changed(m_position, scrollRepeatDirection);
 	}
 }

@@ -1,5 +1,5 @@
 TEMPLATE = lib
-CONFIG   += plugin
+CONFIG   += plugin release
 HEADERS  = clock.h
 SOURCES  = clock.cpp
 TARGET   = clock

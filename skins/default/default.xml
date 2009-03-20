@@ -86,6 +86,21 @@
 					<stop time="10" x="10" y="10" width="432" height="190" opacity="1" acceleration="1"/>
 				</animation>
 			</display>
+			<list name="playlist">
+				<rect x="" y="" width="" height=""/>
+				<!--border images for list  -->
+				<borders
+					upper-left="list_ul.png"
+					upper-right="list_ur.png"
+					top="list_u.png"
+					bottom-left="list_bl.png"
+					bottom-right="list_br.png"
+					bottom="list_b.png"
+					left="list_l.png"
+					right="list_r.png"
+				/>
+				<selector image="list_selector.png" fill="list_selector_fill.png"/>
+			</list>
 			<button name="first"
 				released="first_btn_up.png"
 				pressed="first_btn_up.png">

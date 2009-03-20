@@ -44,21 +44,22 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(paren
 	animationStep = 0;
 
 	m_scrollBar = new ALyxScrollBar(this, s);
+	m_scrollBar->setSingleStep(10);
 
-	connect(m_scrollBar, SIGNAL(changed(int)), this, SLOT(scroll(int)));
+	connect(m_scrollBar, SIGNAL(changed(int, int)), this, SLOT(scroll(int, int)));
 	
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
-	corner_ul = QPixmap("./skins/default/list_ul.png");
-	corner_bl = QPixmap("./skins/default/list_dl.png");
-	corner_br = QPixmap("./skins/default/list_br.png");
-	corner_ur = QPixmap("./skins/default/list_ur.png");
-	top = QPixmap("./skins/default/list_u.png");
-	bottom = QPixmap("./skins/default/list_b.png");
-	right = QPixmap("./skins/default/list_r.png");
-	left = QPixmap("./skins/default/list_l.png");
-	selector = QPixmap("./skins/default/list_selector.png");
-	selector_fill = QPixmap("./skins/default/list_selector_fill.png");
+	corner_ul = QPixmap("./skins/default/mp3player/list_ul.png");
+	corner_bl = QPixmap("./skins/default/mp3player/list_dl.png");
+	corner_br = QPixmap("./skins/default/mp3player/list_br.png");
+	corner_ur = QPixmap("./skins/default/mp3player/list_ur.png");
+	top = QPixmap("./skins/default/mp3player/list_u.png");
+	bottom = QPixmap("./skins/default/mp3player/list_b.png");
+	right = QPixmap("./skins/default/mp3player/list_r.png");
+	left = QPixmap("./skins/default/mp3player/list_l.png");
+	selector = QPixmap("./skins/default/mp3player/list_selector.png");
+	selector_fill = QPixmap("./skins/default/mp3player/list_selector_fill.png");
 
 	animationTimer = new QTimer(this);
 	animationTimer->setInterval(10);
@@ -80,8 +81,14 @@ void ALyxListWidget::setSelectedItem(ALyxListWidgetItem *item) {
 }
 
 void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
+	// ¬ычисл€ем куда двигать селектор и устанавливаем animationStep в -1 или 1.
+	// ”станавливаем m_selectedItem и запускаем анимацию селектора.
 	foreach (ALyxListWidgetItem *item, items()) {
-		if(item->rect().contains(e->pos())) {
+		// “рансформируем Y-координату в соответствии с позицией прокрутки, т.е. учитываем
+		// прокрутку при определении кликнутого пункта.
+		QPoint t_pos = e->pos();
+		t_pos.setY(t_pos.y()/*+m_scrollPosition*/);
+		if(item->rect().contains(t_pos)) {
 			int prev_selectedIndex = m_selectedIndex;
 			setSelectedItem(item);
 			emit selected(item);
@@ -96,6 +103,12 @@ void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
 }
 
 void ALyxListWidget::animateSelector() {
+	// ≈сли заведена анимашка, рисуем селектор в позиции m_selectorPosition
+	// при этом мен€ем ее в зависимости от animationStep.
+	// ѕри достижении селектором верхнего левого угла выбраного пункта списка m_selectedItem анимацию завершаем!
+	// ѕункт выбираетс€ сразу после нажати€ на него мышкой устанавлива€ m_selectedItem в указатель на нажатый объект!
+	
+	// —електор по любому рисуетс€ только в позиции того пункта который выбран. ј в ней уже заложен скрол!
 	if(animationStep != 0) {
 		m_selectorPosition.setY(m_selectorPosition.y()+(m_acceleration*animationStep));
 		m_acceleration++;
@@ -113,6 +126,7 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	QPainter p(this);
 
 	// Draw skinned frame of the listWidget
+	/*** “ут все завершено! ***/
 	p.drawPixmap(0, 0, corner_ul); // Upper left
 	p.drawPixmap(corner_ul.width(), 0, top.scaled(width() - corner_ul.width() - corner_ur.width() - l_paddingRight, corner_ul.height())); // Top
 	p.drawPixmap(0, height()-corner_bl.height(), corner_bl); // Bottom left
@@ -123,6 +137,7 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	p.drawPixmap(0, corner_ul.height(), left.scaled(corner_ur.width(), height() - corner_ur.height() - corner_br.height())); // Left
 
 	// Fill the center of a rect
+	/*** “ут все завершено! ***/
 	p.setBrush(QBrush(QColor("white")));
 	p.setPen(QColor("white"));
 	p.drawRect(corner_ul.width(),
@@ -134,6 +149,7 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	QPainter temporary(&temporaryImage);
 
 	// Clear transparency
+	/*** “ут все завершено! ***/
 	temporary.setBrush(QColor("white"));
 	temporary.setCompositionMode(QPainter::CompositionMode_Clear);
 	temporary.drawRect(0, 0, width(), height());
@@ -159,9 +175,9 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 	int cpos = l_paddingTop-m_scrollPosition;
 	foreach (ALyxListWidgetItem *item, items()) {
 
-//		qDebug() << "Painted item" << item->text() << "at" << l_paddingLeft << "x" << cpos << "width" << width() << "height" << item->height();
-
 		// Set item rect to real item position in list
+		// ƒвигаем пр€моугольники при отрисокве если надо, то есть запоминаем 
+		// все координаты пунктов при отрисовке с учетом скрола.
 		item->setRect(QRect(l_paddingLeft, cpos, width(), item->height()));
 		if(item->visible() && (item->rect().intersects(rect()))) {
 			//
@@ -185,13 +201,13 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 				   Qt::AlignVCenter,
 				   item->text()
 			);
-			cpos+=l_verticalSpacing+item->height();
 		}
+		cpos+=l_verticalSpacing+item->height();
 	}
 
 	//
 	// Start blending
-	//
+	//	
 	temporary.setCompositionMode(QPainter::CompositionMode_DestinationIn);
 	temporary.setPen(QColor(0, 255, 0, 255));
 	
@@ -231,5 +247,15 @@ void ALyxListWidget::selectItem(ALyxListWidgetItem *item) {
 void ALyxListWidget::clear() {
 	setSelectedItem(NULL);
 	l_items.clear();
+	repaint();
+}
+
+void ALyxListWidget::scroll(int position, int steps) {
+	if(m_scrollPosition > position) {
+		m_selectorPosition.setY(m_selectorPosition.y()+m_scrollBar->singleStep());
+	} else {
+		m_selectorPosition.setY(m_selectorPosition.y()-m_scrollBar->singleStep());
+	}
+	m_scrollPosition = position;
 	repaint();
 }

@@ -24,8 +24,20 @@ ALyxDisplay::ALyxDisplay(QWidget *parent) : ALyxControl(parent) {
 	lbl->setFixedWidth(250);
 	lbl->startScroll();
 
+	ALyxScrollLabel *timeLbl = new ALyxScrollLabel(this);
+	timeLbl->setSpeed(980);
+	timeLbl->setStep(1);
+	timeLbl->setDelay(1000);
+	timeLbl->setTextColor(QColor("black"));
+	timeLbl->setFont(QFont("Calibri", 37));
+	timeLbl->setText("32:21");
+	timeLbl->move(290, 0);
+	timeLbl->setFixedWidth(130);
+	timeLbl->startScroll();
+
 	ALyxDisplayLayout layout1;
 	layout1 << lbl;
+	layout1 << timeLbl;
 	m_layouts.insert("layout1", layout1);
 
 	activateLayout("layout1");

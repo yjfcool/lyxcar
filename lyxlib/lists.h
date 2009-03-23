@@ -21,6 +21,7 @@
 #include <QBoxLayout>
 #include <QTimer>
 
+#include "list_pix.h"
 #include "skinner.h"
 #include "scrollbar.h"
 #include "control.h"

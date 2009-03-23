@@ -22,6 +22,8 @@
 #include <QPushButton>
 
 ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
+	m_skinner = s;
+
 	l_font = QFont("Calibri", 12);
 	l_paddingTop = 15;
 	l_paddingLeft = 15;
@@ -45,21 +47,23 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(paren
 
 	m_scrollBar = new ALyxScrollBar(this, s);
 	m_scrollBar->setSingleStep(10);
+	m_scrollBar->setMinimumPosition(0);
+	m_scrollBar->setMaximumPosition(10);
 
 	connect(m_scrollBar, SIGNAL(changed(int, int)), this, SLOT(scroll(int, int)));
 	
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
-	corner_ul = QPixmap("./skins/default/mp3player/list_ul.png");
-	corner_bl = QPixmap("./skins/default/mp3player/list_dl.png");
-	corner_br = QPixmap("./skins/default/mp3player/list_br.png");
-	corner_ur = QPixmap("./skins/default/mp3player/list_ur.png");
-	top = QPixmap("./skins/default/mp3player/list_u.png");
-	bottom = QPixmap("./skins/default/mp3player/list_b.png");
-	right = QPixmap("./skins/default/mp3player/list_r.png");
-	left = QPixmap("./skins/default/mp3player/list_l.png");
-	selector = QPixmap("./skins/default/mp3player/list_selector.png");
-	selector_fill = QPixmap("./skins/default/mp3player/list_selector_fill.png");
+	corner_ul = QPixmap();
+	corner_bl = QPixmap();
+	corner_br = QPixmap();
+	corner_ur = QPixmap();
+	top = QPixmap();
+	bottom = QPixmap();
+	right = QPixmap();
+	left = QPixmap();
+	selector = QPixmap();
+	selector_fill = QPixmap();
 
 	animationTimer = new QTimer(this);
 	animationTimer->setInterval(10);
@@ -68,17 +72,82 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(paren
 
 ALyxListWidget::~ALyxListWidget() {}
 
+void ALyxListWidget::setSkin(ASkinner *skinner, QString moduleName, QString listName) {
+	ASkinner *t_skinner; // Temporary object
+	if(skinner != NULL) {
+		t_skinner = skinner;
+	} else {
+		t_skinner = m_skinner;
+	}
+
+	if(t_skinner == NULL) {
+		qDebug() << "Error: skinned object is undefined";
+		return;
+	}
+
+	QDomElement listElement = t_skinner->skinModuleElementByName(moduleName, "list", listName);
+
+	QDomElement rectElement = listElement.firstChildElement("rect");
+	if(!rectElement.isNull()) {
+		move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
+		setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
+	} else {
+	 	qDebug() << "Warning: no initial rectangle for" << objectName() << "defined";
+	}
+
+	QDomElement bordersElement = listElement.firstChildElement("borders");
+	if(!bordersElement.isNull()) {
+		corner_ul = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("upper-left"));
+		corner_bl = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom-left"));
+		corner_br = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom-right"));
+		corner_ur = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("upper-right"));
+		top = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("top"));
+		bottom = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom"));
+		right = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("right"));
+		left = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("left"));
+	} else {
+	 	qDebug() << "Warning: no borders defined for list" << objectName();
+	}
+
+	QDomElement selectorElement = listElement.firstChildElement("selector");
+	if(!selectorElement.isNull()) {
+		selector = QPixmap(t_skinner->skinModuleImagePath(moduleName)+selectorElement.attribute("image"));
+		selector_fill = QPixmap(t_skinner->skinModuleImagePath(moduleName)+selectorElement.attribute("fill"));
+	} else {
+	 	qDebug() << "Warning: no selector defined for list" << objectName();
+	}
+}
+
+// Adds new item to the list
 void ALyxListWidget::addItem(ALyxListWidgetItem *item) {
 	item->setHeight(m_defaultItemHeight);
-	l_items << item; 
-	m_scrollBar->setMaximumPosition(m_scrollBar->maximumPosition()+item->height());
+	l_items << item;
+
+	int t_totalHeight = 0;
+	foreach(ALyxListWidgetItem *item, l_items) {
+		t_totalHeight+= item->height();
+	}
+
+	if(t_totalHeight > height()) {
+		t_totalHeight-=height()-l_paddingTop;
+		m_scrollBar->setMaximumPosition(t_totalHeight);
+	} 
+
+
 	repaint();
 }
 
+// Sets currently selected item by item object
 void ALyxListWidget::setSelectedItem(ALyxListWidgetItem *item) {
 	m_selectedItem = item;
 	m_selectedIndex = l_items.indexOf(item);
 	repaint();
+}
+
+void ALyxListWidget::resizeEvent(QResizeEvent *e) {
+//	m_scrollBar->setMinimumPosition(height());
+	m_scrollBar->setFixedSize(60, height()-m_scrollBarPaddingTop-m_scrollBarPaddingBottom);
+	m_scrollBar->move(width()-m_scrollBar->width(), m_scrollBarPaddingTop);
 }
 
 void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
@@ -232,9 +301,6 @@ void ALyxListWidget::paintEvent(QPaintEvent *e) {
 
 	p.drawImage(0, 0, temporaryImage);
 	p.end();
-
-	m_scrollBar->setFixedSize(60, height()-m_scrollBarPaddingTop-m_scrollBarPaddingBottom);
-	m_scrollBar->move(width()-m_scrollBar->width(), m_scrollBarPaddingTop);
 }
 
 void ALyxListWidget::selectItem(int itemIndex) {
@@ -252,6 +318,9 @@ void ALyxListWidget::clear() {
 }
 
 void ALyxListWidget::scroll(int position, int steps) {
+
+	qDebug() << "min:" << m_scrollBar->minimumPosition() << "max:" << m_scrollBar->maximumPosition() << "cur:" << position;
+
 	if(m_scrollPosition > position) {
 		m_selectorPosition.setY(m_selectorPosition.y()+m_scrollBar->singleStep());
 	} else {

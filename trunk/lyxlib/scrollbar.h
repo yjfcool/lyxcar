@@ -25,15 +25,17 @@ class ALyxScrollBar : public QWidget {
 		ALyxScrollBar(QWidget *parent = 0, ASkinner *s = 0);
 		~ALyxScrollBar();
 
-		void setSingleStep(int step) { m_singleStep = step; }
+		void setSingleStep(int step) { m_singleStep = step;  calculateSliderButton(); repaint(); }
 		int singleStep() { return m_singleStep; }
 
 		void setPosition(int position) { m_position = position; repaint(); }
 		int position() { return m_position; }
 
-		void setMaximumPosition(int position) { m_maximumPosition = position; repaint(); }
+		void setMaximumPosition(int position) { m_maximumPosition = position; calculateSliderButton(); repaint(); }
 		int maximumPosition() { return m_maximumPosition; }
 
+		void setMinimumPosition(int position) { m_minimumPosition = position; if(m_position < m_minimumPosition) { m_position = m_minimumPosition; } calculateSliderButton(); repaint(); }
+		int minimumPosition() { return m_minimumPosition; }
 
 	private:
 		ASkinner *m_skinner;
@@ -50,6 +52,7 @@ class ALyxScrollBar : public QWidget {
 		
 		int m_position;
 		int m_maximumPosition;
+		int m_minimumPosition;
 		
 		int m_sliderOffset; // Current slider position in pixels
 		int m_sliderStep;	// Slider one step (when pressing forward or backward button) in items
@@ -66,6 +69,9 @@ class ALyxScrollBar : public QWidget {
 
 		QTimer *scrollRepeatTimer;
 		int scrollRepeatDirection;
+
+		// Calculate temporary values for slider button positioning.
+		void calculateSliderButton();
 
 	private slots:
 		void scrollRepeat();

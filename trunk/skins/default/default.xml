@@ -87,7 +87,7 @@
 				</animation>
 			</display>
 			<list name="playlist">
-				<rect x="" y="" width="" height=""/>
+				<rect x="450" y="10" width="330" height="390"/>
 				<!--border images for list  -->
 				<borders
 					upper-left="list_ul.png"

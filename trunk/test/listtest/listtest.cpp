@@ -23,6 +23,22 @@ Window::Window(QWidget *parent) {
 	item4->setText("Rammstein\nIch Will");
 	list->addItem(item4);
 
+	ALyxListWidgetItem *item5 = new ALyxListWidgetItem(list);
+	item5->setText("Hello1\nSecond string");
+	list->addItem(item5);
+
+	ALyxListWidgetItem *item6 = new ALyxListWidgetItem(list);
+	item6->setText("Hello2\nOK Song");
+	list->addItem(item6);
+
+	ALyxListWidgetItem *item7 = new ALyxListWidgetItem(list);
+	item7->setText("Hello3");
+	list->addItem(item7);
+
+	ALyxListWidgetItem *item8 = new ALyxListWidgetItem(list);
+	item8->setText("Rammstein\nIch Will");
+	list->addItem(item8);
+
 }
 
 Window::~Window() {

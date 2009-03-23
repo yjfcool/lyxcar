@@ -1,7 +1,7 @@
 #include <QtGui>
 #include <QMainWindow>
 
-#include "../../lyxlib/lists.h"
+#include "../../lyxlib/scrollbar.h"
 
 class Window : public QMainWindow {
 	Q_OBJECT

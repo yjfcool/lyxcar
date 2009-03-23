@@ -1,6 +1,6 @@
 TEMPLATE		= app
-HEADERS			= listtest.h
-SOURCES			= listtest.cpp
+HEADERS			= scrolltest.h
+SOURCES			= scrolltest.cpp
 CONFIG			+= release config qt
 QT			+= network xml sql
 INCLUDEPATH		+= ./include
@@ -8,7 +8,7 @@ LIBS					+= -L../../ -llyxlib
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs
 DESTDIR		= ../../
-TARGET		= listtest
+TARGET		= scrolltest
 
 
 win32:release {

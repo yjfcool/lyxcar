@@ -93,11 +93,18 @@ class ALyxListWidget : public ALyxControl {
 		void setSelectedItem(ALyxListWidgetItem *item);
 
 		//! \brief Clears the list widget
-		void clear();	
+		void clear();
+
+		//! \brief Sets list skinned parametres
+		void setSkin(ASkinner *s, QString moduleName, QString listName);
+
 	private:
 		QTimer	*animationTimer;
 
 		QFont l_font;
+
+		ASkinner *m_skinner;
+
 		int l_verticalSpacing;	// Item top and bottom spacing
 		int l_paddingLeft;
 		int l_paddingRight;
@@ -151,6 +158,7 @@ class ALyxListWidget : public ALyxControl {
 		
 	protected:
 		void paintEvent(QPaintEvent *e);
+		void resizeEvent(QResizeEvent *e);
 		void mousePressEvent(QMouseEvent *e);
 };
 

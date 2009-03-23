@@ -171,8 +171,7 @@ void mp3playerWindow::createWindow() {
 	displayModeBtn->move(604, 410);
 	
 	playList = new ALyxListWidget(this, m_skinner);
-	playList->move(450, 10);
-	playList->setFixedSize(330, 390);
+	playList->setSkin(NULL, "mp3player", "playlist");
 
 	QDomElement displayElement = m_skinner->skinModuleElement("mp3player", "display");
 	QString background = displayElement.attribute("background");

@@ -54,14 +54,14 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(paren
 	
 	setAttribute(Qt::WA_NoSystemBackground, true);
 
-	corner_ul = QPixmap();
-	corner_bl = QPixmap();
-	corner_br = QPixmap();
-	corner_ur = QPixmap();
-	top = QPixmap();
-	bottom = QPixmap();
-	right = QPixmap();
-	left = QPixmap();
+	corner_ul = QPixmap(list_ul_xpm);
+	corner_bl = QPixmap(list_bl_xpm);
+	corner_br = QPixmap(list_br_xpm);
+	corner_ur = QPixmap(list_ur_xpm);
+	top = QPixmap(list_u_xpm);
+	bottom = QPixmap(list_b_xpm);
+	right = QPixmap(list_r_xpm);
+	left = QPixmap(list_l_xpm);
 	selector = QPixmap();
 	selector_fill = QPixmap();
 

@@ -13,7 +13,7 @@
 #include "panel.h"
 #include "mainmenu.h"
 
-APanel::APanel(QWidget *parent, ASkinner *s) {
+APanel::APanel(QWidget *parent, ASkinner *s) : QWidget(parent) {
 
 	skinner = s;
 

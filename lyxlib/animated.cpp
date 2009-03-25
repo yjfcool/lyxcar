@@ -76,11 +76,11 @@ void ALyxAnimation::animateStep() {
 //	qDebug() << "time_diff is" << time_diff;
 
 	// Calculate movement in one tick
-	qreal x_diff = (n_stop.x() - c_stop.x()) / time_diff;
+	int x_diff = (n_stop.x() - c_stop.x()) / time_diff;
 //	qDebug() << "x_diff is" << x_diff;
-	qreal y_diff = (n_stop.y() - c_stop.y()) / time_diff;
-	qreal w_diff = (n_stop.width() - c_stop.width()) / time_diff;
-	qreal h_diff = (n_stop.height() - c_stop.height()) / time_diff;
+	int y_diff = (n_stop.y() - c_stop.y()) / time_diff;
+	int w_diff = (n_stop.width() - c_stop.width()) / time_diff;
+	int h_diff = (n_stop.height() - c_stop.height()) / time_diff;
 	qreal opa_diff = (n_stop.opacity() - c_stop.opacity()) / time_diff;
 	
 	// Transform control

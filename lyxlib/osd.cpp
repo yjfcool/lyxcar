@@ -12,6 +12,7 @@
 
 #include "osd.h"
 
-ALyxOSD::ALyxOSD(QWidget *parent) {}
+ALyxOSD::ALyxOSD(QWidget *parent) : QWidget(parent) {}
 
 ALyxOSD::~ALyxOSD() {}
+

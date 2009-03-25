@@ -145,12 +145,14 @@ void ALyxListWidget::setSelectedItem(ALyxListWidgetItem *item) {
 }
 
 void ALyxListWidget::resizeEvent(QResizeEvent *e) {
+   Q_UNUSED(e);
 //	m_scrollBar->setMinimumPosition(height());
 	m_scrollBar->setFixedSize(60, height()-m_scrollBarPaddingTop-m_scrollBarPaddingBottom);
 	m_scrollBar->move(width()-m_scrollBar->width(), m_scrollBarPaddingTop);
 }
 
 void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
+   Q_UNUSED(e);
 	// ¬ычисл€ем куда двигать селектор и устанавливаем animationStep в -1 или 1.
 	// ”станавливаем m_selectedItem и запускаем анимацию селектора.
 	foreach (ALyxListWidgetItem *item, items()) {
@@ -193,6 +195,7 @@ void ALyxListWidget::animateSelector() {
 }
 
 void ALyxListWidget::paintEvent(QPaintEvent *e) {
+   Q_UNUSED(e);
 	QPainter p(this);
 
 	// Draw skinned frame of the listWidget
@@ -318,7 +321,6 @@ void ALyxListWidget::clear() {
 }
 
 void ALyxListWidget::scroll(int position, int steps) {
-
 	qDebug() << "min:" << m_scrollBar->minimumPosition() << "max:" << m_scrollBar->maximumPosition() << "cur:" << position;
 
 	if(m_scrollPosition > position) {

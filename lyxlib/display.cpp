@@ -38,14 +38,17 @@ void ALyxDisplay::insertWidget(QString layoutName, QWidget *widget) {
 }
 
 QStringList ALyxDisplay::layouts() {
-
+   return QStringList();
 }
 
 void ALyxDisplay::activateLayout(QString layoutName) {
+   Q_UNUSED(layoutName)
 	
 }
 
 void ALyxDisplay::paintEvent(QPaintEvent *e) {
+   Q_UNUSED(e);
+
 	QPainter p(this);
 	if(!m_background.isNull()) {
 		p.drawPixmap(0, 0, m_background, 0, 0, width(), height());

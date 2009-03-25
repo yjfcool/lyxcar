@@ -42,6 +42,11 @@ class ALyxDisplay : public ALyxControl {
 		//! \brief Set display background pixmap
 		void setBackgroundPixmap(QPixmap pixmap) { m_background = pixmap; repaint(); }
 
+		void createLayout(QString layoutName);
+		QStringList layouts();
+
+		void insertWidget(QString layoutName, QWidget *widget);
+
 	private:
 		QMap<QString, ALyxDisplayLayout> m_layouts;
 

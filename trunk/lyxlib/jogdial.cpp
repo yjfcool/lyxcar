@@ -110,7 +110,11 @@ void ALyxJogdial::paintEvent(QPaintEvent *e) {
  	   	p.drawText(ax, ay-20, ai->width(), 20, Qt::AlignCenter, ai->text());
 		p.setFont(passiveFont);
 		if(!ai->pixmap().isNull()) {
-			p.drawPixmap(ax + (int)((ai->width() - aw) / 2), ay, ai->pixmap().scaled(QSize(aw, ah), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			if(animationTimer->isActive()) {
+				p.drawPixmap(ax + (int)((ai->width() - aw) / 2), ay, ai->pixmap().scaled(QSize(aw, ah), Qt::KeepAspectRatio));
+			} else {
+				p.drawPixmap(ax + (int)((ai->width() - aw) / 2), ay, ai->pixmap().scaled(QSize(aw, ah), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+			}
 		}
 		ai->setRect(QRect(ax, ay, ai->pixmap().width(), ai->pixmap().height()));
 
@@ -133,7 +137,11 @@ void ALyxJogdial::paintEvent(QPaintEvent *e) {
 			p.setPen(pi->textColor());
 			p.drawText(px, py-20, ai->width(), 20, Qt::AlignCenter, pi->text());
 			if(!pi->pixmap().isNull()) {
-				p.drawPixmap(px + (int)((pi->width() - pw) / 2), py, pi->pixmap().scaled(QSize(pw, ph), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+				if(animationTimer->isActive()) {
+					p.drawPixmap(px + (int)((pi->width() - pw) / 2), py, pi->pixmap().scaled(QSize(pw, ph), Qt::KeepAspectRatio));
+				} else {
+					p.drawPixmap(px + (int)((pi->width() - pw) / 2), py, pi->pixmap().scaled(QSize(pw, ph), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+				}
 			}
 			pi->setRect(QRect(px, py, pw, ph));
 		}
@@ -152,7 +160,11 @@ void ALyxJogdial::paintEvent(QPaintEvent *e) {
 			p.setPen(ni->textColor());
 			p.drawText(nx, ny-20, ai->width(), 20, Qt::AlignCenter, ni->text());
 			if(!ni->pixmap().isNull()) {
-				p.drawPixmap(nx + (int)((ni->width() - nw) / 2), ny, ni->pixmap().scaled(QSize(nw, nh), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+				if(animationTimer->isActive()) {
+					p.drawPixmap(nx + (int)((ni->width() - nw) / 2), ny, ni->pixmap().scaled(QSize(nw, nh), Qt::KeepAspectRatio));
+				} else {
+					p.drawPixmap(nx + (int)((ni->width() - nw) / 2), ny, ni->pixmap().scaled(QSize(nw, nh), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+				}
 			}
 			ni->setRect(QRect(nx, ny, nw, nh));
 		}

@@ -181,6 +181,32 @@ void mp3playerWindow::createWindow() {
 
 	display->setObjectName("display");
 	display->setBackgroundPixmap(QPixmap(m_skinner->skinModuleImagePath("mp3player")+background));
+	display->createLayout("mainLayout");
+
+	ALyxScrollLabel *lbl = new ALyxScrollLabel(display);
+	lbl->setSpeed(980);
+	lbl->setStep(1);
+	lbl->setDelay(1000);
+	lbl->setTextColor(QColor("black"));
+	lbl->setFont(QFont("Calibri", 20));
+	lbl->setText("My favorite song - Song number one *** ");
+	lbl->move(20, 10);
+	lbl->setFixedWidth(250);
+	lbl->startScroll();
+
+	ALyxScrollLabel *timeLbl = new ALyxScrollLabel(display);
+	timeLbl->setSpeed(980);
+	timeLbl->setStep(1);
+	timeLbl->setDelay(1000);
+	timeLbl->setTextColor(QColor("black"));
+	timeLbl->setFont(QFont("Calibri", 37));
+	timeLbl->setText("32:21");
+	timeLbl->move(290, 0);
+	timeLbl->setFixedWidth(130);
+	timeLbl->startScroll();
+
+	display->insertWidget("mainLayout", lbl);
+	display->insertWidget("mainLayout", timeLbl);
 
 	QDomElement rectElement = displayElement.firstChildElement("rect");
 	if(!rectElement.isNull()) {

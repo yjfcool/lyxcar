@@ -13,8 +13,6 @@
 #include "dialogs.h"
 
 ALyxDialog::ALyxDialog(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
-
-	setOpacity(0.9);
 	setModal(true);
 
 	raise();
@@ -23,7 +21,8 @@ ALyxDialog::ALyxDialog(QWidget *parent, ASkinner *s) : ALyxControl(parent) {
 
 ALyxDialog::~ALyxDialog() {
 	// Restore accessibility before deletion
-	//setModal(false);
+//	setModal(false);
+
 	qDebug() << "ALyxDialog desroyed";
 }
 
@@ -45,12 +44,11 @@ void ALyxDialog::paintEvent(QPaintEvent *e) {
 	p.setPen(QColor("white"));
 	p.setBrush(QColor("white"));
 
-	p.setOpacity(1);
+
 	p.setPen(QColor("white"));
 	p.drawText(10, 20, windowTitle());
 
 	// Draw frame
-	p.setOpacity(m_opacity);
 	QRect rectangle(1, 1, width()-2, height()-2);
 	QPen pen(QColor("black")); pen.setWidth(2);
 	p.setPen(pen);

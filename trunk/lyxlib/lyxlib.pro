@@ -5,7 +5,7 @@ HEADERS		= animated.h display.h osd.h lists.h \
 SOURCES		= animated.cpp display.cpp osd.cpp lists.cpp \
 		  buttons.cpp control.cpp skinner.cpp scrollbar.cpp \
 		  scrolllabel.cpp dialogs.cpp devicesdlg.cpp jogdial.cpp
-CONFIG		+= release
+CONFIG		+= qt release
 QT		+= xml sql
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs

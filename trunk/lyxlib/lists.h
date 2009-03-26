@@ -93,6 +93,11 @@ class ALyxListWidget : public ALyxControl {
 		//! \brief Sets item specified as a currently selected item
 		void setSelectedItem(ALyxListWidgetItem *item);
 
+		//! \brief Gets currently selected item index
+		int selectedIndex();
+		//! \brief Gets currently selected item
+		ALyxListWidgetItem *selectedItem();
+
 		//! \brief Clears the list widget
 		void clear();
 

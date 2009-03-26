@@ -1,12 +1,12 @@
 TEMPLATE = lib
-CONFIG += plugin \
+CONFIG += plugin qt \
     release
 HEADERS = mp3player.h \
     mplayerprocess.h \
     playerdisplay.h
 SOURCES = mp3player.cpp \
     mplayerprocess.cpp \
-    playerdisplay.cpp
+   playerdisplay.cpp
 TARGET = mp3player
 INCLUDEPATH += ../.. \
     ../ \

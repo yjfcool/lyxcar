@@ -28,7 +28,7 @@
 #include "scrolllabel.h"
 #include "display.h"
 #include "devicesdlg.h"
-//#include "playerdisplay.h"
+#include "playerdisplay.h"
 
 #include <taglib.h>
 #include <fileref.h>
@@ -75,6 +75,7 @@ class mp3playerWindow : public QWidget {
 
 		void	loadDeviceContents();
 		void	selectDevice();
+	signals:
 
 	private slots:
 		void	deviceSelection(QString operation);
@@ -86,7 +87,7 @@ class mp3playerWindow : public QWidget {
 		QHash<QString, QString> m_devices; // Devices list from conf file
 		QString	m_device; // Currently selected device
 
-		ALyxDisplay *display;
+		AMp3PlayerDisplay *display;
 		ALyxListWidget *playList;
 		ALyxButton *firstBtn;
 		ALyxButton *backBtn;

@@ -32,6 +32,7 @@ typedef QList<ALyxControl *> ALyxDisplayLayout;
 */
 class ALyxDisplay : public ALyxControl {
 	Q_OBJECT
+//	Q_DECLARE_PRIVATE(ALyxDisplay)
 	public:
 		//! \brief Constructs display layout object.
 		ALyxDisplay(QWidget *parent = 0, ASkinner *skinner = 0);
@@ -54,6 +55,9 @@ class ALyxDisplay : public ALyxControl {
 		QPixmap m_background;
 
 		void paintEvent(QPaintEvent *e);
+
+	protected:
+		ASkinner *m_skinner;
 
 	private slots:
 

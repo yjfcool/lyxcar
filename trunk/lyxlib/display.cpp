@@ -12,7 +12,8 @@
 
 #include "display.h"
 
-ALyxDisplay::ALyxDisplay(QWidget *parent, ASkinner *skinner) : ALyxControl(parent, skinner) {
+ALyxDisplay::ALyxDisplay(QWidget *parent, ASkinner *skinner) : ALyxControl(parent) {
+	m_skinner = skinner;
 }
 
 ALyxDisplay::~ALyxDisplay() {

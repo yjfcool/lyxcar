@@ -128,6 +128,9 @@ void mp3playerWindow::deviceSelection(QString operation) {
 
 void mp3playerWindow::createWindow() {
 	playBtn = new ALyxButton(this);
+
+	connect(playBtn, SIGNAL(clicked()), this, SLOT(playCurrent()));
+
 	firstBtn = new ALyxButton(this);
 	backBtn = new ALyxButton(this);
 	nextBtn = new ALyxButton(this);
@@ -179,7 +182,7 @@ void mp3playerWindow::createWindow() {
 	lastBtn->setSkin(m_skinner, "mp3player", "last");
 	nextBtn->setSkin(m_skinner, "mp3player", "next");
 
-//	display = new AMp3PlayerDisplay(this, m_skinner);
+	display = new AMp3PlayerDisplay(this, m_skinner);
 }
 
 void mp3playerWindow::playerRead() {
@@ -238,26 +241,29 @@ void mp3playerWindow::loadDeviceContents() {
 	}
 }
 
-void mp3playerWindow::readCurrentMedia() {
-	/*QDirModel *model = new QDirModel;
-	mediaTree->setModel(model);
-
-	mediaTree->setRootIndex(model->index(QDir("/").absolutePath())); 
-	((QHeaderView*)mediaTree->header())->hideSection(1);
-	((QHeaderView*)mediaTree->header())->hideSection(2);
-	((QHeaderView*)mediaTree->header())->hideSection(3);*/
-}
-
 void mp3playerWindow::playCurrent() {
-	player->play();
+	//player->play();
+	if(playList->selectedIndex() >= 0) {
+		ALyxListWidgetItem *item = playList->selectedItem();
+		qDebug() << "Mp3Player STARTS playing" << item->text();
+		display->setPlaying(true);
+		display->setSongTitle(item->text().replace("\n", " - ")+" *** ");
+	} else {
+		qDebug() << "Mp3Player has nothing to play, nothing is selected";
+	}
 }
 
 void mp3playerWindow::stopCurrent() {
+	qDebug() << "Mp3Player STOPS playing";
 	player->write(QByteArray("stop\n"));
+	display->setPlaying(false);
+	display->setPaused(false);
 }
 
 void mp3playerWindow::pauseCurrent() {
+	qDebug() << "Mp3Player PAUSES playing";
 	player->write(QByteArray("pause\n"));
+	display->setPaused(true);
 }
 
 /*

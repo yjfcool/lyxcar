@@ -16,23 +16,22 @@
 #include <QWidget>
 #include <QDebug>
 
-#include "skinner.h"
+class ALyxControlPrivate;
 
 class ALyxControl : public QWidget {
 	Q_OBJECT
+	Q_DECLARE_PRIVATE(ALyxControl)
 	public:
-		ALyxControl(QWidget *parent = 0, ASkinner *skinner = 0);
+		ALyxControl(QWidget *parent = 0);
 		~ALyxControl();
 
 		void setOpacity(qreal opacity) { m_opacity = opacity; repaint(); }
-		qreal opacity() { return m_opacity; }
+		qreal opacity() const;
 
 		void setFixedSize(int w, int h);
 		void setFixedSize(QSize s);
 
 	protected:
-		ASkinner *m_skinner;
-
 		qreal m_opacity;
 };
 

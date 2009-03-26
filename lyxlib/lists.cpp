@@ -314,6 +314,14 @@ void ALyxListWidget::selectItem(ALyxListWidgetItem *item) {
 	setSelectedItem(item);
 }
 
+ALyxListWidgetItem *ALyxListWidget::selectedItem() {
+	return m_selectedItem;
+}
+
+int ALyxListWidget::selectedIndex() {
+	return m_selectedIndex;
+}
+
 void ALyxListWidget::clear() {
 	setSelectedItem(NULL);
 	l_items.clear();

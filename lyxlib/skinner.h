@@ -31,7 +31,7 @@ class ASkinner : public QObject {
         \param parent specifies parent object
         \param skinName specifies skin directory name
         */
-      ASkinner(QObject *parent, QString skinName);
+      ASkinner(QObject *parent = 0, QString skinName = "");
       ~ASkinner() {}
 
       //! \brief Loads skin specified by the name
@@ -82,7 +82,7 @@ class ASkinner : public QObject {
 
    private:
       QString	skinsPath;
-      QString skinName;
+      QString	skinName;
 
       QDomDocument * skin;
 

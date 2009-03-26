@@ -28,6 +28,7 @@
 #include "scrolllabel.h"
 #include "display.h"
 #include "devicesdlg.h"
+//#include "playerdisplay.h"
 
 #include <taglib.h>
 #include <fileref.h>

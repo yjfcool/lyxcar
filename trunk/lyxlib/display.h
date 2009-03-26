@@ -16,6 +16,7 @@
 #include "control.h"
 #include "scrolllabel.h"
 #include "buttons.h"
+#include "skinner.h"
 
 //! \brief Provided for convinience.
 typedef QList<ALyxControl *> ALyxDisplayLayout;
@@ -33,7 +34,7 @@ class ALyxDisplay : public ALyxControl {
 	Q_OBJECT
 	public:
 		//! \brief Constructs display layout object.
-		ALyxDisplay(QWidget *parent = 0);
+		ALyxDisplay(QWidget *parent = 0, ASkinner *skinner = 0);
 		~ALyxDisplay();
 
 		//! \brief Get named display layout of type ALyxDisplayLayout

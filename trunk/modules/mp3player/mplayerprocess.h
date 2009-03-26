@@ -18,7 +18,7 @@
 
 class MPlayerProcess : public QProcess {
 	Q_OBJECT
-	public:
+
 		MPlayerProcess(QObject *parent = 0);
 
 	signals:

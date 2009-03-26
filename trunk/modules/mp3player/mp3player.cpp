@@ -127,7 +127,6 @@ void mp3playerWindow::deviceSelection(QString operation) {
 }
 
 void mp3playerWindow::createWindow() {
-	display = new ALyxDisplay(this);
 	playBtn = new ALyxButton(this);
 	firstBtn = new ALyxButton(this);
 	backBtn = new ALyxButton(this);
@@ -161,9 +160,10 @@ void mp3playerWindow::createWindow() {
 	repeatModeBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
 	repeatModeBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
 	repeatModeBtn->setText("Repeat all");
-	repeatModeBtn->setFont(QFont("Calibri", 12));
-	repeatModeBtn->move(488, 410);
-	ALyxPushButton *displayModeBtn = new ALyxPushButton(this);
+        repeatModeBtn->setFont(QFont("Calibri", 12));
+        repeatModeBtn->move(488, 410);
+
+        ALyxPushButton *displayModeBtn = new ALyxPushButton(this);
 	displayModeBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
 	displayModeBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
 	displayModeBtn->setText("Albums");
@@ -173,54 +173,13 @@ void mp3playerWindow::createWindow() {
 	playList = new ALyxListWidget(this, m_skinner);
 	playList->setSkin(NULL, "mp3player", "playlist");
 
-	QDomElement displayElement = m_skinner->skinModuleElement("mp3player", "display");
-	QString background = displayElement.attribute("background");
-	QString fontfamily = displayElement.attribute("font-family");
-	QString fontsize = displayElement.attribute("font-size");
-	qDebug() << "mp3player display background" << background << "font-family" << fontfamily << "font-size" << fontsize;
-
-	display->setObjectName("display");
-	display->setBackgroundPixmap(QPixmap(m_skinner->skinModuleImagePath("mp3player")+background));
-	display->createLayout("mainLayout");
-
-	ALyxScrollLabel *lbl = new ALyxScrollLabel(display);
-	lbl->setSpeed(980);
-	lbl->setStep(1);
-	lbl->setDelay(1000);
-	lbl->setTextColor(QColor("black"));
-	lbl->setFont(QFont("Calibri", 20));
-	lbl->setText("My favorite song - Song number one *** ");
-	lbl->move(20, 10);
-	lbl->setFixedWidth(250);
-	lbl->startScroll();
-
-	ALyxScrollLabel *timeLbl = new ALyxScrollLabel(display);
-	timeLbl->setSpeed(980);
-	timeLbl->setStep(1);
-	timeLbl->setDelay(1000);
-	timeLbl->setTextColor(QColor("black"));
-	timeLbl->setFont(QFont("Calibri", 37));
-	timeLbl->setText("32:21");
-	timeLbl->move(290, 0);
-	timeLbl->setFixedWidth(130);
-	timeLbl->startScroll();
-
-	display->insertWidget("mainLayout", lbl);
-	display->insertWidget("mainLayout", timeLbl);
-
-	QDomElement rectElement = displayElement.firstChildElement("rect");
-	if(!rectElement.isNull()) {
-		display->move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
-		display->setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
-	} else {
-	 	qDebug() << "Warning: no initial rectangle for" << display->objectName() << "defined";
-	}
-
 	playBtn->setSkin(m_skinner, "mp3player", "play");
 	firstBtn->setSkin(m_skinner, "mp3player", "first");
 	backBtn->setSkin(m_skinner, "mp3player", "back");
 	lastBtn->setSkin(m_skinner, "mp3player", "last");
 	nextBtn->setSkin(m_skinner, "mp3player", "next");
+
+//	display = new AMp3PlayerDisplay(this, m_skinner);
 }
 
 void mp3playerWindow::playerRead() {

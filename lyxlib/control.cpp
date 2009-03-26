@@ -12,8 +12,9 @@
 
 #include "control.h"
 
-ALyxControl::ALyxControl(QWidget * parent) :
+ALyxControl::ALyxControl(QWidget * parent, ASkinner *skinner) :
 	QWidget(parent) {
+	m_skinner = skinner;
 	m_opacity = 1.0;
 }
 

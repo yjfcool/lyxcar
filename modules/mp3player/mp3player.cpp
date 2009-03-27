@@ -175,6 +175,7 @@ void mp3playerWindow::createWindow() {
 	
 	playList = new ALyxListWidget(this, m_skinner);
 	playList->setSkin(NULL, "mp3player", "playlist");
+	connect(playList, SIGNAL(doubleClicked()), this, SLOT(playCurrent()));
 
 	playBtn->setSkin(m_skinner, "mp3player", "play");
 	firstBtn->setSkin(m_skinner, "mp3player", "first");
@@ -197,39 +198,52 @@ void mp3playerWindow::loadDeviceContents() {
 	QString device = m_device;
 	qDebug() << "Loading device contents from" << device;
 
-	QDirIterator it(device, QDirIterator::Subdirectories);
+	playList->clear();
+	albums.clear();
 
 //
 // For Russian windows users whose tags are in cp-1251
 //
 #ifdef Q_OS_WIN32
-	QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
+	tagCodec = QTextCodec::codecForName("Windows-1251");
 #endif
 
-	playList->clear();
-	albums.clear();
-	while (it.hasNext()) {
-		QString fullFilePath = it.next().toLocal8Bit();
-		if((it.fileInfo().suffix() == "mp3") ||
-		(it.fileInfo().suffix() == "ogg") ||
-		(it.fileInfo().suffix() == "flac")) {
-			TagLib::FileRef f(fullFilePath.toAscii().constData());
+	FolderContentsLoader *loader = new FolderContentsLoader();
+	loader->setFolder(device);
+
+	connect(loader, SIGNAL(finished()), this, SLOT(fillPlayList()));
+	connect(loader, SIGNAL(fileFound(QString)), this, SLOT(fileFound(QString)));
+
+	loader->start();
+}
+
+// Media loader thread calls this when media file is found
+void mp3playerWindow::fileFound(QString fileName) {
+			qDebug() << "Found file" << fileName;
+
+			TagLib::FileRef f(fileName.toAscii().constData());
 
 			QString artist = TStringToQString(f.tag()->artist());
 			QString album = TStringToQString(f.tag()->album());
-			QString title= TStringToQString(f.tag()->title());
+			QString title = TStringToQString(f.tag()->title());
 
 //
 // For Russian windows users whose tags are in cp-1251
 //
 #ifdef Q_OS_WIN32
-			artist = codec->toUnicode(artist.toAscii());
-			album = codec->toUnicode(album.toAscii());
-			title = codec->toUnicode(title.toAscii());
+			artist = tagCodec->toUnicode(artist.toAscii());
+			album = tagCodec->toUnicode(album.toAscii());
+			title = tagCodec->toUnicode(title.toAscii());
 #endif
-			albums[artist+"\n"+album].insert(title, fullFilePath);
-		}
-	} 
+			albums[artist+"\n"+album].insert(title, fileName);
+}
+
+// Media loader thread calls this when it is finished
+void mp3playerWindow::fillPlayList() {
+	qDebug() << "Media loader is filling the play list";
+
+	disconnect(sender(), SIGNAL(fileFound(QString)), this, SLOT(fileFound(QString)));
+	disconnect(sender(), SIGNAL(finished()), this, SLOT(fillPlayList()));
 
 	// Fill the playlist with album entries
 	foreach(QString albumName, albums.keys()) {
@@ -239,6 +253,8 @@ void mp3playerWindow::loadDeviceContents() {
 		item->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
 		playList->addItem(item);
 	}
+
+//	delete tagCodec;
 }
 
 void mp3playerWindow::playCurrent() {
@@ -246,6 +262,12 @@ void mp3playerWindow::playCurrent() {
 	if(playList->selectedIndex() >= 0) {
 		ALyxListWidgetItem *item = playList->selectedItem();
 		qDebug() << "Mp3Player STARTS playing" << item->text();
+		playBtn->setUpPixmap(QPixmap("./skins/default/mp3player/stop_btn_up.png"));
+		playBtn->setDownPixmap(QPixmap("./skins/default/mp3player/stop_btn_up.png"));
+
+		disconnect(playBtn, SIGNAL(clicked()), this, SLOT(playCurrent()));
+		connect(playBtn, SIGNAL(clicked()), this, SLOT(stopCurrent()));
+
 		display->setPlaying(true);
 		display->setSongTitle(item->text().replace("\n", " - ")+" *** ");
 	} else {
@@ -255,9 +277,14 @@ void mp3playerWindow::playCurrent() {
 
 void mp3playerWindow::stopCurrent() {
 	qDebug() << "Mp3Player STOPS playing";
-	player->write(QByteArray("stop\n"));
+	playBtn->setUpPixmap(QPixmap("./skins/default/mp3player/play_btn_up.png"));
+	playBtn->setDownPixmap(QPixmap("./skins/default/mp3player/play_btn_up.png"));
+	//player->write(QByteArray("stop\n"));
 	display->setPlaying(false);
 	display->setPaused(false);
+
+	connect(playBtn, SIGNAL(clicked()), this, SLOT(playCurrent()));
+	disconnect(playBtn, SIGNAL(clicked()), this, SLOT(stopCurrent()));
 }
 
 void mp3playerWindow::pauseCurrent() {

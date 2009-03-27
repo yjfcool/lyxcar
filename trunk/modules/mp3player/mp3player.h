@@ -29,6 +29,7 @@
 #include "display.h"
 #include "devicesdlg.h"
 #include "playerdisplay.h"
+#include "foldercontentsloader.h"
 
 #include <taglib.h>
 #include <fileref.h>
@@ -36,6 +37,8 @@
 #include <id3v1tag.h>
 #include <id3v2tag.h>
 #include <tstring.h>
+
+
 
 class mp3playerModule : public QObject, public M_Interface {
 	Q_OBJECT
@@ -75,14 +78,18 @@ class mp3playerWindow : public QWidget {
 
 		void	loadDeviceContents();
 		void	selectDevice();
+		void	fillPlayList();
+
 	signals:
 
 	private slots:
 		void	deviceSelection(QString operation);
+		void	fileFound(QString fileName);
 
 	private:
 		ASkinner *m_skinner;
 		M_Interface *m_Interface;
+		QTextCodec *tagCodec;
 
 		QHash<QString, QString> m_devices; // Devices list from conf file
 		QString	m_device; // Currently selected device

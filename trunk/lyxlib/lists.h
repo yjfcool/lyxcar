@@ -153,6 +153,8 @@ class ALyxListWidget : public ALyxControl {
 
 	signals:
 		void selected(ALyxListWidgetItem *item);
+		void clicked();
+		void doubleClicked();
 
 	public slots:
 		void selectItem(int itemIndex);
@@ -166,6 +168,7 @@ class ALyxListWidget : public ALyxControl {
 		void paintEvent(QPaintEvent *e);
 		void resizeEvent(QResizeEvent *e);
 		void mousePressEvent(QMouseEvent *e);
+		void mouseDoubleClickEvent(QMouseEvent *e);
 };
 
 #endif

@@ -125,6 +125,8 @@ void ALyxScrollLabel::scrollStep() {
 }
 
 void ALyxScrollLabel::startScroll() {
+	m_scrollPosition = 0;
+
 	delayTimer->start();
 }
 

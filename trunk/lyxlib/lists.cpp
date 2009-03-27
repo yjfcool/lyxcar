@@ -145,25 +145,25 @@ void ALyxListWidget::setSelectedItem(ALyxListWidgetItem *item) {
 }
 
 void ALyxListWidget::resizeEvent(QResizeEvent *e) {
-   Q_UNUSED(e);
-//	m_scrollBar->setMinimumPosition(height());
+	Q_UNUSED(e);
 	m_scrollBar->setFixedSize(60, height()-m_scrollBarPaddingTop-m_scrollBarPaddingBottom);
 	m_scrollBar->move(width()-m_scrollBar->width(), m_scrollBarPaddingTop);
 }
 
 void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
-   Q_UNUSED(e);
+	Q_UNUSED(e);
 	// Вычисляем куда двигать селектор и устанавливаем animationStep в -1 или 1.
 	// Устанавливаем m_selectedItem и запускаем анимацию селектора.
 	foreach (ALyxListWidgetItem *item, items()) {
 		// Трансформируем Y-координату в соответствии с позицией прокрутки, т.е. учитываем
 		// прокрутку при определении кликнутого пункта.
 		QPoint t_pos = e->pos();
-		t_pos.setY(t_pos.y()/*+m_scrollPosition*/);
+		t_pos.setY(t_pos.y());
 		if(item->rect().contains(t_pos)) {
 			int prev_selectedIndex = m_selectedIndex;
 			setSelectedItem(item);
 			emit selected(item);
+			emit clicked();
 			if(prev_selectedIndex < m_selectedIndex) {
 				animationStep = 1;
 			} else if(prev_selectedIndex > m_selectedIndex) {
@@ -172,6 +172,11 @@ void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
 			animationTimer->start();
 		}
 	}	
+}
+
+void ALyxListWidget::mouseDoubleClickEvent(QMouseEvent *e) {
+	Q_UNUSED(e);
+	emit doubleClicked();
 }
 
 void ALyxListWidget::animateSelector() {

@@ -126,6 +126,32 @@
 				pressed="last_btn_up.png">
 				<rect x="353" y="260" width="81" height="91"/>
 			</button>
+			<button name="device"
+				released="buttonbar_left_up.png"
+				pressed="buttonbar_left_up.png">
+				<rect x="60" y="410" width="116" height="36"/>
+			</button>
+			<button name="settings"
+				released="buttonbar_mid_up.png"
+				pressed="buttonbar_mid_up.png">
+				<rect x="176" y="410" width="116" height="36"/>
+			</button>
+			<button name="test"
+				released="buttonbar_right_up.png"
+				pressed="buttonbar_right_up.png">
+				<rect x="292" y="410" width="116" height="36"/>
+			</button>
+
+			<button name="repeat"
+				released="buttonbar_left_up.png"
+				pressed="buttonbar_left_up.png">
+				<rect x="488" y="410" width="116" height="36"/>
+			</button>
+			<button name="display"
+				released="buttonbar_right_up.png"
+				pressed="buttonbar_right_up.png">
+				<rect x="604" y="410" width="116" height="36"/>
+			</button>
 		</mp3player>
 	</modules>
 	<home module="default_home">

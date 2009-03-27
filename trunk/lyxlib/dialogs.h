@@ -45,6 +45,9 @@ class ALyxDialog : public ALyxControl {
 		//! Sets dialog modality
 		void setModal(bool modality);
 
+		//! Positions a dialog in center of the parent window.
+		void center();
+
 	private:
 		QString m_title;
 		QList<ALyxButton *> m_buttons;

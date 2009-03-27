@@ -137,41 +137,31 @@ void mp3playerWindow::createWindow() {
 	lastBtn = new ALyxButton(this);
 
 	ALyxPushButton *selectDeviceBtn = new ALyxPushButton(this);
-	selectDeviceBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
-	selectDeviceBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
+	selectDeviceBtn->setSkin(m_skinner, "mp3player", "device");
 	selectDeviceBtn->setText("Device");
 	selectDeviceBtn->setFont(QFont("Calibri", 12));
-	selectDeviceBtn->move(60, 410);
 
 	connect(selectDeviceBtn, SIGNAL(clicked()), this, SLOT(selectDevice()));
 
 	ALyxPushButton *settingsBtn = new ALyxPushButton(this);
-	settingsBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_mid_up.png"));
-	settingsBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_mid_up.png"));
+	settingsBtn->setSkin(m_skinner, "mp3player", "settings");
 	settingsBtn->setText("Settings");
 	settingsBtn->setFont(QFont("Calibri", 12));
-	settingsBtn->move(176, 410);
 
 	ALyxPushButton *testBtn = new ALyxPushButton(this);
-	testBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
-	testBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
+	testBtn->setSkin(m_skinner, "mp3player", "test");
 	testBtn->setText("Test");
 	testBtn->setFont(QFont("Calibri", 12));
-	testBtn->move(292, 410);
 
 	ALyxPushButton *repeatModeBtn = new ALyxPushButton(this);
-	repeatModeBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
-	repeatModeBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_left_up.png"));
+	repeatModeBtn->setSkin(m_skinner, "mp3player", "repeat");
 	repeatModeBtn->setText("Repeat all");
         repeatModeBtn->setFont(QFont("Calibri", 12));
-        repeatModeBtn->move(488, 410);
 
         ALyxPushButton *displayModeBtn = new ALyxPushButton(this);
-	displayModeBtn->setUpPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
-	displayModeBtn->setDownPixmap(QPixmap("./skins/default/mp3player/buttonbar_right_up.png"));
+	displayModeBtn->setSkin(m_skinner, "mp3player", "display");
 	displayModeBtn->setText("Albums");
 	displayModeBtn->setFont(QFont("Calibri", 12));
-	displayModeBtn->move(604, 410);
 	
 	playList = new ALyxListWidget(this, m_skinner);
 	playList->setSkin(NULL, "mp3player", "playlist");
@@ -200,6 +190,13 @@ void mp3playerWindow::loadDeviceContents() {
 
 	playList->clear();
 	albums.clear();
+
+	progressDlg = new ALyxProgressDialog(this);
+	progressDlg->setWindowTitle(tr("Progress"));
+	progressDlg->setProgress(50);
+	progressDlg->center();
+
+	progressDlg->show();
 
 //
 // For Russian windows users whose tags are in cp-1251
@@ -254,7 +251,10 @@ void mp3playerWindow::fillPlayList() {
 		playList->addItem(item);
 	}
 
-//	delete tagCodec;
+	progressDlg->setModal(false);
+	progressDlg->hide();
+
+	delete progressDlg;
 }
 
 void mp3playerWindow::playCurrent() {

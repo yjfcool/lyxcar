@@ -30,6 +30,7 @@
 #include "devicesdlg.h"
 #include "playerdisplay.h"
 #include "foldercontentsloader.h"
+#include "progressdlg.h"
 
 #include <taglib.h>
 #include <fileref.h>
@@ -104,6 +105,8 @@ class mp3playerWindow : public QWidget {
 
 		// Album name - tracks
 		QHash<QString, mp3playerAlbumContents> albums;
+
+		ALyxProgressDialog *progressDlg;
 
 		void	readCurrentMedia();
 };

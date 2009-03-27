@@ -26,6 +26,13 @@ ALyxDialog::~ALyxDialog() {
 	qDebug() << "ALyxDialog desroyed";
 }
 
+void ALyxDialog::center() {
+	int x = (qobject_cast<QWidget*>(parent())->width() - width()) / 2;
+	int y = (qobject_cast<QWidget*>(parent())->height() - height()) / 2;
+
+	move(x, y);
+}
+
 void ALyxDialog::setModal(bool modality) {
 	QObjectList ch = parent()->children();
 	for(int i = 0; i < ch.count(); i++) {
@@ -55,7 +62,8 @@ void ALyxDialog::paintEvent(QPaintEvent *e) {
 	p.setBrush(QColor(0, 0, 0, 128));
 	p.drawLine(5, 28, width()-5, 28);
 
-#ifdef Q_OS_UNIX	p.drawRoundedRect(rectangle, 10, 10);
+#ifdef Q_OS_UNIX
+	p.drawRoundedRect(rectangle, 10, 10);
 #endif
 
 #ifdef Q_OS_WIN32

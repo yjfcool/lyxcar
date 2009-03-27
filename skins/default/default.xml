@@ -116,6 +116,13 @@
 				pressed="play_btn_up.png">
 				<rect x="153" y="227" width="139" height="160"/>
 			</button>
+
+			<button name="stop"
+				released="stop_btn_up.png"
+				pressed="stop_btn_up.png">
+				<rect x="153" y="227" width="139" height="160"/>
+			</button>
+
 			<button name="next"
 				released="next_btn_up.png"
 				pressed="next_btn_up.png">

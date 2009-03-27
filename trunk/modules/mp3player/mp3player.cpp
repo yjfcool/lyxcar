@@ -262,8 +262,7 @@ void mp3playerWindow::playCurrent() {
 	if(playList->selectedIndex() >= 0) {
 		ALyxListWidgetItem *item = playList->selectedItem();
 		qDebug() << "Mp3Player STARTS playing" << item->text();
-		playBtn->setUpPixmap(QPixmap("./skins/default/mp3player/stop_btn_up.png"));
-		playBtn->setDownPixmap(QPixmap("./skins/default/mp3player/stop_btn_up.png"));
+		playBtn->setSkin(m_skinner, "mp3player", "stop");
 
 		disconnect(playBtn, SIGNAL(clicked()), this, SLOT(playCurrent()));
 		connect(playBtn, SIGNAL(clicked()), this, SLOT(stopCurrent()));
@@ -277,8 +276,7 @@ void mp3playerWindow::playCurrent() {
 
 void mp3playerWindow::stopCurrent() {
 	qDebug() << "Mp3Player STOPS playing";
-	playBtn->setUpPixmap(QPixmap("./skins/default/mp3player/play_btn_up.png"));
-	playBtn->setDownPixmap(QPixmap("./skins/default/mp3player/play_btn_up.png"));
+	playBtn->setSkin(m_skinner, "mp3player", "play");
 	//player->write(QByteArray("stop\n"));
 	display->setPlaying(false);
 	display->setPaused(false);

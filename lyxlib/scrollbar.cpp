@@ -61,7 +61,7 @@ void ALyxScrollBar::paintEvent(QPaintEvent *e) {
 	p.drawPixmap(0, height()-forwardbtn_up.height(), forwardbtn_up);
 	p.drawPixmap(0, tmp_sliderMin+(int)(tmp_sliderStep*(m_position-m_minimumPosition)), slider_up);
 
-	qDebug() << "Drawing slider at" << (m_position-m_minimumPosition);
+//	qDebug() << "Drawing slider at" << (m_position-m_minimumPosition);
 	
 	p.end();
 }
@@ -69,7 +69,7 @@ void ALyxScrollBar::paintEvent(QPaintEvent *e) {
 void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 	if(QRect(0, 0, backbtn_up.width(), backbtn_up.height()).contains(e->pos())) {
 		// Pressed backward button
-		qDebug() << "Back button pressed!";
+//		qDebug() << "Back button pressed!";
 		if(m_position > m_minimumPosition) {
 			m_position-=m_singleStep;
 			if(m_position < m_minimumPosition) { m_position = m_minimumPosition; }
@@ -82,7 +82,7 @@ void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 		repaint();
 	} else if(QRect(0, height()-forwardbtn_up.height(), forwardbtn_up.width(), forwardbtn_up.height()).contains(e->pos())) {
 		// Pressed forward button
-		qDebug() << "Forward button pressed!";
+//		qDebug() << "Forward button pressed!";
 		if(m_position < m_maximumPosition) {
 			m_position+=m_singleStep;
 			if(m_position > m_maximumPosition) { m_position = m_maximumPosition; }
@@ -99,7 +99,7 @@ void ALyxScrollBar::mousePressEvent(QMouseEvent *e) {
 		tmp_sliderPressPos = e->pos();
 		tmp_sliderInitialPos = m_position;
 		emit changed(m_position, 0);
-		qDebug() << "Slider button pressed!";
+//		qDebug() << "Slider button pressed!";
 	} else {
 		// Pressed slider bar
 	}

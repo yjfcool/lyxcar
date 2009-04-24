@@ -3,19 +3,18 @@ CONFIG += plugin \
     qt \
     release
 HEADERS = mp3player.h \
-    mplayerprocess.h \
     playerdisplay.h \
     foldercontentsloader.h
 SOURCES = mp3player.cpp \
-    mplayerprocess.cpp \
     playerdisplay.cpp \
     foldercontentsloader.cpp
 TARGET = mp3player
 INCLUDEPATH += ../.. \
     ../ \
-    ../../lyxlib
+    ../../lyxlib \
+    ../../3rdparty
 LIBS += -L../.. \
-    -llyxlib
+    -llyxlib -lphonon
 QT += xml
 OBJECTS_DIR = ./libs
 MOC_DIR = ./libs

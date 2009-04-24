@@ -19,8 +19,6 @@
 #include <QSettings>
 #include <QTextCodec>
 
-#include "mplayerprocess.h"
-
 #include "m_interface.h"
 #include "buttons.h"
 #include "skinner.h"
@@ -31,6 +29,17 @@
 #include "playerdisplay.h"
 #include "foldercontentsloader.h"
 #include "progressdlg.h"
+
+/*#include <phonon/phononnamespace.h>
+#include <phonon/audiooutput.h>
+#include <phonon/videowidget.h>
+#include <phonon/seekslider.h>
+#include <phonon/backendcapabilities.h>
+#include <phonon/effect.h>
+#include <phonon/effectparameter.h>*/
+
+#include <phonon/mediasource.h>
+#include <phonon/mediaobject.h>
 
 #include <taglib.h>
 #include <fileref.h>
@@ -61,14 +70,14 @@ typedef QHash<QString,QString> mp3playerAlbumContents;
 class mp3playerWindow : public QWidget {
 	Q_OBJECT
 	public:
-		mp3playerWindow(QWidget *parent = 0, ASkinner *s = 0);
+		mp3playerWindow(QWidget *parent = 0, ASkinner *s = 0, Phonon::AudioOutput *output = 0);
 		~mp3playerWindow() { qDebug() << "mp3player window destroyed"; }
 
-		MPlayerProcess *player;
 		QSettings *settings;
 		
 		void createWindow();
 		void setSkinner(ASkinner *s) { m_skinner = s; }
+		void setAudioOutput(Phonon::AudioOutput *output) { m_audioOutput = output; }
 
 	public slots:
 		void	playCurrent();
@@ -107,6 +116,9 @@ class mp3playerWindow : public QWidget {
 		QHash<QString, mp3playerAlbumContents> albums;
 
 		ALyxProgressDialog *progressDlg;
+
+		Phonon::MediaObject *m_mediaObject;
+		Phonon::AudioOutput *m_audioOutput;
 
 		void	readCurrentMedia();
 };

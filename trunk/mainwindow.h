@@ -73,6 +73,11 @@ class AMainWindow : public QMainWindow {
 		
 		bool fillPanel();
 
+		//
+		// Main audio output for the program used by every module!
+		//
+		Phonon::AudioOutput *m_audioOutput;
+
 	private slots:
 		void replyActivation(QString mname);
 };

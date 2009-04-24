@@ -19,6 +19,9 @@
 #include "panel.h"
 #include "skinner.h"
 
+#include <phonon/audiooutput.h>
+#include <phonon/mediaobject.h>
+
 //! \brief This is a basic interface for implementing modules for LyxCar.
 
 class M_Interface {
@@ -66,10 +69,15 @@ class M_Interface {
 		
 		//! \brief Set module name
 		void setModuleName(QString name) { m_moduleName = name; }
+		
+		//! \brief Set Phonon audio output interface for the module to make it possible to use it.
+		//! The program has only one audio interface and every module use it for it's purposes.
+		void setAudioOutput(Phonon::AudioOutput *output) { m_audioOutput = output; }
 
 	protected:
 		ASkinner *m_skinner;
 		QString m_moduleName;
+		Phonon::AudioOutput *m_audioOutput;
 };
 
 Q_DECLARE_INTERFACE(M_Interface, "com.trolltech.Lyxcar.M_Interface/1.0"); 

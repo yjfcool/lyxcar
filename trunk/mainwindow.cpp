@@ -145,6 +145,7 @@ bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
 		qDebug() << "MainWidget says Discovered plugin" << fileName;
 		modules[moduleName] = plugin;
 		qobject_cast<M_Interface *>(plugin)->setModuleName(moduleName);
+		qobject_cast<M_Interface *>(plugin)->setAudioOutput(m_audioOutput);
 
 		// Connect module's activation demand signal
 		// to main window reply slot.
@@ -189,15 +190,18 @@ void AMainWindow::init(const QString & skin_name)
    qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(1, mainArea, 1);
    qobject_cast<QBoxLayout *>(mainWidget->layout())->insertWidget(2, panel);
 
-   // Load modules from configuration file
-   QSettings *modules_conf = new QSettings("conf/modules.conf", QSettings::IniFormat);
-   modulesList = modules_conf->childGroups();
-   // Then load all modules into QHash - create objects
-   foreach (QString mod, modulesList) 
-   {
-      loadModule(mod);
-   }
+    // Load modules from configuration file
+    QSettings *modules_conf = new QSettings("conf/modules.conf", QSettings::IniFormat);
+    modulesList = modules_conf->childGroups();
 
-   fillPanel();
+    // Create main audio output for main program
+    m_audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+
+    // Then load all modules into QHash - create objects
+    foreach (QString mod, modulesList) 
+    {
+	loadModule(mod);
+    }
+
+    fillPanel();
 }
-

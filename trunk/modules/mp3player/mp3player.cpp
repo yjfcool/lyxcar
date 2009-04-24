@@ -16,9 +16,15 @@
 
 #include "mp3player.h"
 
-mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
+mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s, Phonon::AudioOutput *output) {
 	m_skinner = s;
 	m_device = QString();
+
+	setAudioOutput(output);
+
+	m_mediaObject = new Phonon::MediaObject(this);
+	m_mediaObject->setCurrentSource(Phonon::MediaSource("test.mp3"));
+	Phonon::Path path = Phonon::createPath(m_mediaObject, m_audioOutput);
 
 	setContentsMargins(0, 0, 0, 0);
 
@@ -50,14 +56,6 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s) {
 		selectDevice();
 	}
 
-//	player = new MPlayerProcess(this);
-//	connect(player, SIGNAL(readyReadStandardOutput()), this, SLOT(playerRead()));
-//	connect(playBtn, SIGNAL(clicked()), this, SLOT(pauseCurrent()));
-
-//	readCurrentMedia();
-//	loadPlayList();
-
-//	playCurrent();
 }
 
 // SLOT
@@ -232,6 +230,8 @@ void mp3playerWindow::fileFound(QString fileName) {
 			album = tagCodec->toUnicode(album.toAscii());
 			title = tagCodec->toUnicode(title.toAscii());
 #endif
+			// Insert into albums database structure containing
+			// song title as a key and it's file name as a value (QHash)
 			albums[artist+"\n"+album].insert(title, fileName);
 }
 
@@ -269,6 +269,14 @@ void mp3playerWindow::playCurrent() {
 
 		display->setPlaying(true);
 		display->setSongTitle(item->text().replace("\n", " - ")+" *** ");
+
+		//
+		// Just play for testing purposes
+		//
+		qDebug() << albums[item->text()].keys().value(0);
+		m_mediaObject->stop();
+		m_mediaObject->setCurrentSource(Phonon::MediaSource(albums[item->text()].values().value(0)));
+		m_mediaObject->play();
 	} else {
 		qDebug() << "Mp3Player has nothing to play, nothing is selected";
 	}
@@ -287,7 +295,6 @@ void mp3playerWindow::stopCurrent() {
 
 void mp3playerWindow::pauseCurrent() {
 	qDebug() << "Mp3Player PAUSES playing";
-	player->write(QByteArray("pause\n"));
 	display->setPaused(true);
 }
 
@@ -295,7 +302,7 @@ void mp3playerWindow::pauseCurrent() {
  * Module activation procedure
  */
 QWidget * mp3playerModule::activate(QWidget *parent) {
-	moduleWindow = new mp3playerWindow(parent, m_skinner);
+	moduleWindow = new mp3playerWindow(parent, m_skinner, m_audioOutput);
 
 	return moduleWindow;
 }

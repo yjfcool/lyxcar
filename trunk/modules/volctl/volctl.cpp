@@ -14,7 +14,7 @@
 
 volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) : QWidget(parent) {
 	setFixedWidth(220);
-
+ 
 	QBoxLayout *layout = new QHBoxLayout(this);
 	setLayout(layout);
 
@@ -40,8 +40,8 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) : QWidget(p
 	vol_down_button->setDownPixmap(QPixmap(m_skinner->skinModuleImage("volctl", "volume_down_button", "pressed")));
 	vol_mute_button->setDownPixmap(QPixmap(m_skinner->skinModuleImage("volctl", "volume_mute_button", "pressed")));
 
-	connect(vol_up_button, SIGNAL(clicked()), this, SLOT(volume_up()));
-	connect(vol_down_button, SIGNAL(clicked()), this, SLOT(volume_down()));
+	connect(vol_up_button, SIGNAL(pressed()), this, SLOT(volume_up()));
+	connect(vol_down_button, SIGNAL(pressed()), this, SLOT(volume_down()));
 	connect(vol_mute_button, SIGNAL(clicked()), this, SLOT(volume_mute()));
 
 	layout->setSpacing(0);
@@ -51,22 +51,45 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) : QWidget(p
 	layout->addWidget(vol_up_button);
 	layout->addWidget(vol_mute_button);
 	layout->addStretch(1);
+	
+	volumeChangeTimer = new QTimer(this);
+	volumeChangeTimer->setInterval(50);
+	volumeChange = 0;
+
+	connect(volumeChangeTimer, SIGNAL(timeout()), this, SLOT(volume_change()));
+	connect(vol_up_button, SIGNAL(released()), volumeChangeTimer, SLOT(stop()));
+	connect(vol_down_button, SIGNAL(released()), volumeChangeTimer, SLOT(stop()));
 }
 
 volCtlModuleApplet::~volCtlModuleApplet() {
 
 }
 
-void volCtlModuleApplet::volume_up() {
-	qDebug() << "Volume UP button pressed";
+void volCtlModuleApplet::volume_change() {
+	qreal vol = m_audioOutput->volume()+(0.01*volumeChange);
+	m_audioOutput->setVolume(vol);
+	qDebug() << "Current volume is" << vol;
 }
 
-void volCtlModuleApplet::volume_mute() {
-	qDebug() << "Volume MUTE button pressed";
+void volCtlModuleApplet::volume_up() {
+	qDebug() << "Volume UP button pressed";
+	volumeChange = 1;
+	volumeChangeTimer->start();
 }
 
 void volCtlModuleApplet::volume_down() {
 	qDebug() << "Volume DOWN button pressed";
+	volumeChange = -1;
+	volumeChangeTimer->start();
+}
+
+void volCtlModuleApplet::volume_mute() {
+	qDebug() << "Volume MUTE button pressed" << m_audioOutput->isMuted();
+	if(m_audioOutput->isMuted()) {
+	    m_audioOutput->setMuted(false);
+	} else {
+	    m_audioOutput->setMuted(true);
+	}
 }
 
 QWidget * volCtlModule::activate(QWidget *parent) {
@@ -79,6 +102,7 @@ QWidget * volCtlModule::activateApplet(QWidget *parent) {
 	// Create applet widget
 	appletWidget = new volCtlModuleApplet(NULL, m_skinner);	
 	appletWidget->setSkinner(m_skinner);
+	appletWidget->setAudioOutput(m_audioOutput);
 
 	return appletWidget;
 }

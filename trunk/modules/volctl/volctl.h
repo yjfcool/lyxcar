@@ -21,6 +21,8 @@
 #include "skinner.h"
 #include "m_interface.h"
 
+#include <phonon/audiooutput.h>
+
 class volCtlModuleApplet : public QWidget {
 	Q_OBJECT
 	public:
@@ -29,6 +31,7 @@ class volCtlModuleApplet : public QWidget {
 		~volCtlModuleApplet();
 
 		void setSkinner(ASkinner *s) { m_skinner = s; }
+		void setAudioOutput(Phonon::AudioOutput *output) { m_audioOutput = output; }
 
 	private:
 		/* private members */
@@ -37,11 +40,16 @@ class volCtlModuleApplet : public QWidget {
 		ALyxButton * vol_mute_button;
 
 		ASkinner * m_skinner;
+		Phonon::AudioOutput *m_audioOutput;
+		
+		QTimer *volumeChangeTimer;
+		qreal volumeChange;
 
 	private slots:
 		void	volume_up();
 		void	volume_down();
 		void	volume_mute();
+		void	volume_change();
 };
 
 class volCtlModule : public QObject, M_Interface {

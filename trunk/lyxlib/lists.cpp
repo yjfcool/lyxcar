@@ -334,7 +334,7 @@ void ALyxListWidget::clear() {
 }
 
 void ALyxListWidget::scroll(int position, int steps) {
-	qDebug() << "min:" << m_scrollBar->minimumPosition() << "max:" << m_scrollBar->maximumPosition() << "cur:" << position;
+//	qDebug() << "min:" << m_scrollBar->minimumPosition() << "max:" << m_scrollBar->maximumPosition() << "cur:" << position;
 
 	if(m_scrollPosition > position) {
 		m_selectorPosition.setY(m_selectorPosition.y()+m_scrollBar->singleStep());

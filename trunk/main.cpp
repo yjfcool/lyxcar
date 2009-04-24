@@ -15,6 +15,7 @@
 int main(int argc, char * argv[])
 {
 	QApplication app(argc, argv);
+	app.setApplicationName("lyxcar");
 	
 //	QTranslator translator;
 //	translator.load("./translate/ru.qm");

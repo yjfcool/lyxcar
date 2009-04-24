@@ -160,10 +160,16 @@ void mp3playerWindow::createWindow() {
 	displayModeBtn->setSkin(m_skinner, "mp3player", "display");
 	displayModeBtn->setText("Albums");
 	displayModeBtn->setFont(QFont("Calibri", 12));
+	connect(displayModeBtn, SIGNAL(clicked()), this, SLOT(displayAlbums()));
 	
 	playList = new ALyxListWidget(this, m_skinner);
 	playList->setSkin(NULL, "mp3player", "playlist");
-	connect(playList, SIGNAL(doubleClicked()), this, SLOT(playCurrent()));
+	connect(playList, SIGNAL(doubleClicked()), this, SLOT(playAlbum()));
+
+	trackList = new ALyxListWidget(this, m_skinner);
+	trackList->setSkin(NULL, "mp3player", "playlist");
+	trackList->setVisible(false); // Hide it by default until the album is selected
+	connect(trackList, SIGNAL(doubleClicked()), this, SLOT(playTrack()));
 
 	playBtn->setSkin(m_skinner, "mp3player", "play");
 	firstBtn->setSkin(m_skinner, "mp3player", "first");
@@ -187,6 +193,7 @@ void mp3playerWindow::loadDeviceContents() {
 	qDebug() << "Loading device contents from" << device;
 
 	playList->clear();
+	trackList->clear();
 	albums.clear();
 
 	progressDlg = new ALyxProgressDialog(this);
@@ -257,26 +264,80 @@ void mp3playerWindow::fillPlayList() {
 	delete progressDlg;
 }
 
+void mp3playerWindow::loadAlbumTracks(QString album) {
+	qDebug() << "Loading tracks of" << album << "album to tracklist";
+	trackList->clear();
+
+	QStringList tracks = albums[album].keys();
+	foreach(QString trackName, tracks) {
+		ALyxListWidgetItem *item = new ALyxListWidgetItem(trackList);
+		item->setText(trackName);
+		item->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
+		trackList->addItem(item);
+	}
+}
+
+void mp3playerWindow::displayAlbums() {
+    trackList->hide();
+    playList->show();
+}
+
 void mp3playerWindow::playCurrent() {
-	//player->play();
+	qDebug() << "Mp3Player STARTS playing current:\n" 
+	    << "album:" << m_currentAlbumPlaying
+	    << "\ntrack:" << m_currentTrackPlaying 
+	    << "\nfile:" << m_currentFilePlaying;
+
+	playBtn->setSkin(m_skinner, "mp3player", "stop");
+
+	disconnect(playBtn, SIGNAL(clicked()), this, SLOT(playCurrent()));
+	connect(playBtn, SIGNAL(clicked()), this, SLOT(stopCurrent()));
+
+	display->setPlaying(true);
+	QString tmp = m_currentAlbumPlaying;
+	display->setSongTitle(tmp.replace("\n", " - ")+" *** ");
+
+	m_mediaObject->stop();
+	m_mediaObject->setCurrentSource(Phonon::MediaSource(m_currentFilePlaying));
+	m_mediaObject->play();
+}
+
+void mp3playerWindow::playTrack() {
+    if(trackList->selectedIndex() >= 0) {
+        ALyxListWidgetItem *item = trackList->selectedItem();
+        m_currentTrackPlaying = item->text();
+	qDebug() << m_currentAlbumPlaying;
+        m_currentFilePlaying = albums[m_currentAlbumPlaying].value(m_currentTrackPlaying);
+
+	playCurrent();
+    }
+}
+
+void mp3playerWindow::playAlbum() {
 	if(playList->selectedIndex() >= 0) {
 		ALyxListWidgetItem *item = playList->selectedItem();
-		qDebug() << "Mp3Player STARTS playing" << item->text();
-		playBtn->setSkin(m_skinner, "mp3player", "stop");
 
-		disconnect(playBtn, SIGNAL(clicked()), this, SLOT(playCurrent()));
-		connect(playBtn, SIGNAL(clicked()), this, SLOT(stopCurrent()));
+		// Get album name from the list
+		if(item->text() != m_currentAlbumPlaying) {
+		    m_currentAlbumPlaying = item->text();
+		    m_currentTrackPlaying = "";
+		    m_currentFilePlaying = "";
+		}
 
-		display->setPlaying(true);
-		display->setSongTitle(item->text().replace("\n", " - ")+" *** ");
-
-		//
-		// Just play for testing purposes
-		//
-		qDebug() << albums[item->text()].keys().value(0);
-		m_mediaObject->stop();
-		m_mediaObject->setCurrentSource(Phonon::MediaSource(albums[item->text()].values().value(0)));
-		m_mediaObject->play();
+		// If there is no track or file defined play the first one in album
+		if((m_currentTrackPlaying == "") || (m_currentFilePlaying == "")) {
+		    m_currentTrackPlaying = albums[item->text()].keys().value(0);
+		    m_currentFilePlaying = albums[item->text()].values().value(0);
+		}
+		
+		// Load tracks to current playing album
+		loadAlbumTracks(m_currentAlbumPlaying);
+		
+		playList->hide();
+		trackList->show();
+		
+		// Start playing current selected album
+		playCurrent();
 	} else {
 		qDebug() << "Mp3Player has nothing to play, nothing is selected";
 	}
@@ -285,9 +346,10 @@ void mp3playerWindow::playCurrent() {
 void mp3playerWindow::stopCurrent() {
 	qDebug() << "Mp3Player STOPS playing";
 	playBtn->setSkin(m_skinner, "mp3player", "play");
-	//player->write(QByteArray("stop\n"));
 	display->setPlaying(false);
 	display->setPaused(false);
+
+	m_mediaObject->stop();
 
 	connect(playBtn, SIGNAL(clicked()), this, SLOT(playCurrent()));
 	disconnect(playBtn, SIGNAL(clicked()), this, SLOT(stopCurrent()));

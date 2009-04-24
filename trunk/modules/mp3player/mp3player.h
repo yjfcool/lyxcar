@@ -30,14 +30,6 @@
 #include "foldercontentsloader.h"
 #include "progressdlg.h"
 
-/*#include <phonon/phononnamespace.h>
-#include <phonon/audiooutput.h>
-#include <phonon/videowidget.h>
-#include <phonon/seekslider.h>
-#include <phonon/backendcapabilities.h>
-#include <phonon/effect.h>
-#include <phonon/effectparameter.h>*/
-
 #include <phonon/mediasource.h>
 #include <phonon/mediaobject.h>
 
@@ -80,6 +72,8 @@ class mp3playerWindow : public QWidget {
 		void setAudioOutput(Phonon::AudioOutput *output) { m_audioOutput = output; }
 
 	public slots:
+		void	playAlbum();
+		void	playTrack();
 		void	playCurrent();
 		void	stopCurrent();
 		void 	pauseCurrent();
@@ -89,7 +83,7 @@ class mp3playerWindow : public QWidget {
 		void	loadDeviceContents();
 		void	selectDevice();
 		void	fillPlayList();
-
+		void	displayAlbums();
 	signals:
 
 	private slots:
@@ -105,7 +99,10 @@ class mp3playerWindow : public QWidget {
 		QString	m_device; // Currently selected device
 
 		AMp3PlayerDisplay *display;
+
 		ALyxListWidget *playList;
+		ALyxListWidget *trackList;
+
 		ALyxButton *firstBtn;
 		ALyxButton *backBtn;
 		ALyxButton *playBtn;
@@ -115,12 +112,17 @@ class mp3playerWindow : public QWidget {
 		// Album name - tracks
 		QHash<QString, mp3playerAlbumContents> albums;
 
+		QString m_currentAlbumPlaying;
+		QString m_currentTrackPlaying;
+		QString m_currentFilePlaying;
+
 		ALyxProgressDialog *progressDlg;
 
 		Phonon::MediaObject *m_mediaObject;
 		Phonon::AudioOutput *m_audioOutput;
 
 		void	readCurrentMedia();
+		void	loadAlbumTracks(QString album);
 };
 
 #endif

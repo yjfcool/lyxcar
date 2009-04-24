@@ -22,6 +22,8 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s, Phonon::AudioOutp
 
 	setAudioOutput(output);
 
+	m_dbase = new mp3playerDatabase(this);
+
 	m_mediaObject = new Phonon::MediaObject(this);
 	m_mediaObject->setCurrentSource(Phonon::MediaSource("test.mp3"));
 	Phonon::Path path = Phonon::createPath(m_mediaObject, m_audioOutput);
@@ -180,9 +182,7 @@ void mp3playerWindow::createWindow() {
 	display = new AMp3PlayerDisplay(this, m_skinner);
 }
 
-void mp3playerWindow::playerRead() {
-	//testText->append(player->readAllStandardOutput());
-}
+void mp3playerWindow::playerRead() {}
 
 //
 // Scan current selected device for media files
@@ -254,7 +254,7 @@ void mp3playerWindow::fillPlayList() {
 		qDebug() << albumName;
 		ALyxListWidgetItem *item = new ALyxListWidgetItem(playList);
 		item->setText(albumName);
-		item->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
+		item->setPixmap(QPixmap("./skins/default/icons/cdplayer.png"));
 		playList->addItem(item);
 	}
 
@@ -272,7 +272,7 @@ void mp3playerWindow::loadAlbumTracks(QString album) {
 	foreach(QString trackName, tracks) {
 		ALyxListWidgetItem *item = new ALyxListWidgetItem(trackList);
 		item->setText(trackName);
-		item->setPixmap(QPixmap("./skins/default/mp3player/cdplayer.png"));
+		item->setPixmap(QPixmap("./skins/default/icons/audio/audio-x-wav.png"));
 		trackList->addItem(item);
 	}
 }

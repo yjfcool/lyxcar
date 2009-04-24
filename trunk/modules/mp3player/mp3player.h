@@ -29,6 +29,7 @@
 #include "playerdisplay.h"
 #include "foldercontentsloader.h"
 #include "progressdlg.h"
+#include "database.h"
 
 #include <phonon/mediasource.h>
 #include <phonon/mediaobject.h>
@@ -99,6 +100,7 @@ class mp3playerWindow : public QWidget {
 		QString	m_device; // Currently selected device
 
 		AMp3PlayerDisplay *display;
+		mp3playerDatabase *m_dbase;
 
 		ALyxListWidget *playList;
 		ALyxListWidget *trackList;
@@ -120,6 +122,7 @@ class mp3playerWindow : public QWidget {
 
 		Phonon::MediaObject *m_mediaObject;
 		Phonon::AudioOutput *m_audioOutput;
+
 
 		void	readCurrentMedia();
 		void	loadAlbumTracks(QString album);

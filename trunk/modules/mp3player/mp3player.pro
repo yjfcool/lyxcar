@@ -4,10 +4,12 @@ CONFIG += plugin \
     release
 HEADERS = mp3player.h \
     playerdisplay.h \
-    foldercontentsloader.h
+    foldercontentsloader.h \
+    database.h
 SOURCES = mp3player.cpp \
     playerdisplay.cpp \
-    foldercontentsloader.cpp
+    foldercontentsloader.cpp \
+    database.cpp
 TARGET = mp3player
 INCLUDEPATH += ../.. \
     ../ \

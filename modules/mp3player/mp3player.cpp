@@ -19,21 +19,24 @@
 mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s, Phonon::AudioOutput *output) {
 	m_skinner = s;
 	m_device = QString();
-
 	setAudioOutput(output);
 
-	m_dbase = new mp3playerDatabase(this);
+	m_dbase = new mp3playerDatabase(this); // Create connection to mp3s database
 
-	m_mediaObject = new Phonon::MediaObject(this);
-	m_mediaObject->setCurrentSource(Phonon::MediaSource("test.mp3"));
-	Phonon::Path path = Phonon::createPath(m_mediaObject, m_audioOutput);
+	m_mediaObject = new Phonon::MediaObject(this);	// Create new media object for this instance of player
+//	m_mediaObject->setCurrentSource(Phonon::MediaSource("test.mp3"));
+	Phonon::Path path = Phonon::createPath(m_mediaObject, m_audioOutput);	// Connect it to audio output
 
+	playTimer = new QTimer();
+	playTimer->setInterval(500);
+	connect(playTimer, SIGNAL(timeout()), this, SLOT(playTimerTimeout()));
+  
 	setContentsMargins(0, 0, 0, 0);
 
 	qDebug() << "mp3player is reading player settings";
 	settings = new QSettings("./conf/mp3player.conf", QSettings::IniFormat, this);
 
-	// Loading devices list
+	// Loading media devices list
 	settings->beginGroup("Devices");
 	QStringList devs = settings->childKeys();
 	// Parse [Devices]
@@ -295,10 +298,21 @@ void mp3playerWindow::displayAlbums() {
     playList->show();
 }
 
+// SLOT executed every 500ms to update song remaining time and so on.
+void mp3playerWindow::playTimerTimeout() {
+    QTime t_time = QTime(0, 0, 0);
+    QTime m_time = t_time.addMSecs(m_mediaObject->remainingTime());
+
+    QString t_str = m_time.toString("mm:ss");
+    display->setSongDuration(t_str);
+
+    qDebug() << "Time is:" << m_mediaObject->remainingTime();
+}
+
 void mp3playerWindow::playCurrent() {
-	qDebug() << "Mp3Player STARTS playing current:\n" 
+	qDebug() << "Mp3Player STARTS playing current:\n"
 	    << "album:" << m_currentAlbumPlaying
-	    << "\ntrack:" << m_currentTrackPlaying 
+	    << "\ntrack:" << m_currentTrackPlaying
 	    << "\nfile:" << m_currentFilePlaying;
 
 	playBtn->setSkin(m_skinner, "mp3player", "stop");
@@ -310,9 +324,11 @@ void mp3playerWindow::playCurrent() {
 	QString tmp = m_currentAlbumPlaying;
 	display->setSongTitle(tmp.replace("\n", " - ")+" *** ");
 
+	playTimer->stop();
 	m_mediaObject->stop();
 	m_mediaObject->setCurrentSource(Phonon::MediaSource(m_currentFilePlaying));
 	m_mediaObject->play();
+	playTimer->start();
 }
 
 void mp3playerWindow::playTrack() {

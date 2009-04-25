@@ -48,10 +48,10 @@ AMp3PlayerDisplay::AMp3PlayerDisplay(QWidget *parent, ASkinner *skinner) :
 	songTitleLbl->setFixedWidth(250);
 
 	songDurationLbl = new QLabel(d);
-	songDurationLbl->setFont(QFont("Calibri", 30));
+	songDurationLbl->setFont(QFont("Calibri", 24));
 	songDurationLbl->setText("--:--");
 	songDurationLbl->move(300, 10);
-	songDurationLbl->setFixedWidth(100);
+	songDurationLbl->setFixedWidth(80);
 
 	playIcon = new QLabel(d);
 	playIcon->setPixmap(QPixmap());

@@ -20,7 +20,7 @@ void FolderContentsLoader::run() {
 	qDebug() << "Media loader started at" << m_folder;
 	QDirIterator it(m_folder, QDirIterator::Subdirectories);
 	while (it.hasNext()) {
-		QString fullFilePath = it.next().toLocal8Bit();
+		QString fullFilePath = it.next();
 		if((it.fileInfo().suffix() == "mp3") ||
 		(it.fileInfo().suffix() == "ogg") ||
 		(it.fileInfo().suffix() == "flac")) {

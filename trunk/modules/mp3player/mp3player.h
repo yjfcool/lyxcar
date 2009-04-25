@@ -90,6 +90,7 @@ class mp3playerWindow : public QWidget {
 	private slots:
 		void	deviceSelection(QString operation);
 		void	fileFound(QString fileName);
+		void	playTimerTimeout();
 
 	private:
 		ASkinner *m_skinner;
@@ -122,7 +123,7 @@ class mp3playerWindow : public QWidget {
 
 		Phonon::MediaObject *m_mediaObject;
 		Phonon::AudioOutput *m_audioOutput;
-
+		QTimer			*playTimer;
 
 		void	readCurrentMedia();
 		void	loadAlbumTracks(QString album);

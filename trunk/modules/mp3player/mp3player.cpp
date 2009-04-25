@@ -223,20 +223,33 @@ void mp3playerWindow::loadDeviceContents() {
 void mp3playerWindow::fileFound(QString fileName) {
 			qDebug() << "Found file" << fileName;
 
-			TagLib::FileRef f(fileName.toAscii().constData());
+			QString artist;
+			QString album;
+			QString title;
 
-			QString artist = TStringToQString(f.tag()->artist());
-			QString album = TStringToQString(f.tag()->album());
-			QString title = TStringToQString(f.tag()->title());
+			if(m_dbase->ifExists(fileName)) {
+			    ATrackData td;
+			    td = m_dbase->getTrack(fileName);
 
-//
+			    artist = td.artist;
+			    album = td.album;
+			    title = td.trackName;
+			} else {
+			    QString t_fileName = fileName.toLocal8Bit();
+			    TagLib::FileRef f(t_fileName.toAscii().constData());
+
+			    artist = TStringToQString(f.tag()->artist());
+			    album = TStringToQString(f.tag()->album());
+			    title = TStringToQString(f.tag()->title());
+
 // For Russian windows users whose tags are in cp-1251
-//
 #ifdef Q_OS_WIN32
-			artist = tagCodec->toUnicode(artist.toAscii());
-			album = tagCodec->toUnicode(album.toAscii());
-			title = tagCodec->toUnicode(title.toAscii());
+			    artist = tagCodec->toUnicode(artist.toAscii());
+			    album = tagCodec->toUnicode(album.toAscii());
+			    title = tagCodec->toUnicode(title.toAscii());
 #endif
+			    m_dbase->addTrack(fileName, artist, album, title, "00:00");
+			}
 			// Insert into albums database structure containing
 			// song title as a key and it's file name as a value (QHash)
 			albums[artist+"\n"+album].insert(title, fileName);

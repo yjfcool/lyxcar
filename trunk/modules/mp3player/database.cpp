@@ -18,10 +18,26 @@ mp3playerDatabase::mp3playerDatabase(QObject *parent) {
 	bool ok = m_db.open();
 	if(!ok) { 
 	    qDebug() << "mp3player: Can't open database of media files!";
+	    m_db_ok = false;
 	    return;
 	} else {
 	    qDebug() << "mp3player: Using sqlite database. It's ok!";
-	    m_db_ok = true;
+	    QSqlQuery query(m_db);
+	    if(!query.exec("select * from tracks limit 1;")) {
+	        qDebug() << "Trying to create table.";
+
+		QFile file("./conf/mp3player.sql");
+	        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) return;
+		QString q;
+    	        while (!file.atEnd()) { q += file.readLine(); }
+		if(!query.exec(q)) {
+		    qDebug() << "mp3player: Tried to create table in database but failed. Won't use sqlite!";
+		    m_db_ok = false;
+		} else {
+		    qDebug() << "mp3player: Database successfully created!";
+		    m_db_ok = true;
+	        }
+	    }
 	}
 }
 
@@ -69,13 +85,39 @@ void mp3playerDatabase::updateTrack(
 
 bool mp3playerDatabase::ifExists(QString fileName) {
     QSqlQuery query(m_db);
-    QString q = QString("select filename from tracks where filename = %1").arg(fileName);
+    fileName = fileName.replace("'", "\\'");
+    QString q = QString("select filename from tracks where filename = '%1' limit 1;").arg(fileName);
+    qDebug() << "Query is" << q;
     if(!query.exec(q)) {
 	qDebug() << "mp3player: Database track existance check failed!";
-    }
-    if(query.size() > 0) {
-	return true;
-    } else {
 	return false;
+    } else {
+	if(query.first()) {
+	    qDebug() << "File" << fileName << "found in database!";
+	    return true;
+	} else {
+	    qDebug() << "File" << fileName << "NOT found in database!";
+	    return false;
+	}
     }
+}
+
+ATrackData mp3playerDatabase::getTrack(QString fileName) {
+    ATrackData td;
+    td.artist = "Unknown";
+    td.album = "Unknown";
+    td.trackName = fileName;
+
+    QSqlQuery query(m_db);
+    QString q = QString("select filename, artist, album, trackname from tracks where filename = '%1' limit 1;").arg(fileName);
+    if(!query.exec(q)) {
+	qDebug() << "mp3player: Database track existance check failed!";
+    } else {
+	if(query.first()) {    
+	    td.artist = query.value(1).toString();
+	    td.album = query.value(2).toString();
+	    td.trackName = query.value(3).toString();
+	}
+    }
+    return td;
 }

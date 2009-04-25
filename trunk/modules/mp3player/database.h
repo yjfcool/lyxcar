@@ -21,6 +21,14 @@
 #include <QStringList>
 #include <QtCore>
 
+typedef struct ATrackData {
+    QString	fileName;
+    QString	artist;
+    QString	album;
+    QString	trackName;
+    QString	duration;
+} ATrackData;
+
 class mp3playerDatabase : public QObject {
     Q_OBJECT
     public:
@@ -30,6 +38,7 @@ class mp3playerDatabase : public QObject {
 	void addTrack(QString fileName, QString artist, QString album, QString trackName, QString duration);
 	void updateTrack(QString fileName, QString artist, QString album, QString trackName, QString duration);
 	bool ifExists(QString fileName);
+	ATrackData getTrack(QString fileName);
 	void removeTrack(QString file) {}
 	void updateDir(QDir directory) {}
 	void rescan() {}

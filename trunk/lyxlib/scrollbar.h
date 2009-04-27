@@ -31,7 +31,12 @@ class ALyxScrollBar : public QWidget {
 		void setPosition(int position) { m_position = position; repaint(); }
 		int position() { return m_position; }
 
-		void setMaximumPosition(int position) { m_maximumPosition = position; calculateSliderButton(); repaint(); }
+		void setMaximumPosition(int position) {
+		    m_maximumPosition = position;
+		    if(m_position > m_maximumPosition) { m_position = m_maximumPosition; }
+		    calculateSliderButton();
+		    repaint();
+		}
 		int maximumPosition() { return m_maximumPosition; }
 
 		void setMinimumPosition(int position) { m_minimumPosition = position; if(m_position < m_minimumPosition) { m_position = m_minimumPosition; } calculateSliderButton(); repaint(); }

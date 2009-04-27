@@ -24,7 +24,7 @@ void FolderContentsLoader::run() {
 		if((it.fileInfo().suffix() == "mp3") ||
 		(it.fileInfo().suffix() == "ogg") ||
 		(it.fileInfo().suffix() == "flac")) {
-			qDebug() << "Found file" << fullFilePath;
+//			qDebug() << "Found file" << fullFilePath;
 			emit fileFound(fullFilePath);
 		}
 	}

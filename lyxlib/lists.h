@@ -103,6 +103,9 @@ class ALyxListWidget : public ALyxControl {
 
 		//! \brief Sets list skinned parametres
 		void setSkin(ASkinner *s, QString moduleName, QString listName);
+		
+		//! \brief Returns size of list
+		int size() { return l_items.size(); }
 
 	private:
 		QTimer	*animationTimer;

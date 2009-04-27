@@ -139,8 +139,23 @@ void ALyxListWidget::addItem(ALyxListWidgetItem *item) {
 
 // Sets currently selected item by item object
 void ALyxListWidget::setSelectedItem(ALyxListWidgetItem *item) {
+	int prev_selectedIndex = m_selectedIndex;
 	m_selectedItem = item;
 	m_selectedIndex = l_items.indexOf(item);
+	if((m_selectedIndex >= 0) && (m_selectedIndex < l_items.size())) {
+	    if(prev_selectedIndex < m_selectedIndex) {
+		animationStep = 1;
+	    } else if(prev_selectedIndex > m_selectedIndex) {
+		animationStep = -1;
+	    }
+	    animationTimer->start();
+	} else {
+	    // If there is no item selected or index is out of bounds, 
+	    // stop animations and select none.
+	    animationStep = 0;
+	    animationTimer->stop();
+	    m_selectedIndex = -1;
+	}
 	repaint();
 }
 
@@ -160,16 +175,9 @@ void ALyxListWidget::mousePressEvent(QMouseEvent *e) {
 		QPoint t_pos = e->pos();
 		t_pos.setY(t_pos.y());
 		if(item->rect().contains(t_pos)) {
-			int prev_selectedIndex = m_selectedIndex;
 			setSelectedItem(item);
 			emit selected(item);
 			emit clicked();
-			if(prev_selectedIndex < m_selectedIndex) {
-				animationStep = 1;
-			} else if(prev_selectedIndex > m_selectedIndex) {
-				animationStep = -1;
-			}
-			animationTimer->start();
 		}
 	}	
 }
@@ -186,7 +194,7 @@ void ALyxListWidget::animateSelector() {
 	// ѕункт выбираетс€ сразу после нажати€ на него мышкой устанавлива€ m_selectedItem в указатель на нажатый объект!
 	
 	// —електор по любому рисуетс€ только в позиции того пункта который выбран. ј в ней уже заложен скрол!
-	if(animationStep != 0) {
+	if((animationStep != 0) && (m_selectedIndex >= 0)) {
 		m_selectorPosition.setY(m_selectorPosition.y()+(m_acceleration*animationStep));
 		m_acceleration++;
 		if(((m_selectorPosition.y() <= m_selectedItem->rect().y() && animationStep < 0)) || 
@@ -329,6 +337,7 @@ int ALyxListWidget::selectedIndex() {
 
 void ALyxListWidget::clear() {
 	setSelectedItem(NULL);
+	m_selectedIndex = -1;
 	l_items.clear();
 	repaint();
 }

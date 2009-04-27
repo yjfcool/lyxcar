@@ -76,6 +76,8 @@ class mp3playerWindow : public QWidget {
 		void	playAlbum();
 		void	playTrack();
 		void	playCurrent();
+		void	playNext();
+		void	playPrevious();
 		void	stopCurrent();
 		void 	pauseCurrent();
 

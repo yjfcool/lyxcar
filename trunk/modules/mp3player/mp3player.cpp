@@ -136,7 +136,9 @@ void mp3playerWindow::createWindow() {
 
 	firstBtn = new ALyxButton(this);
 	backBtn = new ALyxButton(this);
+	connect(backBtn, SIGNAL(clicked()), this, SLOT(playPrevious()));
 	nextBtn = new ALyxButton(this);
+	connect(nextBtn, SIGNAL(clicked()), this, SLOT(playNext()));
 	lastBtn = new ALyxButton(this);
 
 	ALyxPushButton *selectDeviceBtn = new ALyxPushButton(this);
@@ -306,7 +308,7 @@ void mp3playerWindow::playTimerTimeout() {
     QString t_str = m_time.toString("mm:ss");
     display->setSongDuration(t_str);
 
-    qDebug() << "Time is:" << m_mediaObject->remainingTime();
+//    qDebug() << "Time is:" << m_mediaObject->remainingTime();
 }
 
 void mp3playerWindow::playCurrent() {
@@ -329,6 +331,11 @@ void mp3playerWindow::playCurrent() {
 	m_mediaObject->setCurrentSource(Phonon::MediaSource(m_currentFilePlaying));
 	m_mediaObject->play();
 	playTimer->start();
+	
+	//
+	// Select currently playing track in list
+	//
+	
 }
 
 void mp3playerWindow::playTrack() {
@@ -361,6 +368,9 @@ void mp3playerWindow::playAlbum() {
 		
 		// Load tracks to current playing album
 		loadAlbumTracks(m_currentAlbumPlaying);
+		if(trackList->size() > 0) {
+		    trackList->selectItem(0);
+		}
 		
 		playList->hide();
 		trackList->show();
@@ -384,9 +394,52 @@ void mp3playerWindow::stopCurrent() {
 	disconnect(playBtn, SIGNAL(clicked()), this, SLOT(stopCurrent()));
 }
 
+void mp3playerWindow::playNext() {
+    if((m_currentTrackPlaying != "") && (m_currentFilePlaying != "")) {
+        QStringList m_albums = albums.keys();
+	QStringList m_tracks = albums[m_currentAlbumPlaying].keys();
+
+        int m_currentTrackIndex = m_tracks.indexOf(m_currentTrackPlaying);
+	int m_currentAlbumIndex = m_albums.indexOf(m_currentAlbumPlaying);
+	if(m_tracks.size()-m_currentTrackIndex > 1) {
+	    m_currentTrackPlaying = m_tracks[m_currentTrackIndex+1];
+	    m_currentFilePlaying = albums[m_currentAlbumPlaying].value(m_currentTrackPlaying);
+	    playCurrent();
+
+	    playList->selectItem(m_currentAlbumIndex+1);
+	    trackList->selectItem(m_currentTrackIndex+1);
+	} else {
+	    // If there is albums to play select next one
+	    if(m_albums.size()-m_currentAlbumIndex > 1) {
+		m_currentAlbumPlaying = m_albums[m_currentAlbumIndex+1];	// Next album
+		if(albums[m_currentAlbumPlaying].keys().size() > 0) {
+		    m_currentTrackPlaying = albums[m_currentAlbumPlaying].keys().value(0);
+		    m_currentFilePlaying = albums[m_currentAlbumPlaying].values().value(0);
+
+		    // Load tracks to current playing album
+		    loadAlbumTracks(m_currentAlbumPlaying);
+	            playCurrent();
+
+		    // Make track selection
+		    playList->selectItem(m_currentAlbumIndex+1);
+		    trackList->selectItem(0);
+		} else {
+		    qDebug() << "mp3player: Album has no tracks! That's an error!\nGoing to next track.";
+		    playNext();
+		}
+	    } else {
+		// Disable next button
+	    }
+	}
+    }
+}
+void mp3playerWindow::playPrevious() {
+
+}
 void mp3playerWindow::pauseCurrent() {
 	qDebug() << "Mp3Player PAUSES playing";
 	display->setPaused(true);
+	m_mediaObject->pause();
 }
 
 /*

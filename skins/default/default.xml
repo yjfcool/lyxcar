@@ -28,7 +28,7 @@
 					<stop time="20" x="20" y="20" width="276" height="94" opacity="1" acceleration="1"/>
 				</animation>
 			</button>
-			<button name="video" value="Video player"
+			<button name="phone" value="Phone"
 				appear-pause="0"
 				disappear-pause="0"
 				released="video_btn_up.png"

@@ -2,8 +2,8 @@ TEMPLATE = lib
 CONFIG += plugin \
     qt \
     release
-HEADERS = phone.h
-SOURCES = phone.cpp
+HEADERS = phone.h phonewindow.h
+SOURCES = phone.cpp phonewindow.cpp
 TARGET = phone
 INCLUDEPATH += ../.. \
     ../ \

@@ -11,12 +11,13 @@
 */
 
 #include "phone.h"
+#include "phonewindow.h"
 
 /*
  * Module activation procedure
  */
 QWidget * phoneModule::activate(QWidget *parent) {
-//	moduleWindow = new mp3playerWindow(parent, m_skinner, m_audioOutput);
+	moduleWindow = new phoneWindow(parent, m_skinner, m_audioOutput);
 
 	return moduleWindow;
 }

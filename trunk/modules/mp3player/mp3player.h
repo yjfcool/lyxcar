@@ -77,7 +77,9 @@ class mp3playerWindow : public QWidget {
 		void	playTrack();
 		void	playCurrent();
 		void	playNext();
+		void	playNextAlbum();
 		void	playPrevious();
+		void	playPreviousAlbum();
 		void	stopCurrent();
 		void 	pauseCurrent();
 
@@ -108,11 +110,11 @@ class mp3playerWindow : public QWidget {
 		ALyxListWidget *playList;
 		ALyxListWidget *trackList;
 
-		ALyxButton *firstBtn;
-		ALyxButton *backBtn;
+		ALyxButton *prevAlbumBtn;
+		ALyxButton *prevBtn;
 		ALyxButton *playBtn;
 		ALyxButton *nextBtn;
-		ALyxButton *lastBtn;
+		ALyxButton *nextAlbumBtn;
 
 		// Album name - tracks
 		QHash<QString, mp3playerAlbumContents> albums;

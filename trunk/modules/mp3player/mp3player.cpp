@@ -134,12 +134,17 @@ void mp3playerWindow::createWindow() {
 
 	connect(playBtn, SIGNAL(clicked()), this, SLOT(playCurrent()));
 
-	firstBtn = new ALyxButton(this);
-	backBtn = new ALyxButton(this);
-	connect(backBtn, SIGNAL(clicked()), this, SLOT(playPrevious()));
+	prevAlbumBtn = new ALyxButton(this);
+	connect(prevAlbumBtn, SIGNAL(clicked()), this, SLOT(playPreviousAlbum()));
+
+	prevBtn = new ALyxButton(this);
+	connect(prevBtn, SIGNAL(clicked()), this, SLOT(playPrevious()));
+
 	nextBtn = new ALyxButton(this);
 	connect(nextBtn, SIGNAL(clicked()), this, SLOT(playNext()));
-	lastBtn = new ALyxButton(this);
+
+	nextAlbumBtn = new ALyxButton(this);
+	connect(nextAlbumBtn, SIGNAL(clicked()), this, SLOT(playNextAlbum()));
 
 	ALyxPushButton *selectDeviceBtn = new ALyxPushButton(this);
 	selectDeviceBtn->setSkin(m_skinner, "mp3player", "device");
@@ -179,9 +184,9 @@ void mp3playerWindow::createWindow() {
 	connect(trackList, SIGNAL(doubleClicked()), this, SLOT(playTrack()));
 
 	playBtn->setSkin(m_skinner, "mp3player", "play");
-	firstBtn->setSkin(m_skinner, "mp3player", "first");
-	backBtn->setSkin(m_skinner, "mp3player", "back");
-	lastBtn->setSkin(m_skinner, "mp3player", "last");
+	prevAlbumBtn->setSkin(m_skinner, "mp3player", "first");
+	prevBtn->setSkin(m_skinner, "mp3player", "back");
+	nextAlbumBtn->setSkin(m_skinner, "mp3player", "last");
 	nextBtn->setSkin(m_skinner, "mp3player", "next");
 
 	display = new AMp3PlayerDisplay(this, m_skinner);
@@ -360,18 +365,20 @@ void mp3playerWindow::playAlbum() {
 		    m_currentFilePlaying = "";
 		}
 
-		// If there is no track or file defined play the first one in album
-		if((m_currentTrackPlaying == "") || (m_currentFilePlaying == "")) {
-		    m_currentTrackPlaying = albums[item->text()].keys().value(0);
-		    m_currentFilePlaying = albums[item->text()].values().value(0);
-		}
-		
 		// Load tracks to current playing album
 		loadAlbumTracks(m_currentAlbumPlaying);
-		if(trackList->size() > 0) {
-		    trackList->selectItem(0);
+
+		// If there is no track or file defined play the first one in album
+		if((m_currentTrackPlaying == "") || (m_currentFilePlaying == "")) {
+		    if(trackList->size() > 0) {	// If the album has tracks start with the first one
+		        m_currentTrackPlaying = albums[item->text()].keys().value(0);
+			m_currentFilePlaying = albums[item->text()].values().value(0);
+			trackList->selectItem(0);
+		    } else {
+			// Album has no tracks
+		    }
 		}
-		
+
 		playList->hide();
 		trackList->show();
 		
@@ -394,6 +401,33 @@ void mp3playerWindow::stopCurrent() {
 	disconnect(playBtn, SIGNAL(clicked()), this, SLOT(stopCurrent()));
 }
 
+void mp3playerWindow::playNextAlbum() {
+    // If there is albums to play select next one
+    QStringList m_albums = albums.keys();
+    int m_currentAlbumIndex = m_albums.indexOf(m_currentAlbumPlaying);
+
+    if(m_albums.size()-m_currentAlbumIndex > 1) {
+	m_currentAlbumPlaying = m_albums[m_currentAlbumIndex+1];	// Next album
+	if(albums[m_currentAlbumPlaying].keys().size() > 0) {
+	    m_currentTrackPlaying = albums[m_currentAlbumPlaying].keys().value(0);
+	    m_currentFilePlaying = albums[m_currentAlbumPlaying].values().value(0);
+
+	    // Load tracks to current playing album
+	    loadAlbumTracks(m_currentAlbumPlaying);
+            playCurrent();
+
+	    // Make track selection
+	    playList->selectItem(m_currentAlbumIndex+1);
+	    trackList->selectItem(0);
+	} else {
+	    qDebug() << "mp3player: Album has no tracks! That's an error!\nGoing to next track.";
+	    playNextAlbum();
+	}
+    } else {
+		// Disable next button
+    }
+}
+
 void mp3playerWindow::playNext() {
     if((m_currentTrackPlaying != "") && (m_currentFilePlaying != "")) {
         QStringList m_albums = albums.keys();
@@ -401,41 +435,70 @@ void mp3playerWindow::playNext() {
 
         int m_currentTrackIndex = m_tracks.indexOf(m_currentTrackPlaying);
 	int m_currentAlbumIndex = m_albums.indexOf(m_currentAlbumPlaying);
+
+	// Next track
 	if(m_tracks.size()-m_currentTrackIndex > 1) {
 	    m_currentTrackPlaying = m_tracks[m_currentTrackIndex+1];
 	    m_currentFilePlaying = albums[m_currentAlbumPlaying].value(m_currentTrackPlaying);
 	    playCurrent();
 
-	    playList->selectItem(m_currentAlbumIndex+1);
+	    playList->selectItem(m_currentAlbumIndex);
 	    trackList->selectItem(m_currentTrackIndex+1);
 	} else {
-	    // If there is albums to play select next one
-	    if(m_albums.size()-m_currentAlbumIndex > 1) {
-		m_currentAlbumPlaying = m_albums[m_currentAlbumIndex+1];	// Next album
-		if(albums[m_currentAlbumPlaying].keys().size() > 0) {
-		    m_currentTrackPlaying = albums[m_currentAlbumPlaying].keys().value(0);
-		    m_currentFilePlaying = albums[m_currentAlbumPlaying].values().value(0);
-
-		    // Load tracks to current playing album
-		    loadAlbumTracks(m_currentAlbumPlaying);
-	            playCurrent();
-
-		    // Make track selection
-		    playList->selectItem(m_currentAlbumIndex+1);
-		    trackList->selectItem(0);
-		} else {
-		    qDebug() << "mp3player: Album has no tracks! That's an error!\nGoing to next track.";
-		    playNext();
-		}
-	    } else {
-		// Disable next button
-	    }
+	    playNextAlbum();
 	}
     }
 }
-void mp3playerWindow::playPrevious() {
 
+void mp3playerWindow::playPrevious() {
+    if((m_currentTrackPlaying != "") && (m_currentFilePlaying != "")) {
+        QStringList m_albums = albums.keys();
+	QStringList m_tracks = albums[m_currentAlbumPlaying].keys();
+
+        int m_currentTrackIndex = m_tracks.indexOf(m_currentTrackPlaying);
+	int m_currentAlbumIndex = m_albums.indexOf(m_currentAlbumPlaying);
+
+	// Previous track
+	if(m_currentTrackIndex > 0) {
+	    m_currentTrackPlaying = m_tracks[m_currentTrackIndex-1];
+	    m_currentFilePlaying = albums[m_currentAlbumPlaying].value(m_currentTrackPlaying);
+	    playCurrent();
+
+	    playList->selectItem(m_currentAlbumIndex);
+	    trackList->selectItem(m_currentTrackIndex-1);
+	} else {
+	    playPreviousAlbum();
+	}
+    }
 }
+
+void mp3playerWindow::playPreviousAlbum() {
+    // If there is albums to play select next one
+    QStringList m_albums = albums.keys();
+    int m_currentAlbumIndex = m_albums.indexOf(m_currentAlbumPlaying);
+
+    if(m_currentAlbumIndex > 0) {
+	m_currentAlbumPlaying = m_albums[m_currentAlbumIndex-1];	// Prev album
+	if(albums[m_currentAlbumPlaying].keys().size() > 0) {
+	    m_currentTrackPlaying = albums[m_currentAlbumPlaying].keys().value(albums[m_currentAlbumPlaying].keys().size()-1);
+	    m_currentFilePlaying = albums[m_currentAlbumPlaying].values().value(albums[m_currentAlbumPlaying].values().size()-1);
+
+	    // Load tracks to current playing album
+	    loadAlbumTracks(m_currentAlbumPlaying);
+            playCurrent();
+
+	    // Make track selection
+	    playList->selectItem(m_currentAlbumIndex-1);
+	    trackList->selectItem(albums[m_currentAlbumPlaying].keys().size()-1);
+	} else {
+	    qDebug() << "mp3player: Album has no tracks! That's an error!\nGoing to next track.";
+	    playPreviousAlbum();
+	}
+    } else {
+		// Disable previous button
+    }
+}
+
 void mp3playerWindow::pauseCurrent() {
 	qDebug() << "Mp3Player PAUSES playing";
 	display->setPaused(true);

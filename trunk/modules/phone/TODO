@@ -1,0 +1,10 @@
+This module must do:
+
+  - make calls with cellphone
+  - connect to internet through cellular network.
+  
+To make calls this must support dialing numbers on screen numeric keyboard, send ATDTxxxxxxxxx, than
+connect audio device to bluetooth device to make subscriber be able to speak.
+
+To establish connection to internet this must be able to interface pppd, create options file and run pppd to dial, than
+check connection and the route and notify user.

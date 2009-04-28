@@ -21,6 +21,8 @@
 
 #include "m_interface.h"
 
+#include "phoneconnector.h"
+
 class phoneModule : public QObject, public M_Interface {
 	Q_OBJECT
 	Q_INTERFACES(M_Interface)
@@ -29,6 +31,9 @@ class phoneModule : public QObject, public M_Interface {
 		QWidget * activate(QWidget *parent = 0);
 		QWidget * activateApplet(QWidget *parent = 0);
 		void deactivate(QString deactivateFor = "");
+
+	private:
+		phoneConnector *m_phoneConnector;
 
 	signals:
 		void demandActivation(QString moduleName);

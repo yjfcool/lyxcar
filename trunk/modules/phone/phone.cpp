@@ -17,6 +17,9 @@
  * Module activation procedure
  */
 QWidget * phoneModule::activate(QWidget *parent) {
+	m_phoneConnector = new phoneConnector(this);
+	m_phoneConnector->start();
+
 	moduleWindow = new phoneWindow(parent, m_skinner, m_audioOutput);
 
 	return moduleWindow;

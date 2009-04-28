@@ -85,4 +85,3 @@ phoneWindow::phoneWindow(QWidget *parent, ASkinner *skinner, Phonon::AudioOutput
 phoneWindow::~phoneWindow() {
 
 }
-

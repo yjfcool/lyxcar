@@ -2,9 +2,7 @@ TEMPLATE = lib
 TARGET = phonon
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs
-win32:release {
-	DESTDIR	= ../..
-}
+DESTDIR	= ../..
 
 CONFIG += dll release warn_on
 include($$QT_SOURCE_TREE/src/qbase.pri)

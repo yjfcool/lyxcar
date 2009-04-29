@@ -6,7 +6,7 @@
     License as published by the Free Software Foundation; either
     version 2.1 of the License, or (at your option) version 3, or any
     later version accepted by the membership of KDE e.V. (or its
-    successor approved by the membership of KDE e.V.), Nokia Corporation
+    successor approved by the membership of KDE e.V.), Trolltech ASA
     (or its successors, if any) and the KDE Free Qt Foundation, which shall
     act as a proxy defined in Section 6 of version 3 of the license.
 
@@ -15,7 +15,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Lesser General Public License for more details.
 
-    You should have received a copy of the GNU Lesser General Public
+    You should have received a copy of the GNU Lesser General Public 
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 */
@@ -29,7 +29,7 @@
 #include "phononnamespace_p.h"
 #include "platform_p.h"
 
-#include <QtCore/qmath.h>
+#include <qmath.h>
 
 #define PHONON_CLASSNAME AudioOutput
 #define IFACES2 AudioOutputInterface42
@@ -67,7 +67,7 @@ AudioOutput::AudioOutput(Phonon::Category category, QObject *parent)
     d->init(category);
 }
 
-AudioOutput::AudioOutput(QObject *parent)
+AudioOutput::AudioOutput(QObject *parent) 
     : AbstractAudioOutput(*new AudioOutputPrivate, parent)
 {
     K_D(AudioOutput);
@@ -126,9 +126,7 @@ void AudioOutput::setName(const QString &newName)
     d->name = newName;
     setVolume(Platform::loadVolume(newName));
 #ifndef QT_NO_DBUS
-    if (d->adaptor) {
-        emit d->adaptor->nameChanged(newName);
-    }
+    emit d->adaptor->nameChanged(newName);
 #endif
 }
 
@@ -403,9 +401,7 @@ void AudioOutputPrivate::handleAutomaticDeviceChange(const AudioOutputDevice &de
 AudioOutputPrivate::~AudioOutputPrivate()
 {
 #ifndef QT_NO_DBUS
-    if (adaptor) {
-        emit adaptor->outputDestroyed();
-    }
+    emit adaptor->outputDestroyed();
 #endif
 }
 

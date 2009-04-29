@@ -6,7 +6,7 @@
     License as published by the Free Software Foundation; either
     version 2.1 of the License, or (at your option) version 3, or any
     later version accepted by the membership of KDE e.V. (or its
-    successor approved by the membership of KDE e.V.), Nokia Corporation 
+    successor approved by the membership of KDE e.V.), Trolltech ASA 
     (or its successors, if any) and the KDE Free Qt Foundation, which shall
     act as a proxy defined in Section 6 of version 3 of the license.
 
@@ -24,8 +24,8 @@
 #define VOLUMESLIDER_P_H
 
 #include "volumeslider.h"
-#include "swiftslider_p.h"
 #include <QtGui/QBoxLayout>
+#include <QtGui/QSlider>
 #include <QtGui/QLabel>
 #include <QtGui/QPixmap>
 #include <QtGui/QToolButton>
@@ -76,8 +76,6 @@ class VolumeSliderPrivate
 
         VolumeSlider *q_ptr;
 
-        void updateIcon();
-
         void _k_sliderChanged(int);
         void _k_volumeChanged(qreal);
         void _k_mutedChanged(bool);
@@ -85,7 +83,7 @@ class VolumeSliderPrivate
 
     private:
         QBoxLayout layout;
-        SwiftSlider slider;
+        QSlider slider;
         QToolButton muteButton;
         QIcon volumeIcon;
         QIcon mutedIcon;

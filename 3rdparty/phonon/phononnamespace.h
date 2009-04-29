@@ -6,7 +6,7 @@
     License as published by the Free Software Foundation; either
     version 2.1 of the License, or (at your option) version 3, or any
     later version accepted by the membership of KDE e.V. (or its
-    successor approved by the membership of KDE e.V.), Nokia Corporation 
+    successor approved by the membership of KDE e.V.), Trolltech ASA 
     (or its successors, if any) and the KDE Free Qt Foundation, which shall
     act as a proxy defined in Section 6 of version 3 of the license.
 
@@ -36,12 +36,12 @@
 /**
  * PHONON_VERSION is (major << 16) + (minor << 8) + patch.
  */
-#define PHONON_VERSION PHONON_VERSION_CHECK(4, 3, 50)
+#define PHONON_VERSION PHONON_VERSION_CHECK(4, 3, 1)
 
 /**
  * PHONON_VERSION_STR is "major.minor.patch". E.g. "4.2.1"
  */
-#define PHONON_VERSION_STR "4.3.50"
+#define PHONON_VERSION_STR "4.3.1"
 
 QT_BEGIN_HEADER
 QT_BEGIN_NAMESPACE
@@ -90,7 +90,7 @@ namespace Phonon
     };
 
     /**
-     * Provided as keys for MediaObject::metaData for convenience, in addition to the strings defined in
+     * Provided as keys for \ref MediaObject::metaData for convenience, in addition to the strings defined in
      * the Ogg Vorbis specification.
      */
     enum MetaData {

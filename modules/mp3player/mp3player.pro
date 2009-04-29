@@ -17,7 +17,7 @@ INCLUDEPATH += ../.. \
     ../../3rdparty
 LIBS += -L../.. \
     -llyxlib -lphonon
-QT += xml
+QT += xml sql
 OBJECTS_DIR = ./libs
 MOC_DIR = ./libs
 unix { 

@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS = lyxlib \
-	  3rdparty/phonon \
+	  3rdparty \
 	  app \
 	  modules/clock \
 	  modules/volctl \

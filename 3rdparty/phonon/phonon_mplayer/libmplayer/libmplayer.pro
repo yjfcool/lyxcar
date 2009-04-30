@@ -19,5 +19,5 @@ MOC_DIR		= ./libs
 
 CONFIG += qt lib release static
 TARGET = mplayer
-DESTDIR = ../../../..
+DESTDIR = ..
 TEMPLATE = lib

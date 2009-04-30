@@ -23,7 +23,9 @@ HEADERS=AudioOutput.h \
 INCLUDEPATH=../..
 
 OBJECTS_DIR	= ./libs
-MOC_DIR		= ./libs
+MOC_DIR	= ./libs
+LIBPATH+= ../../..
+LIBS += ./libmplayer.a -lphonon4
 
 CONFIG += qt lib release plugin
 TARGET = phonon_mplayer

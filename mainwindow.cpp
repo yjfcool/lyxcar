@@ -35,6 +35,13 @@ AMainWindow::~AMainWindow()
 {
 }
 
+/*
+ * This function activates modules:
+ * 1) If there is a loaded and activated module we need to deactivate it.
+ * 1.1) Connect it's deactivated(QString) signal to new module activateModule(QString) slot.
+ * 1.2) Call deactivate() for it.
+ * 2) If there isn't any module activated then just activate a new module.
+ */
 void AMainWindow::activateModuleDemand(QString moduleName) {
 	if(activeModuleName() != moduleName) {
 		qDebug() << "MainWidget says Got activateModuleDemand(" << moduleName << ")";
@@ -52,8 +59,6 @@ void AMainWindow::activateModuleDemand(QString moduleName) {
 			prevModule->deactivate(deactivateFor);
 		} else {
 			activateModule(moduleName);
-			connect(modules[m_activeModuleName], SIGNAL(deactivated(QString)), this, SLOT(activateModule(QString)));
-			qDebug() << "MainWidget says deactivated() signal connected for module" << m_activeModuleName;
 		}
 	} else {
 		qDebug() << "Warning: Already activated" << moduleName;
@@ -158,6 +163,8 @@ bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
    
 void AMainWindow::init(const QString & skin_name)
 {
+   QString defaultModule;
+
    skinner = new ASkinner(this, skin_name);
    
    int headerSpace = skinner->skinValue("", "", "header_space").toInt();
@@ -201,7 +208,13 @@ void AMainWindow::init(const QString & skin_name)
     foreach (QString mod, modulesList) 
     {
 	loadModule(mod);
+	if(modules_conf->value(mod+"/Default").toInt() > 0) {
+	    defaultModule = mod;
+	}
     }
 
     fillPanel();
+
+    // Activate default module, or activate saved state module.
+    activateModule(defaultModule);
 }

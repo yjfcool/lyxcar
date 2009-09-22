@@ -75,8 +75,10 @@ class M_Interface {
 		void setAudioOutput(Phonon::AudioOutput *output) { m_audioOutput = output; }
 
 	protected:
-		ASkinner *m_skinner;
-		QString m_moduleName;
+		QString		m_moduleName;
+		bool		closable; // If set, module is deleted during deactivation procedure, 
+					  // otherwise it's just hidden.
+		ASkinner	*m_skinner;
 		Phonon::AudioOutput *m_audioOutput;
 };
 

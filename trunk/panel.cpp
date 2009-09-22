@@ -31,26 +31,8 @@ APanel::APanel(QWidget *parent, ASkinner *s) : QWidget(parent) {
 
 	layout->setSpacing(0);
 	layout->setContentsMargins(skinner->skinValue("", "panel", "padding-left").toInt(), 0,
-         skinner->skinValue("", "panel", "padding-right").toInt(), 0);
-//        layout->insertWidget(0, new QWidget(), 5);
+        skinner->skinValue("", "panel", "padding-right").toInt(), 0);
         layout->insertStretch(0, 5);
-
-//	button = new AMainMenuButton(this);
-//	layout->insertWidget(0, button);
-
-/*	widget = new AMainMenuWidget(parent);
-	widget->setParent(parent);
-	widget->setAutoFillBackground(true);
-	widget->move(0, 600-500-79);
-	widget->hide();             
-
-	QPalette pal_menu = palette();
-	QPixmap bgImg2("../skins/default/mbg2.png");
-	brush.setTexture(bgImg2);
-	pal_menu.setBrush(QPalette::Window, brush);
-	widget->setPalette(pal_menu);
-
-	connect(button, SIGNAL(activated()), this, SLOT(popup()));*/
 }
 
 APanel::~APanel() {}

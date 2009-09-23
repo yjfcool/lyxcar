@@ -149,7 +149,7 @@
 				<rect x="292" y="410" width="116" height="36"/>
 			</button>
 
-			<button name="repeat"
+			<button name="playlist"
 				released="buttonbar_left_up.png"
 				pressed="buttonbar_left_up.png">
 				<rect x="488" y="410" width="116" height="36"/>

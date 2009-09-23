@@ -16,7 +16,7 @@ INCLUDEPATH += ../.. \
     ../../lyxlib \
     ../../3rdparty
 LIBS += -L../.. \
-    -llyxlib -lphonon
+    -llyxlib -lphonon4
 QT += xml sql
 OBJECTS_DIR = ./libs
 MOC_DIR = ./libs

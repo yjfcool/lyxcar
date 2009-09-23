@@ -19,6 +19,7 @@
 
 #include "panel.h"
 #include "buttons.h"
+#include "lists.h"
 #include "skinner.h"
 #include "animated.h"
 #include "m_interface.h"
@@ -41,8 +42,22 @@ class playListMgrModuleWidget : public QWidget {
 		ALyxAnimation *lastAnimation;
 
 		// Buttons and animations in hashes with "button name" key.
-		QHash<QString, ALyxAnimation *> animations;
-		QHash<QString, ALyxButton *> buttons;
+		ALyxListWidget	*playList;
+		ALyxListWidget	*folderList;
+
+		// Add and remove buttons between lists
+		ALyxButton	*addBtn;
+		ALyxButton	*removeBtn;
+
+		// Device selection buttons
+		ALyxButton	*folderSelBtn;
+		ALyxButton	*cdSelBtn;
+
+		ALyxButton	*playBtn;	// When pressed it sends pause to mp3player and plays selected.
+		ALyxButton	*stopBtn;	// When pressed it sends continue playing to mp3player.
+
+		ALyxButton	*saveBtn;	// Playlist operations buttons
+		ALyxButton	*loadBtn;
 
 	private slots:
 		void activateModule();
@@ -82,7 +97,7 @@ class playListMgrModule : public QObject, M_Interface {
 		void deactivate(QString deactivateFor);
 
 	private:
-		playListMgrModuleApplet * appletWidget;
+//		playListMgrModuleApplet * appletWidget;
 		playListMgrModuleWidget * moduleWidget;
 		
 		QString nextModuleName;

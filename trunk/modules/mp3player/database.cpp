@@ -12,6 +12,9 @@
 
 #include "database.h"
 
+/*
+ * Works with database of mp3 files. The db stores tags and file paths to make it faster.
+ */
 mp3playerDatabase::mp3playerDatabase(QObject *parent) {
 	m_db = QSqlDatabase::addDatabase("QSQLITE");
 	m_db.setDatabaseName(QDir::toNativeSeparators(QDir::homePath()+"/data.sqlite"));
@@ -45,6 +48,9 @@ mp3playerDatabase::~mp3playerDatabase() {
     m_db.close();
 }
 
+/*
+ * Adds a track to DB
+ */
 void mp3playerDatabase::addTrack(
     QString fileName,
     QString artist, 
@@ -64,6 +70,9 @@ void mp3playerDatabase::addTrack(
     }
 }
 
+/*
+ * When track already exists in DB but some tag fields are have been changed updates them.
+ */
 void mp3playerDatabase::updateTrack(
     QString fileName,
     QString artist,
@@ -83,6 +92,9 @@ void mp3playerDatabase::updateTrack(
     }
 }
 
+/*
+ * Checks if the track data record exists in db
+ */
 bool mp3playerDatabase::ifExists(QString fileName) {
     QSqlQuery query(m_db);
     fileName = fileName.replace("'", "\\'");
@@ -102,6 +114,9 @@ bool mp3playerDatabase::ifExists(QString fileName) {
     }
 }
 
+/*
+ * Gets track information.
+ */
 ATrackData mp3playerDatabase::getTrack(QString fileName) {
     ATrackData td;
     td.artist = "Unknown";

@@ -28,6 +28,10 @@ class M_Interface {
 	public:
 		//! \brief Virtual destructor.
 		virtual ~M_Interface() {}
+		M_Interface() {
+				moduleWindow = NULL;
+				m_closable = true;
+		}
 
 		QWidget * moduleWindow;
 		//! \brief This must be implemented as needed to display module's interface in main window.
@@ -74,10 +78,13 @@ class M_Interface {
 		//! The program has only one audio interface and every module use it for it's purposes.
 		void setAudioOutput(Phonon::AudioOutput *output) { m_audioOutput = output; }
 
+
+		void setClosable(bool value) { m_closable = value; }
+		bool closable() { return m_closable; }
 	protected:
 		QString		m_moduleName;
-		bool		closable; // If set, module is deleted during deactivation procedure, 
-					  // otherwise it's just hidden.
+		bool			m_closable; // If set, module is deleted during deactivation procedure, otherwise it's just hidden.
+
 		ASkinner	*m_skinner;
 		Phonon::AudioOutput *m_audioOutput;
 };

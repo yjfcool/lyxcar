@@ -24,7 +24,6 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s, Phonon::AudioOutp
 	m_dbase = new mp3playerDatabase(this); // Create connection to mp3s database
 
 	m_mediaObject = new Phonon::MediaObject(this);	// Create new media object for this instance of player
-//	m_mediaObject->setCurrentSource(Phonon::MediaSource("test.mp3"));
 	Phonon::Path path = Phonon::createPath(m_mediaObject, m_audioOutput);	// Connect it to audio output
 
 	playTimer = new QTimer();
@@ -164,8 +163,8 @@ void mp3playerWindow::createWindow() {
 	testBtn->setFont(QFont("Calibri", 12));
 
 	ALyxPushButton *repeatModeBtn = new ALyxPushButton(this);
-	repeatModeBtn->setSkin(m_skinner, "mp3player", "repeat");
-	repeatModeBtn->setText("Repeat all");
+	repeatModeBtn->setSkin(m_skinner, "mp3player", "playlist");
+	repeatModeBtn->setText("Playlist");
         repeatModeBtn->setFont(QFont("Calibri", 12));
 
         ALyxPushButton *displayModeBtn = new ALyxPushButton(this);
@@ -343,6 +342,10 @@ void mp3playerWindow::playCurrent() {
 	
 }
 
+/*
+ * Begins playing selected track.
+ * Sets currentTrack to selected and calls playCurrent().
+ */
 void mp3playerWindow::playTrack() {
     if(trackList->selectedIndex() >= 0) {
         ALyxListWidgetItem *item = trackList->selectedItem();
@@ -354,6 +357,11 @@ void mp3playerWindow::playTrack() {
     }
 }
 
+/*
+ * Begins playing selected album.
+ * Sets currentAlbumPlaying, loads album tracks into list and sets currentTrack
+ * to the first one. Than calls playCurrent().
+ */
 void mp3playerWindow::playAlbum() {
 	if(playList->selectedIndex() >= 0) {
 		ALyxListWidgetItem *item = playList->selectedItem();
@@ -509,7 +517,12 @@ void mp3playerWindow::pauseCurrent() {
  * Module activation procedure
  */
 QWidget * mp3playerModule::activate(QWidget *parent) {
-	moduleWindow = new mp3playerWindow(parent, m_skinner, m_audioOutput);
+	if(!moduleWindow) {
+		moduleWindow = new mp3playerWindow(parent, m_skinner, m_audioOutput);
+		setClosable(false);
+	} else {
+		moduleWindow->show();
+	}
 
 	return moduleWindow;
 }

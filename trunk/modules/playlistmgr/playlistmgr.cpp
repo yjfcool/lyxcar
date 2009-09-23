@@ -10,7 +10,7 @@
  *
 */
 
-#include "default_home.h"
+#include "playlistmgr.h"
 
 /*
  * Widget class implementation
@@ -19,80 +19,13 @@
 playListMgrModuleWidget::playListMgrModuleWidget(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
 
-	// Construct menus from a skin defenition
-	QDomElement buttonsElement = m_skinner->skinModuleElement("default_home", "buttons");
-	QDomNodeList buttonsList = buttonsElement.elementsByTagName("button");
-	for(int i = 0; i < buttonsList.count(); i++) {
-		QDomElement buttonElement = buttonsList.at(i).toElement();
-		if(!buttonElement.isNull()) {
-			int tmp_at = 0;
-
-			// Get button properties
-			QString bname = buttonElement.attribute("name");
-			QString value = buttonElement.attribute("value");
-			QString pressed = buttonElement.attribute("pressed");
-			QString released = buttonElement.attribute("released");
-			qDebug() << bname << value << pressed << released;
-
-			// Append button to the buttons list,
-			// and create animation object for button.
-			buttons[bname] = new ALyxButton(this);
-			buttons[bname]->setObjectName(bname);
-			buttons[bname]->setUpPixmap(QPixmap(m_skinner->skinModuleImagePath("default_home")+released));
-			buttons[bname]->setDownPixmap(QPixmap(m_skinner->skinModuleImagePath("default_home")+pressed));
-
-			// Connect button to a module activation slot
-			// ONLY NOW BY DEFAULT, WE NEED TO CHANGE THIS IF
-			// WE HAVE BUTTON FUNCTIONS OTHER THAN JUST CALLING
-			// MODULES!
-			connect(buttons[bname], SIGNAL(clicked()), this, SLOT(activateModule()));
-
-			// Get button animations
-			QDomElement animationElement = buttonElement.firstChildElement("animation");
-			if(!animationElement.isNull()) {
-				QDomNodeList stopsList = animationElement.elementsByTagName("stop");
-				animations[bname] = new ALyxAnimation(this, buttons[bname]);
-				animations[bname]->setAnimationTime(animationElement.attribute("time").toInt());
-				// Detect the longest animation queue
-				if(tmp_at < animationElement.attribute("time").toInt()) { tmp_at = animationElement.attribute("time").toInt(); lastAnimation = animations[bname]; }
-				for(int a = 0; a < stopsList.count(); a++) {
-					QDomElement stopElement = stopsList.at(a).toElement();
-					if(!stopElement.isNull()) {
-						int time = stopElement.attribute("time").toInt();
-						int x = stopElement.attribute("x").toInt();
-						int y = stopElement.attribute("y").toInt();
-						int width = stopElement.attribute("width").toInt();
-						int height = stopElement.attribute("height").toInt();
-						float opacity = stopElement.attribute("opacity").toFloat();
-						int acceleration = stopElement.attribute("acceleration").toInt();
-						animations[bname]->stops << ALyxAnimationStop(time, x, y, width, height, opacity);
-						qDebug() << bname << "stop at" << time << x << y << width << height << opacity;
-					}
-				}       
-			} else {
-				// Get button position and rectangle
-				QDomElement rectElement = buttonElement.firstChildElement("rect");
-				if(!rectElement.isNull()) {
-					int ini_x = rectElement.attribute("x").toInt();
-					int ini_y = rectElement.attribute("y").toInt();
-					int ini_width = rectElement.attribute("width").toInt();
-					int ini_height = rectElement.attribute("height").toInt();
-					buttons[bname]->move(ini_x, ini_y);
-					buttons[bname]->setFixedSize(ini_width, ini_height);
-				} else {
-				 	qDebug() << "Warning: no initial rectangle for" << bname << "defined";
-				}
-			}
-		}
-	}
-
-	foreach (QString anim, animations.keys()) {
+	/*foreach (QString anim, animations.keys()) {
 		animations[anim]->start();
-	}
+	}*/
 }
 
 void playListMgrModuleWidget::animateReverse() {
-	if(animations.count() > 0) {
+/*	if(animations.count() > 0) {
 		// If there is any animation object, connect the fin of it to animationFinished signal.
 		// Only for reverse animation which means deactivation of a module widget.
 		if(lastAnimation) {
@@ -101,7 +34,7 @@ void playListMgrModuleWidget::animateReverse() {
 		foreach (QString anim, animations.keys()) {
 			animations[anim]->reverse();
 		}
-	}
+	}*/
 }
 
 playListMgrModuleWidget::~playListMgrModuleWidget() {
@@ -125,21 +58,10 @@ void playListMgrModuleWidget::activateModule() {
 */
 playListMgrModuleApplet::playListMgrModuleApplet(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
-
-	// This is a simple home button
-	ALyxButton *button = new ALyxButton(this);
-	button->setUpPixmap(QPixmap(m_skinner->skinModuleImage("default_home", "button", "released")));
-	button->setDownPixmap(QPixmap(m_skinner->skinModuleImage("default_home", "button", "pressed")));
-
-	setFixedWidth(button->width());
-
-	// When the button is clicked emit signal from an applet
-	connect(button, SIGNAL(clicked()), this, SIGNAL(buttonClicked()));
-
 }
 
 playListMgrModuleApplet::~playListMgrModuleApplet() {
-	qDebug() << "homeModuleApplet destroyed";
+	qDebug() << "playlistMgrApplet destroyed";
 }
 
 QWidget *playListMgrModule::activate(QWidget *parent) {
@@ -164,17 +86,15 @@ void playListMgrModule::deactivationFinished() {
 }
 
 QWidget *playListMgrModule::activateApplet(QWidget *parent) {
-	qDebug() << "Appending playListMgr plugin to panel";
-
 	// Create applet widget
-	appletWidget = new playListMgrModuleApplet(NULL, m_skinner);
-	appletWidget->setSkinner(m_skinner);
+//	appletWidget = new playListMgrModuleApplet(NULL, m_skinner);
+//	appletWidget->setSkinner(m_skinner);
 
 	// When signal from applet is recieved (button clicked)
 	// call activateWidget().
-	connect(appletWidget, SIGNAL(buttonClicked()), this, SLOT(activateMyself()));
+//	connect(appletWidget, SIGNAL(buttonClicked()), this, SLOT(activateMyself()));
 
-	return appletWidget;
+	return NULL;
 }
 
 

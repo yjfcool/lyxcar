@@ -55,6 +55,12 @@ class mp3playerModule : public QObject, public M_Interface {
 	signals:
 		void demandActivation(QString moduleName);
 		void deactivated(QString deactivateFor);
+
+	public slots:
+		void activatePlaylistEditor() {
+		    qDebug() << "mp3player caller playlist manager";
+		    demandActivation("playlistmgr");
+		}
 };
 
 // File name - track name
@@ -71,6 +77,8 @@ class mp3playerWindow : public QWidget {
 		void createWindow();
 		void setSkinner(ASkinner *s) { m_skinner = s; }
 		void setAudioOutput(Phonon::AudioOutput *output) { m_audioOutput = output; }
+
+		ALyxPushButton *playlistEditBtn;
 
 	public slots:
 		void	playAlbum();
@@ -89,7 +97,9 @@ class mp3playerWindow : public QWidget {
 		void	selectDevice();
 		void	fillPlayList();
 		void	displayAlbums();
+
 	signals:
+		void	playlistClicked();
 
 	private slots:
 		void	deviceSelection(QString operation);
@@ -115,6 +125,8 @@ class mp3playerWindow : public QWidget {
 		ALyxButton *playBtn;
 		ALyxButton *nextBtn;
 		ALyxButton *nextAlbumBtn;
+		
+
 
 		// Album name - tracks
 		QHash<QString, mp3playerAlbumContents> albums;

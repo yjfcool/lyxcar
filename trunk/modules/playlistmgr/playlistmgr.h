@@ -24,12 +24,12 @@
 #include "animated.h"
 #include "m_interface.h"
 
-class playListMgrModuleWidget : public QWidget {
+class playlistmgrModuleWidget : public QWidget {
 	Q_OBJECT
 	public:
 		/* public members */
-		playListMgrModuleWidget(QWidget * parent = 0, ASkinner *s = 0);
-		~playListMgrModuleWidget();
+		playlistmgrModuleWidget(QWidget * parent = 0, ASkinner *s = 0);
+		~playlistmgrModuleWidget();
 
 		void setSkinner(ASkinner *s) { m_skinner = s; }
 		
@@ -67,12 +67,12 @@ class playListMgrModuleWidget : public QWidget {
 		void animationFinished();
 };
 
-class playListMgrModuleApplet : public QWidget {
+class playlistmgrModuleApplet : public QWidget {
 	Q_OBJECT
 	public:
 		/* public members */
-		playListMgrModuleApplet(QWidget * parent = 0, ASkinner *s = 0);
-		~playListMgrModuleApplet();
+		playlistmgrModuleApplet(QWidget * parent = 0, ASkinner *s = 0);
+		~playlistmgrModuleApplet();
 
 		void setSkinner(ASkinner *s) { m_skinner = s; }
 
@@ -87,7 +87,7 @@ class playListMgrModuleApplet : public QWidget {
 		void buttonClicked();
 };
 
-class playListMgrModule : public QObject, M_Interface {
+class playlistmgrModule : public QObject, M_Interface {
 	Q_OBJECT
 	Q_INTERFACES(M_Interface)
 
@@ -97,8 +97,8 @@ class playListMgrModule : public QObject, M_Interface {
 		void deactivate(QString deactivateFor);
 
 	private:
-//		playListMgrModuleApplet * appletWidget;
-		playListMgrModuleWidget * moduleWidget;
+//		playlistmgrModuleApplet * appletWidget;
+		playlistmgrModuleWidget * moduleWidget;
 		
 		QString nextModuleName;
 

@@ -27,9 +27,15 @@ INCLUDEPATH=../..
 OBJECTS_DIR	= ./libs
 MOC_DIR	= ./libs
 LIBPATH+= ../../..
-LIBS += ./libmplayer.a -lphonon4
+win32:release {
+    LIBS += ./libmplayer.a -lphonon4
+}
+
+unix {
+    LIBS += ./libmplayer.a -lphonon
+}
 
 CONFIG += qt lib release plugin
 TARGET = phonon_mplayer
-DESTDIR=../../..
+DESTDIR=../../../phonon_backend
 TEMPLATE = lib

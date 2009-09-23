@@ -6,6 +6,7 @@ SUBDIRS = lyxlib \
 	  modules/volctl \
           modules/default_home \
 	  modules/mp3player \
-	  modules/phone
+	  modules/phone \
+	  modules/playlistmgr
 
 CONFIG += ordered release

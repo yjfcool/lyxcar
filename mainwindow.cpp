@@ -96,13 +96,19 @@ void AMainWindow::replyActivation(QString mname) {
 	activateModuleDemand(mname);
 }
 
-void AMainWindow::clearMainArea() { // ** Finished **
+void AMainWindow::clearMainArea() { // ** UNFinished **
 		// We need to destroy boxLayout to clear main area and create it again.
 		if(mainArea->layout()) {
-			qDebug() << "MainWidget says Clearing main area's layout: mainArea->layout() destroyed";
+			qDebug() << "MainWidget says clearing main area's layout: mainArea->layout() destroyed";
 			foreach(QObject *child, mainArea->children()) {
-			    qDebug() << "Deleting" << child->objectName();
-			    child->deleteLater();
+				// Hide all QWidget elements and delete all other!
+				if(child->inherits("QWidget")) {
+					qDebug() << "Hiding" << child->objectName();
+					qobject_cast<QWidget *>(child)->hide();
+				} else {
+					qDebug() << "Deleting" << child->objectName();
+					child->deleteLater();
+				}
 			}
 			// CHECK IF the garbage collector destroys module widget?!
 			delete mainArea->layout();

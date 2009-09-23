@@ -1,6 +1,7 @@
 SOURCES=AudioOutput.cpp \
 	Backend.cpp \ 
 	Effect.cpp \
+	EffectManager.cpp \
 	MPlayerVideoWidget.cpp \
 	MediaController.cpp \
 	MediaObject.cpp \
@@ -12,6 +13,7 @@ SOURCES=AudioOutput.cpp \
 HEADERS=AudioOutput.h \
 	Backend.h \ 
 	Effect.h \
+	EffectManager.h \
 	MPlayerVideoWidget.h \
 	MediaController.h \
 	MediaObject.h \

@@ -3,7 +3,7 @@ TARGET = phonon
 OBJECTS_DIR	= ./libs
 MOC_DIR		= ./libs
 DESTDIR	= ../..
-LIBS		= ../../phonon_mplayer.dll
+#LIBS		= ../../phonon_mplayer.dll
 
 CONFIG += dll release warn_on
 include($$QT_SOURCE_TREE/src/qbase.pri)

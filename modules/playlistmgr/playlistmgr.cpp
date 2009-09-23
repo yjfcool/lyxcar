@@ -16,29 +16,16 @@
  * Widget class implementation
 */
 
-playListMgrModuleWidget::playListMgrModuleWidget(QWidget *parent, ASkinner *s) {
+playlistmgrModuleWidget::playlistmgrModuleWidget(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
-
-	/*foreach (QString anim, animations.keys()) {
-		animations[anim]->start();
-	}*/
 }
 
-void playListMgrModuleWidget::animateReverse() {
-/*	if(animations.count() > 0) {
-		// If there is any animation object, connect the fin of it to animationFinished signal.
-		// Only for reverse animation which means deactivation of a module widget.
-		if(lastAnimation) {
-			connect(lastAnimation, SIGNAL(finished()), this, SIGNAL(animationFinished()));
-		}
-		foreach (QString anim, animations.keys()) {
-			animations[anim]->reverse();
-		}
-	}*/
+void playlistmgrModuleWidget::animateReverse() {
+
 }
 
-playListMgrModuleWidget::~playListMgrModuleWidget() {
-	qDebug() << "playListMgrModuleWidget destroyed";	
+playlistmgrModuleWidget::~playlistmgrModuleWidget() {
+	qDebug() << "playlistmgrModuleWidget destroyed";	
 }
 
 /* SLOT
@@ -47,7 +34,7 @@ playListMgrModuleWidget::~playListMgrModuleWidget() {
  * For example, if we have a button called "foo", and associated with module "bar"
  * we need to use substitution table to access "bar".
 */
-void playListMgrModuleWidget::activateModule() {
+void playlistmgrModuleWidget::activateModule() {
 	qDebug() << "activateModule recieved objectName" << sender()->objectName();
 
 	emit activateClicked(sender()->objectName());
@@ -56,23 +43,23 @@ void playListMgrModuleWidget::activateModule() {
 /*
  * Applet class implementation
 */
-playListMgrModuleApplet::playListMgrModuleApplet(QWidget *parent, ASkinner *s) {
+playlistmgrModuleApplet::playlistmgrModuleApplet(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
 }
 
-playListMgrModuleApplet::~playListMgrModuleApplet() {
-	qDebug() << "playlistMgrApplet destroyed";
+playlistmgrModuleApplet::~playlistmgrModuleApplet() {
+	qDebug() << "playlistmgrApplet destroyed";
 }
 
-QWidget *playListMgrModule::activate(QWidget *parent) {
-	moduleWidget = new playListMgrModuleWidget(parent, m_skinner);
+QWidget *playlistmgrModule::activate(QWidget *parent) {
+	moduleWidget = new playlistmgrModuleWidget(parent, m_skinner);
 
 	connect(moduleWidget, SIGNAL(activateClicked(QString)), this, SLOT(activateModuleWidget(QString)));
 
 	return moduleWidget;
 }
 
-void playListMgrModule::deactivate(QString deactivateFor) {
+void playlistmgrModule::deactivate(QString deactivateFor) {
 	qDebug() << "Deactivating current widget. The next module is" << deactivateFor;
 
 	// It's needed to pass net module name to properly deactivate this and activate next module!
@@ -81,13 +68,13 @@ void playListMgrModule::deactivate(QString deactivateFor) {
 	moduleWidget->animateReverse();
 }
 
-void playListMgrModule::deactivationFinished() {
+void playlistmgrModule::deactivationFinished() {
 	emit deactivated(nextModuleName);
 }
 
-QWidget *playListMgrModule::activateApplet(QWidget *parent) {
+QWidget *playlistmgrModule::activateApplet(QWidget *parent) {
 	// Create applet widget
-//	appletWidget = new playListMgrModuleApplet(NULL, m_skinner);
+//	appletWidget = new playlistmgrModuleApplet(NULL, m_skinner);
 //	appletWidget->setSkinner(m_skinner);
 
 	// When signal from applet is recieved (button clicked)
@@ -98,4 +85,4 @@ QWidget *playListMgrModule::activateApplet(QWidget *parent) {
 }
 
 
-Q_EXPORT_PLUGIN2(home, playListMgrModule);
+Q_EXPORT_PLUGIN2(home, playlistmgrModule);

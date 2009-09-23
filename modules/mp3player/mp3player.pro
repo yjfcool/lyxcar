@@ -16,7 +16,7 @@ INCLUDEPATH += ../.. \
     ../../lyxlib \
     ../../3rdparty
 LIBS += -L../.. \
-    -llyxlib -lphonon4
+    -llyxlib
 QT += xml sql
 OBJECTS_DIR = ./libs
 MOC_DIR = ./libs
@@ -31,5 +31,9 @@ unix {
 win32:release { 
     DESTDIR = ./
     INCLUDEPATH += ./taglib
-    LIBS += -llibtag
+    LIBS += -llibtag -lphonon4
+}
+
+unix {
+    LIBS += -lphonon
 }

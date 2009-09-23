@@ -162,10 +162,11 @@ void mp3playerWindow::createWindow() {
 	testBtn->setText("Test");
 	testBtn->setFont(QFont("Calibri", 12));
 
-	ALyxPushButton *repeatModeBtn = new ALyxPushButton(this);
-	repeatModeBtn->setSkin(m_skinner, "mp3player", "playlist");
-	repeatModeBtn->setText("Playlist");
-        repeatModeBtn->setFont(QFont("Calibri", 12));
+	playlistEditBtn = new ALyxPushButton(this);
+	playlistEditBtn->setSkin(m_skinner, "mp3player", "playlist");
+	playlistEditBtn->setText("Playlist");
+        playlistEditBtn->setFont(QFont("Calibri", 12));
+	connect(playlistEditBtn, SIGNAL(clicked()), this, SLOT(activatePlaylistEditor()));
 
         ALyxPushButton *displayModeBtn = new ALyxPushButton(this);
 	displayModeBtn->setSkin(m_skinner, "mp3player", "display");
@@ -520,6 +521,8 @@ QWidget * mp3playerModule::activate(QWidget *parent) {
 	if(!moduleWindow) {
 		moduleWindow = new mp3playerWindow(parent, m_skinner, m_audioOutput);
 		setClosable(false);
+
+		connect(qobject_cast<mp3playerWindow*>(moduleWindow)->playlistEditBtn, SIGNAL(clicked()), this, SLOT(activatePlaylistEditor()));
 	} else {
 		moduleWindow->show();
 	}

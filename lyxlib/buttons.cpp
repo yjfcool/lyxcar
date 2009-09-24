@@ -14,13 +14,15 @@
 
 #include <QDebug>
 
-ALyxButton::ALyxButton(QWidget *parent) : ALyxControl(parent) {
+ALyxButton::ALyxButton(QWidget *parent, ASkinner *skinner) : ALyxControl(parent) {
 	currentState = false;
 	//if(isChecked()) { currentState = true; }
 	setParent(parent);
 	animationTimer = new QTimer();
 	animationTimer->setInterval(20);
 	currentOpacity = 0;
+
+	if(skinner) { setSkinner(skinner); }
 
 	connect(animationTimer, SIGNAL(timeout()), this, SLOT(animate()));
 }
@@ -42,15 +44,20 @@ void ALyxButton::setDownPixmap(QPixmap image) {
 }
 
 void ALyxButton::setSkin(ASkinner *s, QString moduleName, QString buttonName) {
-	QDomElement btnElement = s->skinModuleElementByName(moduleName, "button", buttonName);
-	setUpPixmap(QPixmap(s->skinModuleImagePath(moduleName)+btnElement.attribute("released")));
-	setDownPixmap(QPixmap(s->skinModuleImagePath(moduleName)+btnElement.attribute("pressed")));
-	QDomElement rectElement = btnElement.firstChildElement("rect");
-	if(!rectElement.isNull()) {
-		move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
-		setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
+	if(!s) { s = m_skinner; }
+	if(s) {
+		QDomElement btnElement = s->skinModuleElementByName(moduleName, "button", buttonName);
+		setUpPixmap(QPixmap(s->skinModuleImagePath(moduleName)+btnElement.attribute("released")));
+		setDownPixmap(QPixmap(s->skinModuleImagePath(moduleName)+btnElement.attribute("pressed")));
+		QDomElement rectElement = btnElement.firstChildElement("rect");
+		if(!rectElement.isNull()) {
+			move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
+			setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
+		} else {
+			qDebug() << "Warning: no initial rectangle for" << objectName() << "defined";
+		}
 	} else {
-	 	qDebug() << "Warning: no initial rectangle for" << objectName() << "defined";
+		qDebug() << "NO SKIN DEFINED FOR" << moduleName << ":" << buttonName;
 	}
 }
 
@@ -114,8 +121,9 @@ void ALyxButton::resizeEvent(QResizeEvent *e) {
 	repaint();
 }
 
-ALyxPushButton::ALyxPushButton(QWidget *parent, QString text) : ALyxButton(parent) {
+ALyxPushButton::ALyxPushButton(QWidget *parent, QString text, ASkinner *skinner) : ALyxButton(parent) {
 	m_text = text;
+	m_skinner = skinner;
 }
 
 ALyxPushButton::~ALyxPushButton() {

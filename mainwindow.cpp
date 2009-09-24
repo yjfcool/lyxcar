@@ -66,7 +66,7 @@ void AMainWindow::activateModuleDemand(QString moduleName) {
 }
 
 void AMainWindow::activateModule(QString moduleName) {
-	qDebug() << "MainWidget says that deactivated() was recieved if it was possible. Activating" << moduleName;
+	qDebug() << "MainWidget says that deactivated() was recieved. Activating" << moduleName;
 	clearMainArea(); // Clearing
 
 	// Activate module by moduleName.

@@ -53,14 +53,13 @@ class playlistmgrModuleWidget : public QWidget {
 		ALyxButton	*folderSelBtn;
 		ALyxButton	*cdSelBtn;
 
-		ALyxButton	*playBtn;	// When pressed it sends pause to mp3player and plays selected.
-		ALyxButton	*stopBtn;	// When pressed it sends continue playing to mp3player.
+		ALyxPushButton	*playBtn;	// When pressed it sends pause to mp3player and plays selected.
+		ALyxPushButton	*returnBtn;	// When pressed it sends continue playing to mp3player.
 
-		ALyxButton	*saveBtn;	// Playlist operations buttons
-		ALyxButton	*loadBtn;
+		ALyxPushButton	*saveBtn;	// Playlist operations buttons
+		ALyxPushButton	*loadBtn;
 
 	private slots:
-		void activateModule();
 	
 	signals:
 		void activateClicked(QString);
@@ -82,9 +81,7 @@ class playlistmgrModuleApplet : public QWidget {
 
 	private slots:
 
-
 	signals:
-		void buttonClicked();
 };
 
 class playlistmgrModule : public QObject, M_Interface {
@@ -97,11 +94,9 @@ class playlistmgrModule : public QObject, M_Interface {
 		void deactivate(QString deactivateFor);
 
 	private:
-//		playlistmgrModuleApplet * appletWidget;
-		playlistmgrModuleWidget * moduleWidget;
+		playlistmgrModuleWidget *m_moduleWidget;
+		QString			m_nextModuleName;
 		
-		QString nextModuleName;
-
 	private slots:
 		void deactivationFinished();
 
@@ -110,17 +105,6 @@ class playlistmgrModule : public QObject, M_Interface {
 		void deactivated(QString deactivateFor);
 
 	public slots:
-		//! \brief Module activation slot - creates and shows main module widget
-		void activateMyself() {
-			// Module emits signal demanding an activation.
-			emit demandActivation(m_moduleName);
-		}
-
-		//! \brief Module activation slot - creates and shows main module <mname> widget
-		void activateModuleWidget(QString mname) {
-			// Module emits signal demanding an activation.
-			emit demandActivation(mname);
-		}
 };
 
 #endif

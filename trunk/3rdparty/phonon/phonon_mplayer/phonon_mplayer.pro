@@ -28,11 +28,11 @@ OBJECTS_DIR	= ./libs
 MOC_DIR	= ./libs
 LIBPATH+= ../../..
 win32:release {
-    LIBS += ./libmplayer.a -lphonon4
+    LIBS += ../../../libmplayer.a -lphonon4
 }
 
 unix {
-    LIBS += ./libmplayer.a -lphonon
+    LIBS += ../../../libmplayer.a -lphonon
 }
 
 CONFIG += qt lib release plugin

@@ -18,28 +18,44 @@
 
 playlistmgrModuleWidget::playlistmgrModuleWidget(QWidget *parent, ASkinner *s) {
 	m_skinner = s;
+
+	playList = new ALyxListWidget(this, m_skinner);
+	playList->setSkin(NULL, "playlistmgr", "playlist");
+
+	folderList = new ALyxListWidget(this, m_skinner);
+	folderList->setSkin(NULL, "playlistmgr", "folderlist");
+
+	addBtn = new ALyxButton(this, m_skinner);
+	addBtn->setSkin(NULL, "playlistmgr", "addbutton");
+
+	removeBtn = new ALyxButton(this, m_skinner);
+	removeBtn->setSkin(NULL, "playlistmgr", "removebutton");
+
+	loadBtn = new ALyxPushButton(this, tr("Load"));
+	loadBtn->setFont(QFont("Calibri", 12));
+	loadBtn->setSkin(m_skinner, "playlistmgr", "loadbutton");
+
+	saveBtn = new ALyxPushButton(this, tr("Save"));
+	saveBtn->setFont(QFont("Calibri", 12));
+	saveBtn->setSkin(m_skinner, "playlistmgr", "savebutton");
+
+	returnBtn = new ALyxPushButton(this, tr("Return"));
+	returnBtn->setFont(QFont("Calibri", 12));
+	returnBtn->setSkin(m_skinner, "playlistmgr", "returnbutton");
+
+	playBtn = new ALyxPushButton(this, tr("Play/Stop"));
+	playBtn->setFont(QFont("Calibri", 12));
+	playBtn->setSkin(m_skinner, "playlistmgr", "playbutton");
 }
 
 void playlistmgrModuleWidget::animateReverse() {
-
+	emit animationFinished();
 }
 
 playlistmgrModuleWidget::~playlistmgrModuleWidget() {
 	qDebug() << "playlistmgrModuleWidget destroyed";	
 }
 
-/* SLOT
- * We use this function when we need to activate another module from current module.
- * The name of module to be activated is defined by objectName of a caller.
- * For example, if we have a button called "foo", and associated with module "bar"
- * we need to use substitution table to access "bar".
-*/
-void playlistmgrModuleWidget::activateModule() {
-	qDebug() << "activateModule recieved objectName" << sender()->objectName();
-
-	emit activateClicked(sender()->objectName());
-}
-	
 /*
  * Applet class implementation
 */
@@ -52,24 +68,22 @@ playlistmgrModuleApplet::~playlistmgrModuleApplet() {
 }
 
 QWidget *playlistmgrModule::activate(QWidget *parent) {
-	moduleWidget = new playlistmgrModuleWidget(parent, m_skinner);
+	m_moduleWidget = new playlistmgrModuleWidget(parent, m_skinner);
 
-	connect(moduleWidget, SIGNAL(activateClicked(QString)), this, SLOT(activateModuleWidget(QString)));
-
-	return moduleWidget;
+	return m_moduleWidget;
 }
 
 void playlistmgrModule::deactivate(QString deactivateFor) {
 	qDebug() << "Deactivating current widget. The next module is" << deactivateFor;
 
 	// It's needed to pass net module name to properly deactivate this and activate next module!
-	nextModuleName = deactivateFor;
-	connect(moduleWidget, SIGNAL(animationFinished()), this, SLOT(deactivationFinished()));
-	moduleWidget->animateReverse();
+	m_nextModuleName = deactivateFor;
+	connect(m_moduleWidget, SIGNAL(animationFinished()), this, SLOT(deactivationFinished()));
+	m_moduleWidget->animateReverse();
 }
 
 void playlistmgrModule::deactivationFinished() {
-	emit deactivated(nextModuleName);
+	emit deactivated(m_nextModuleName);
 }
 
 QWidget *playlistmgrModule::activateApplet(QWidget *parent) {
@@ -80,7 +94,6 @@ QWidget *playlistmgrModule::activateApplet(QWidget *parent) {
 	// When signal from applet is recieved (button clicked)
 	// call activateWidget().
 //	connect(appletWidget, SIGNAL(buttonClicked()), this, SLOT(activateMyself()));
-
 	return NULL;
 }
 

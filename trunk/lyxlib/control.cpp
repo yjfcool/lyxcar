@@ -15,6 +15,7 @@
 ALyxControl::ALyxControl(QWidget * parent) :
 	QWidget(parent) {
 	m_opacity = 1.0;
+	m_skinner = NULL;
 }
 
 void ALyxControl::setFixedSize(int w, int h) {
@@ -29,6 +30,10 @@ void ALyxControl::setFixedSize(QSize s) {
 
 qreal ALyxControl::opacity() const {
 	return m_opacity;
+}
+
+void ALyxControl::setSkinner(ASkinner *s) {
+	m_skinner = s;
 }
 
 ALyxControl::~ALyxControl() {

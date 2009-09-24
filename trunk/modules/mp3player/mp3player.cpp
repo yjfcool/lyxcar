@@ -529,6 +529,12 @@ QWidget * mp3playerModule::activate(QWidget *parent) {
 
 	return moduleWindow;
 }
+
+void  mp3playerModule::activatePlaylistEditor() {
+	qDebug() << "mp3player caller playlist manager";
+	emit demandActivation("playlistmgr");
+}
+
 void mp3playerModule::deactivate(QString deactivateFor) {
     emit deactivated(deactivateFor);
 }

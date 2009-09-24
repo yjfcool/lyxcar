@@ -33,7 +33,7 @@ class ALyxButton : public ALyxControl {
 		/*!
 			\param parent specifies parent widget for the button.
 		*/
-        	ALyxButton(QWidget *parent = 0);
+		ALyxButton(QWidget *parent = 0, ASkinner *skinner = 0);
 
 		~ALyxButton();
 		
@@ -90,7 +90,7 @@ class ALyxButton : public ALyxControl {
 class ALyxPushButton : public ALyxButton {
 	Q_OBJECT
 	public:
-		ALyxPushButton(QWidget *parent = 0, QString text = "");
+		ALyxPushButton(QWidget *parent = 0, QString text = "", ASkinner *skinner = 0);
 		~ALyxPushButton();
 
 		void setText(QString text);

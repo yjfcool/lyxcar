@@ -57,10 +57,7 @@ class mp3playerModule : public QObject, public M_Interface {
 		void deactivated(QString deactivateFor);
 
 	public slots:
-		void activatePlaylistEditor() {
-		    qDebug() << "mp3player caller playlist manager";
-		    demandActivation("playlistmgr");
-		}
+		void activatePlaylistEditor();
 };
 
 // File name - track name

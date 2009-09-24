@@ -42,7 +42,7 @@
 					<stop time="30" x="20" y="140" width="276" height="94" opacity="1" acceleration="1"/>
 				</animation>
 			</button>
-			<button name="gps" value="GPS"
+			<button name="playlistmgr" value="Playlist manager"
 				appear-pause="0"
 				disappear-pause="0"
 				released="gps_btn_up.png"
@@ -160,6 +160,70 @@
 				<rect x="604" y="410" width="116" height="36"/>
 			</button>
 		</mp3player>
+		<playlistmgr>
+			<list name="playlist">
+				<rect x="480" y="10" width="300" height="390"/>
+				<!--border images for list  -->
+				<borders
+					upper-left="list_ul.png"
+					upper-right="list_ur.png"
+					top="list_u.png"
+					bottom-left="list_bl.png"
+					bottom-right="list_br.png"
+					bottom="list_b.png"
+					left="list_l.png"
+					right="list_r.png"
+				/>
+				<selector image="list_selector.png" fill="list_selector_fill.png"/>
+			</list>
+
+			<list name="folderlist">
+				<rect x="100" y="10" width="300" height="390"/>
+				<!--border images for list  -->
+				<borders
+					upper-left="list_ul.png"
+					upper-right="list_ur.png"
+					top="list_u.png"
+					bottom-left="list_bl.png"
+					bottom-right="list_br.png"
+					bottom="list_b.png"
+					left="list_l.png"
+					right="list_r.png"
+				/>
+				<selector image="list_selector.png" fill="list_selector_fill.png"/>
+			</list>
+			<button name="addbutton"
+				released="addbutton.png"
+				pressed="addbutton.png">
+				<rect x="390" y="200" width="81" height="91"/>
+			</button>
+			<button name="removebutton"
+				released="removebutton.png"
+				pressed="removebutton.png">
+				<rect x="390" y="100" width="81" height="91"/>
+			</button>
+
+			<button name="loadbutton"
+				released="buttonbar_left_up.png"
+				pressed="buttonbar_left_up.png">
+				<rect x="498" y="410" width="116" height="36"/>
+			</button>
+			<button name="savebutton"
+				released="buttonbar_right_up.png"
+				pressed="buttonbar_right_up.png">
+				<rect x="614" y="410" width="116" height="36"/>
+			</button>
+			<button name="returnbutton"
+				released="buttonbar_left_up.png"
+				pressed="buttonbar_left_up.png">
+				<rect x="118" y="410" width="116" height="36"/>
+			</button>
+			<button name="playbutton"
+				released="buttonbar_right_up.png"
+				pressed="buttonbar_right_up.png">
+				<rect x="234" y="410" width="116" height="36"/>
+			</button>
+		</playlistmgr>
 	</modules>
 	<home module="default_home">
 	</home>

@@ -73,48 +73,41 @@ ALyxListWidget::ALyxListWidget(QWidget *parent, ASkinner *s) : ALyxControl(paren
 ALyxListWidget::~ALyxListWidget() {}
 
 void ALyxListWidget::setSkin(ASkinner *skinner, QString moduleName, QString listName) {
-	ASkinner *t_skinner; // Temporary object
-	if(skinner != NULL) {
-		t_skinner = skinner;
+	if(!skinner) { skinner = m_skinner; }
+	if(skinner) {
+		QDomElement listElement = skinner->skinModuleElementByName(moduleName, "list", listName);
+
+		QDomElement rectElement = listElement.firstChildElement("rect");
+		if(!rectElement.isNull()) {
+			move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
+			setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
+		} else {
+			qDebug() << "Warning: no initial rectangle for" << objectName() << "defined";
+		}
+
+		QDomElement bordersElement = listElement.firstChildElement("borders");
+		if(!bordersElement.isNull()) {
+			corner_ul = QPixmap(skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("upper-left"));
+			corner_bl = QPixmap(skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom-left"));
+			corner_br = QPixmap(skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom-right"));
+			corner_ur = QPixmap(skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("upper-right"));
+			top = QPixmap(skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("top"));
+			bottom = QPixmap(skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom"));
+			right = QPixmap(skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("right"));
+			left = QPixmap(skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("left"));
+		} else {
+			qDebug() << "Warning: no borders defined for list" << objectName();
+		}
+
+		QDomElement selectorElement = listElement.firstChildElement("selector");
+		if(!selectorElement.isNull()) {
+			selector = QPixmap(skinner->skinModuleImagePath(moduleName)+selectorElement.attribute("image"));
+			selector_fill = QPixmap(skinner->skinModuleImagePath(moduleName)+selectorElement.attribute("fill"));
+		} else {
+			qDebug() << "Warning: no selector defined for list" << objectName();
+		}
 	} else {
-		t_skinner = m_skinner;
-	}
-
-	if(t_skinner == NULL) {
-		qDebug() << "Error: skinned object is undefined";
-		return;
-	}
-
-	QDomElement listElement = t_skinner->skinModuleElementByName(moduleName, "list", listName);
-
-	QDomElement rectElement = listElement.firstChildElement("rect");
-	if(!rectElement.isNull()) {
-		move(rectElement.attribute("x").toInt(), rectElement.attribute("y").toInt());
-		setFixedSize(rectElement.attribute("width").toInt(), rectElement.attribute("height").toInt());
-	} else {
-	 	qDebug() << "Warning: no initial rectangle for" << objectName() << "defined";
-	}
-
-	QDomElement bordersElement = listElement.firstChildElement("borders");
-	if(!bordersElement.isNull()) {
-		corner_ul = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("upper-left"));
-		corner_bl = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom-left"));
-		corner_br = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom-right"));
-		corner_ur = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("upper-right"));
-		top = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("top"));
-		bottom = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("bottom"));
-		right = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("right"));
-		left = QPixmap(t_skinner->skinModuleImagePath(moduleName)+bordersElement.attribute("left"));
-	} else {
-	 	qDebug() << "Warning: no borders defined for list" << objectName();
-	}
-
-	QDomElement selectorElement = listElement.firstChildElement("selector");
-	if(!selectorElement.isNull()) {
-		selector = QPixmap(t_skinner->skinModuleImagePath(moduleName)+selectorElement.attribute("image"));
-		selector_fill = QPixmap(t_skinner->skinModuleImagePath(moduleName)+selectorElement.attribute("fill"));
-	} else {
-	 	qDebug() << "Warning: no selector defined for list" << objectName();
+		qDebug() << "NO SKIN DEFINED FOR" << moduleName << ":" << listName;
 	}
 }
 

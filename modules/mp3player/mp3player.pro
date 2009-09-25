@@ -5,11 +5,13 @@ CONFIG += plugin \
 HEADERS = mp3player.h \
     playerdisplay.h \
     foldercontentsloader.h \
-    database.h
+    database.h \
+    playlist.h
 SOURCES = mp3player.cpp \
     playerdisplay.cpp \
     foldercontentsloader.cpp \
-    database.cpp
+    database.cpp \
+    playlist.cpp
 TARGET = mp3player
 INCLUDEPATH += ../.. \
     ../ \
@@ -17,7 +19,8 @@ INCLUDEPATH += ../.. \
     ../../3rdparty
 LIBS += -L../.. \
     -llyxlib
-QT += xml sql
+QT += xml \
+    sql
 OBJECTS_DIR = ./libs
 MOC_DIR = ./libs
 unix { 
@@ -31,9 +34,7 @@ unix {
 win32:release { 
     DESTDIR = ./
     INCLUDEPATH += ./taglib
-    LIBS += -llibtag -lphonon4
+    LIBS += -llibtag \
+        -lphonon4
 }
-
-unix {
-    LIBS += -lphonon
-}
+unix:LIBS += -lphonon

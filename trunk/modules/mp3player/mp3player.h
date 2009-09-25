@@ -31,6 +31,8 @@
 #include "progressdlg.h"
 #include "database.h"
 
+#include "playlist.h"
+
 #include <phonon/mediasource.h>
 #include <phonon/mediaobject.h>
 

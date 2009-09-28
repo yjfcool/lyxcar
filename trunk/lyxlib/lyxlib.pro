@@ -12,7 +12,8 @@ HEADERS = animated.h \
     devicesdlg.h \
     jogdial.h \
     progressdlg.h \
-    gauges.h
+    gauges.h \
+    filelist.h
 SOURCES = animated.cpp \
     display.cpp \
     osd.cpp \
@@ -26,7 +27,8 @@ SOURCES = animated.cpp \
     devicesdlg.cpp \
     jogdial.cpp \
     progressdlg.cpp \
-    gauges.cpp
+    gauges.cpp \
+    filelist.cpp
 CONFIG += qt \
     release
 QT += xml \

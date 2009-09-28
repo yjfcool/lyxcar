@@ -19,7 +19,7 @@
 
 #include "panel.h"
 #include "buttons.h"
-#include "lists.h"
+#include "filelist.h"
 #include "skinner.h"
 #include "animated.h"
 #include "m_interface.h"
@@ -47,8 +47,8 @@ class playlistmgrModuleWidget : public QWidget {
 		ALyxAnimation *lastAnimation;
 
 		// Buttons and animations in hashes with "button name" key.
-		ALyxListWidget	*playList;
-		ALyxListWidget	*folderList;
+		ALyxListWidget		*playList;
+		ALyxFileListWidget	*fileList;
 
 		// Add and remove buttons between lists
 		ALyxButton	*addBtn;

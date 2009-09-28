@@ -22,8 +22,12 @@ playlistmgrModuleWidget::playlistmgrModuleWidget(QWidget *parent, ASkinner *s) {
 	playList = new ALyxListWidget(this, m_skinner);
 	playList->setSkin(NULL, "playlistmgr", "playlist");
 
-	folderList = new ALyxListWidget(this, m_skinner);
-	folderList->setSkin(NULL, "playlistmgr", "folderlist");
+	fileList = new ALyxFileListWidget(this, m_skinner);
+	fileList->setSkin(NULL, "playlistmgr", "folderlist");
+
+	QStringList	mediaFilter;
+	mediaFilter << "*.mp3" << "*.wma" << "*.ogg" << "*.flac" << "*.wav";
+	fileList->setFilter(mediaFilter);
 
 	addBtn = new ALyxButton(this, m_skinner);
 	addBtn->setSkin(NULL, "playlistmgr", "addbutton");

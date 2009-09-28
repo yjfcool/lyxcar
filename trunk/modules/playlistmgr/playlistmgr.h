@@ -24,6 +24,8 @@
 #include "animated.h"
 #include "m_interface.h"
 
+#include "../mp3player/playlist.h"
+
 class playlistmgrModuleWidget : public QWidget {
 	Q_OBJECT
 	public:
@@ -32,8 +34,11 @@ class playlistmgrModuleWidget : public QWidget {
 		~playlistmgrModuleWidget();
 
 		void setSkinner(ASkinner *s) { m_skinner = s; }
-		
 		void animateReverse();
+
+		void fillPlayList();
+
+		APlaylist *playListXML;
 
 	private:
 		/* private members */

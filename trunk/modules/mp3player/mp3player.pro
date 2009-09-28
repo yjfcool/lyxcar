@@ -16,7 +16,8 @@ TARGET = mp3player
 INCLUDEPATH += ../.. \
     ../ \
     ../../lyxlib \
-    ../../3rdparty
+    ../../3rdparty \
+    ../../3rdparty/taglib
 LIBS += -L../.. \
     -llyxlib
 QT += xml \

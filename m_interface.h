@@ -19,6 +19,8 @@
 #include "panel.h"
 #include "skinner.h"
 
+#include "osd.h"
+
 #include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
 
@@ -81,12 +83,17 @@ class M_Interface {
 
 		void setClosable(bool value) { m_closable = value; }
 		bool closable() { return m_closable; }
+		
+		ALyxOSD		*osd() { return m_osd; }
+		void		setOSD(ALyxOSD *osd) { m_osd = osd; }
+
 	protected:
 		QString		m_moduleName;
 		bool			m_closable; // If set, module is deleted during deactivation procedure, otherwise it's just hidden.
 
 		ASkinner	*m_skinner;
 		Phonon::AudioOutput *m_audioOutput;
+		ALyxOSD		*m_osd;
 };
 
 Q_DECLARE_INTERFACE(M_Interface, "com.trolltech.Lyxcar.M_Interface/1.0"); 

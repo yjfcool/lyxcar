@@ -55,10 +55,13 @@ volCtlModuleApplet::volCtlModuleApplet(QWidget *parent, ASkinner *s) : QWidget(p
 	volumeChangeTimer = new QTimer(this);
 	volumeChangeTimer->setInterval(50);
 	volumeChange = 0;
+	volume = 30;
 
 	connect(volumeChangeTimer, SIGNAL(timeout()), this, SLOT(volume_change()));
 	connect(vol_up_button, SIGNAL(released()), volumeChangeTimer, SLOT(stop()));
 	connect(vol_down_button, SIGNAL(released()), volumeChangeTimer, SLOT(stop()));
+
+
 }
 
 volCtlModuleApplet::~volCtlModuleApplet() {
@@ -66,9 +69,18 @@ volCtlModuleApplet::~volCtlModuleApplet() {
 }
 
 void volCtlModuleApplet::volume_change() {
-	qreal vol = m_audioOutput->volume()+(0.01*volumeChange);
-	m_audioOutput->setVolume(vol);
-	qDebug() << "Current volume is" << vol;
+	if((volume <= 1) && (volumeChange == -1)) {
+	    volume = 1;
+	} else if((volume >= 100) && (volumeChange == 1)) {
+	    volume = 100;
+	} else if(abs(volumeChange) == 1) {
+	    volume += volumeChange;
+	} else {
+	    return;
+	}
+	m_audioOutput->setVolume(volume / 100.0);
+	m_osd->inform(tr("Volume: ")+QString::number(volume));
+	qDebug() << "Current volume is" << m_audioOutput->volume();
 }
 
 void volCtlModuleApplet::volume_up() {
@@ -87,8 +99,10 @@ void volCtlModuleApplet::volume_mute() {
 	qDebug() << "Volume MUTE button pressed" << m_audioOutput->isMuted();
 	if(m_audioOutput->isMuted()) {
 	    m_audioOutput->setMuted(false);
+	    m_osd->inform(tr("Mute OFF"));
 	} else {
 	    m_audioOutput->setMuted(true);
+	    m_osd->inform(tr("Mute ON"));
 	}
 }
 
@@ -103,6 +117,9 @@ QWidget * volCtlModule::activateApplet(QWidget *parent) {
 	appletWidget = new volCtlModuleApplet(NULL, m_skinner);	
 	appletWidget->setSkinner(m_skinner);
 	appletWidget->setAudioOutput(m_audioOutput);
+	appletWidget->setOSD(osd());
+
+	m_audioOutput->setVolume(0.3);
 
 	return appletWidget;
 }

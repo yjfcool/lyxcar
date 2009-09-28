@@ -16,6 +16,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QDir>
+#include <QTextCodec>
 
 #include <taglib.h>
 #include <fileref.h>
@@ -30,16 +31,13 @@ class APlaylist : public QObject
 public:
 	APlaylist(QString fileName);
 
-	QString		m_fileName;
-	QDomElement	m_root;
-
 	QDomDocument	m_xml;
 
 	void	addEntry(QString filePath, QString fileName, QString artist = "", QString album = "", QString title = "");
 	void	setEntryArtist(QString filePath, QString fileName, QString artist) {}
 	void	setEntryAlbum(QString filePath, QString fileName, QString album) {}
 	void	setEntryTitle(QString filePath, QString fileName, QString title) {}
-	void	updateEntry(QString filePath, QString fileName) {}
+	void	parseTags(QDomElement *entry);
 
 	void	addDir(QString dirName);
 	void	addDir(QDir dir);
@@ -48,6 +46,13 @@ public:
 	void	load(QString fileName = "");
 	void	save(QString fileName = "");
 	void	clear();
+
+	QString fileName() { return m_fileName; }
+
+private:
+	QTextCodec *tagCodec;
+	QDomElement	m_root;
+	QString		m_fileName;
 
 signals:
 	void	loaded();

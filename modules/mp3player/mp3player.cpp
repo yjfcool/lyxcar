@@ -59,9 +59,6 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s, Phonon::AudioOutp
 	} else {
 		selectDevice();
 	}
-
-	APlaylist *playList = new APlaylist("./test.playlist");
-	playList->save();
 }
 
 // SLOT

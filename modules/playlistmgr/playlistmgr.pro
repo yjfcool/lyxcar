@@ -11,4 +11,5 @@ MOC_DIR		= ./libs
 
 win32:release {
 	DESTDIR		= ./
+        LIBS            += -llibtag
 }

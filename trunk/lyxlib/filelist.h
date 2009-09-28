@@ -20,7 +20,7 @@ class ALyxFileListWidget : public ALyxListWidget {
 public:
 	ALyxFileListWidget(QWidget *parent, ASkinner *skinner);
 
-	QDir	rootDir() { return m_rootdir; }
+	QDir	dir() { return m_rootdir; }
 	void	setRootDir(QDir dir) { m_rootdir = dir; refresh(); }
 	void	setRootDir(QString dir) { m_rootdir = QDir(dir); refresh(); }
 	void	setFilter(QStringList filter) { m_filter = filter; refresh(); }
@@ -31,6 +31,14 @@ private:
 	QStringList	m_filter;
 
 	void	readRootDir();
+	void	fileDoubleClicked(QString fileName);
+	void	directoryDoubleClicked(QString dirName);
+
+protected:
+	void mouseDoubleClickEvent(QMouseEvent *e);
+
+signals:
+	void	fileActivated(QString fileName);
 };
 
 #endif // _FILELIST_H_

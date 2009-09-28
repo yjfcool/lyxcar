@@ -65,7 +65,8 @@ class playlistmgrModuleWidget : public QWidget {
 		ALyxPushButton	*loadBtn;
 
 	private slots:
-	
+		void addToPlaylist(QString fileName);
+
 	signals:
 		void activateClicked(QString);
 		void animationFinished();

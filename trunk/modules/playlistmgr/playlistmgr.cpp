@@ -24,6 +24,8 @@ playlistmgrModuleWidget::playlistmgrModuleWidget(QWidget *parent, ASkinner *s) {
 
 	fileList = new ALyxFileListWidget(this, m_skinner);
 	fileList->setSkin(NULL, "playlistmgr", "folderlist");
+	
+	connect(fileList, SIGNAL(fileActivated(QString)), this, SLOT(addToPlaylist(QString)));
 
 	QStringList	mediaFilter;
 	mediaFilter << "*.mp3" << "*.wma" << "*.ogg" << "*.flac" << "*.wav";
@@ -87,6 +89,15 @@ void playlistmgrModuleWidget::fillPlayList() {
 	} else {
 		qDebug() << "Playlist is empty!";
 	}
+}
+
+void playlistmgrModuleWidget::addToPlaylist(QString fileName) {
+    playList->clear();
+
+    playListXML->addEntry(fileList->dir().path(), fileName);
+    playListXML->save();
+
+    fillPlayList();
 }
 
 /*

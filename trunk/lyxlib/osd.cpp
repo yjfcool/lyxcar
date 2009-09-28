@@ -28,7 +28,7 @@ ALyxOSD::ALyxOSD(QWidget *parent) : QWidget(parent) {
     mainLayout->addWidget(pictureLabel);
     mainLayout->addWidget(textLabel);
 
-    showHideTimer->setInterval(5000);
+    showHideTimer->setInterval(3000);
     showHideTimer->stop();
     connect(showHideTimer, SIGNAL(timeout()), this, SLOT(hide()));
 

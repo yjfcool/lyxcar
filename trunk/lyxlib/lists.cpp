@@ -332,6 +332,9 @@ void ALyxListWidget::clear() {
 	setSelectedItem(NULL);
 	m_selectedIndex = -1;
 	m_scrollBar->setMaximumPosition(0);
+	foreach(ALyxListWidgetItem *item, l_items) {
+		delete item;
+	}
 	l_items.clear();
 	repaint();
 }

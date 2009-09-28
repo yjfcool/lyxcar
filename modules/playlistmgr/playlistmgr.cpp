@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Pavlov Denis
+ * Copyright (C) 2008-2009 Pavlov Denis
  *
  * Default main home module.
  *
@@ -46,6 +46,11 @@ playlistmgrModuleWidget::playlistmgrModuleWidget(QWidget *parent, ASkinner *s) {
 	playBtn = new ALyxPushButton(this, tr("Play/Stop"));
 	playBtn->setFont(QFont("Calibri", 12));
 	playBtn->setSkin(m_skinner, "playlistmgr", "playbutton");
+
+	playListXML = new APlaylist("./test.playlist");
+	playListXML->load();
+
+	fillPlayList();
 }
 
 void playlistmgrModuleWidget::animateReverse() {
@@ -54,6 +59,23 @@ void playlistmgrModuleWidget::animateReverse() {
 
 playlistmgrModuleWidget::~playlistmgrModuleWidget() {
 	qDebug() << "playlistmgrModuleWidget destroyed";	
+}
+
+void playlistmgrModuleWidget::fillPlayList() {
+	QDomNodeList entries = playListXML->m_xml.elementsByTagName("playlist").at(0).
+		toElement().elementsByTagName("entry");
+	qDebug() << playListXML->m_xml.toString();
+	// Fill the playlist with album entries
+	if(entries.count() > 0) for(int i = 0; i < entries.count(); i++) {
+		QDomElement entry = entries.at(i).toElement();
+		qDebug() << entry.attribute("fileName");
+		ALyxListWidgetItem *item = new ALyxListWidgetItem(playListXML);
+		item->setText(entry.attribute("fileName"));
+		item->setPixmap(QPixmap("./skins/default/icons/cdplayer.png"));
+		playList->addItem(item);
+	} else {
+		qDebug() << "Playlist is empty!";
+	}
 }
 
 /*

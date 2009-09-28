@@ -61,11 +61,7 @@ mp3playerWindow::mp3playerWindow(QWidget *parent, ASkinner *s, Phonon::AudioOutp
 	}
 
 	APlaylist *playList = new APlaylist("./test.playlist");
-	playList->addEntry("./", "testtheme.mp3");
-	playList->addEntry("./", "testtheme2.mp3");
-	playList->addEntry("./", "testtheme4.mp3");
 	playList->save();
-
 }
 
 // SLOT

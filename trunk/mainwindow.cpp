@@ -157,6 +157,7 @@ bool AMainWindow::loadModule(QString moduleName) { // ** Finished **
 		modules[moduleName] = plugin;
 		qobject_cast<M_Interface *>(plugin)->setModuleName(moduleName);
 		qobject_cast<M_Interface *>(plugin)->setAudioOutput(m_audioOutput);
+		qobject_cast<M_Interface *>(plugin)->setOSD(osd);
 
 		// Connect module's activation demand signal
 		// to main window reply slot.
@@ -185,6 +186,10 @@ void AMainWindow::init(const QString & skin_name)
    brush.setTexture(bgImg);
    pal.setBrush(QPalette::Window, brush);
 
+    osd = new ALyxOSD(this);
+    osd->move(0, 300);
+    osd->setFixedSize(800, 200);
+
    QWidget *mainWidget = new QWidget(this);
    QVBoxLayout *layout = new QVBoxLayout(mainWidget);
    layout->setSpacing(0);
@@ -210,6 +215,8 @@ void AMainWindow::init(const QString & skin_name)
     // Create main audio output for main program
     m_audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 
+    osd->inform(tr("Loading modules"));
+  
     // Then load all modules into QHash - create objects
     foreach (QString mod, modulesList) 
     {
@@ -219,6 +226,8 @@ void AMainWindow::init(const QString & skin_name)
 	}
     }
 
+    osd->inform(tr("Everything's done!\nReady to go."));
+    
     fillPanel();
 
     // Activate default module, or activate saved state module.

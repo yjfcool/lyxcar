@@ -1,13 +1,11 @@
-#ifndef __CLOCK_H
-#define __CLOCK_H
+#ifndef _CLOCK_H_
+#define _CLOCK_H_
 
 #include "m_interface.h"
 #include <QWidget>
 
-namespace indie
+class ClockWidget : public QWidget
 {
-   class ClockWidget : public QWidget
-   {
       Q_OBJECT
 
       public:
@@ -16,10 +14,10 @@ namespace indie
 
       protected:
          void paintEvent(QPaintEvent * event);
-   };
+};
 
-   class ClockModule : public QObject, public M_Interface
-   {
+class ClockModule : public QObject, public M_Interface
+{
       Q_OBJECT
       Q_INTERFACES(M_Interface)
 
@@ -36,7 +34,6 @@ namespace indie
 
       private:
          QWidget * m_widget;
-   };
-} // namespace indie
+};
 
-#endif // __CLOCK_H
+#endif // _CLOCK_H_

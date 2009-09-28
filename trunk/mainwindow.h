@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2008 Pavlov Denis
+ * Copyright (C) 2008-2009 Pavlov Denis
  *
  * Comments unavailable.
  *
@@ -22,6 +22,7 @@
 #include "m_interface.h"
 #include "skinner.h"
 #include "buttons.h"
+#include "osd.h"
 
 //! \brief The class of main window.
 /*!
@@ -30,19 +31,22 @@
 class AMainWindow : public QMainWindow {
 		Q_OBJECT
 	public:
-		//! Constructs main window
+	        //! Constructs main window
 		explicit AMainWindow(QWidget * parent = 0);
-      AMainWindow(const QString & skinName, QWidget * parent = 0);
-      //! Destructor
-		~AMainWindow();
-		
-		//! \brief Returns current active module name.
-		QString activeModuleName() { return m_activeModuleName; }
+	        AMainWindow(const QString & skinName, QWidget * parent = 0);
+
+		//! Destructor
+	        ~AMainWindow();
+
+	        //! \brief Returns current active module name.
+	        QString activeModuleName() { return m_activeModuleName; }
+
+		ALyxOSD	*osd;
 
 //		void	closeEvent(QCloseEvent *) {};
 
-   private:
-      void init(const QString & skin_name);
+	private:
+		void init(const QString & skin_name);
 
 	public slots:
 		//! \brief Activates a module named "moduleName". Activation means the module widget is inserted into main area and
@@ -50,27 +54,26 @@ class AMainWindow : public QMainWindow {
 		void activateModule(QString moduleName);
 
 	private:
-		
+
 		QWidget *mainArea;	//! Area for viewing modules!
 		APanel	*panel; // Panel object
 		ASkinner *skinner; // Skin engine object
 
 		QStringList modulesList;	// Module names list
 		QHash<QString, QObject *> modules; // Module objects list by name
-		
+
 		QString m_activeModuleName;	// Contains name of module which is displayed in main area now
 		M_Interface *m_interface;
-		
+
 		//! \brief Loads plugin with name <moduleName>. Returns true if there was an error.
 		bool	loadModule(QString moduleName);
-		
+
 		void activateModuleDemand(QString moduleName);
 
-		
 		//! \brief Clears main area layout. NOTICE: Widgets inserted into that layout lose their parent, that's why we need
 		//! to destroy them properly on application quit.
 		void clearMainArea();
-		
+
 		bool fillPanel();
 
 		//

@@ -4,24 +4,17 @@
 #include <QTime>
 #include <QPainter>
 
-namespace indie
-{
-   ClockWidget::ClockWidget(QWidget * parent) :
-      QWidget(parent)
-   {
-      QTimer * timer = new QTimer(this);
-      connect(timer, SIGNAL(timeout()), this, SLOT(update()));
-      timer->start(1000);
+ClockWidget::ClockWidget(QWidget * parent) : QWidget(parent) {
+    QTimer * timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+    timer->start(1000);
 
-      setMinimumSize(200, 200);
-   }
+    setMinimumSize(200, 200);
+}
 
-   ClockWidget::~ClockWidget()
-   {
-   }
+ClockWidget::~ClockWidget() {}
 
-   void ClockWidget::paintEvent(QPaintEvent * event)
-   {
+void ClockWidget::paintEvent(QPaintEvent * event) {
       Q_UNUSED(event);
       static const QPoint hourHand[3] = {
          QPoint(7, 8),
@@ -70,42 +63,36 @@ namespace indie
 
       painter.setPen(minuteColor);
 
-      for (int j = 0; j < 60; ++j) {
-         if ((j % 5) != 0)
-            painter.drawLine(92, 0, 96, 0);
-         painter.rotate(6.0);
-      }
-   }
+    for (int j = 0; j < 60; ++j) {
+	if ((j % 5) != 0) painter.drawLine(92, 0, 96, 0);
+	painter.rotate(6.0);
+    }
+	
+}
 
-   ClockModule::ClockModule(QObject * parent) :
-      QObject(parent)
-   {
-      m_widget = new ClockWidget;
-   }
+ClockModule::ClockModule(QObject * parent) : QObject(parent) {
 
-   ClockModule::~ClockModule()
-   {
-      delete m_widget;
-   }
+}
+
+ClockModule::~ClockModule() {
+    delete m_widget;
+}
    
-   QWidget * ClockModule::activate(QWidget * parent)
-   {
-      m_widget->setParent(parent);
-      return m_widget;
-   }
+QWidget * ClockModule::activate(QWidget * parent) {
+    return 0;
+}
 
-   void ClockModule::deactivate(QString deactivateFor)
-   {
-      emit deactivated(deactivateFor);
-   }
+void ClockModule::deactivate(QString deactivateFor) {
+    emit deactivated(deactivateFor);
+}
 
-   QWidget * ClockModule::activateApplet(QWidget * parent)
-   {
-      Q_UNUSED(parent);
+QWidget * ClockModule::activateApplet(QWidget * parent) {
+    Q_UNUSED(parent);
 
-      return 0;
-   }
-} // namespace indie
+    m_widget = new ClockWidget(parent);
 
-Q_EXPORT_PLUGIN2(clock, indie::ClockModule);
+    return m_widget;
+}
+
+Q_EXPORT_PLUGIN2(clock, ClockModule);
 

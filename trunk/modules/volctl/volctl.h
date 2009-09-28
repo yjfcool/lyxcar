@@ -32,6 +32,7 @@ class volCtlModuleApplet : public QWidget {
 
 		void setSkinner(ASkinner *s) { m_skinner = s; }
 		void setAudioOutput(Phonon::AudioOutput *output) { m_audioOutput = output; }
+		void setOSD(ALyxOSD *osd) { m_osd = osd; }
 
 	private:
 		/* private members */
@@ -41,9 +42,11 @@ class volCtlModuleApplet : public QWidget {
 
 		ASkinner * m_skinner;
 		Phonon::AudioOutput *m_audioOutput;
+		ALyxOSD	 * m_osd;
 		
 		QTimer *volumeChangeTimer;
-		qreal volumeChange;
+		int	volumeChange;
+		int	volume;
 
 	private slots:
 		void	volume_up();

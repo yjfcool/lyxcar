@@ -70,7 +70,14 @@ void playlistmgrModuleWidget::fillPlayList() {
 		QDomElement entry = entries.at(i).toElement();
 		qDebug() << entry.attribute("fileName");
 		ALyxListWidgetItem *item = new ALyxListWidgetItem(playListXML);
-		item->setText(entry.attribute("fileName"));
+		QString songName;
+		if(!entry.attribute("artist").isEmpty()) songName = entry.attribute("artist");
+		if(entry.attribute("title").isEmpty()) {
+			songName += entry.attribute("fileName");
+		} else {
+			songName += entry.attribute("title");
+		}
+		item->setText(songName);
 		item->setPixmap(QPixmap("./skins/default/icons/cdplayer.png"));
 		playList->addItem(item);
 	} else {

@@ -16,6 +16,7 @@ ALyxFileListWidget::ALyxFileListWidget(QWidget *parent, ASkinner *skinner) :
 	ALyxListWidget(parent, skinner) {
 
 	setRootDir("./");
+	m_rootdir.makeAbsolute();
 }
 
 void ALyxFileListWidget::refresh() {
@@ -27,9 +28,11 @@ void ALyxFileListWidget::readRootDir() {
 	unsigned int i;
 
 	// Add first element of parent directory
-	ALyxListWidgetItem *item = new ALyxListWidgetItem(this, tr("Up"));
-	item->setPixmap(QPixmap("./skins/default/icons/folder.png"));
-	addItem(item);
+	if(!m_rootdir.isRoot()) {
+	    ALyxListWidgetItem *item = new ALyxListWidgetItem(this, tr("Up"));
+	    item->setPixmap(QPixmap("./skins/default/icons/folder-up.png"));
+	    addItem(item);
+	}
 
 	// Read directories first
 	QStringList list = m_rootdir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
@@ -46,4 +49,39 @@ void ALyxFileListWidget::readRootDir() {
 		item->setPixmap(QPixmap("./skins/default/icons/audio/audio-basic.png"));
 		addItem(item);
 	}
+}
+
+void ALyxFileListWidget::mouseDoubleClickEvent(QMouseEvent *e) {
+	Q_UNUSED(e);
+
+	// Check if a clicked object is a directory
+	QStringList list = m_rootdir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+	if(list.indexOf(selectedItem()->text()) >= 0) {
+	    directoryDoubleClicked(selectedItem()->text());
+	    return;
+	}
+
+	// Check if clicked object is a file
+	list = m_rootdir.entryList(QDir::Files | QDir::NoDotAndDotDot);
+	if(list.indexOf(selectedItem()->text()) >= 0) {
+	    fileDoubleClicked(selectedItem()->text());
+	    return;
+	}
+
+	if(selectedItem()->text() == tr("Up")) {
+	    m_rootdir.cdUp();
+	    refresh();
+	    return;
+	}
+}
+
+void ALyxFileListWidget::fileDoubleClicked(QString fileName) {
+	qDebug() << "Executed file operation" << fileName;
+	emit fileActivated(fileName);
+}
+
+void ALyxFileListWidget::directoryDoubleClicked(QString dirName) {
+	m_rootdir.cd(dirName);
+	refresh();
+	qDebug() << "Directory changed to" << dirName;
 }

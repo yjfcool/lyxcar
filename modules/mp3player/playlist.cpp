@@ -24,22 +24,25 @@ APlaylist::APlaylist(QString fileName) {
 #ifdef Q_OS_WIN32
 	tagCodec = QTextCodec::codecForName("Windows-1251");
 #endif
-
+	qDebug() << "APlaylist created";
 }
 
 void APlaylist::addEntry(QString filePath, QString fileName, QString artist, QString album, QString title) {
+	qDebug() << "Adding new entry to playlist";
+
 	if(!filePath.isEmpty() && !fileName.isEmpty()) {
-		if(!QFile::exists(filePath+"/"+fileName)) {
-			qDebug() << "No such a file:" << filePath+"/"+fileName << "!";
-			return;
-		}
+	//	if(!QFile::exists(filePath+"/"+fileName)) {
+	//		qDebug() << "No such a file:" << filePath+"/"+fileName << "!";
+	//		return;
+	//	}
 		QDomElement tag = m_xml.createElement("entry");
 		tag.setAttribute("filePath", filePath);
 		tag.setAttribute("fileName", fileName);
 
-		parseTags(&tag);
+		//parseTags(&tag);
 
 		m_root.appendChild(tag);
+		qDebug() << "Playlist contents is" << m_xml.toString();
 
 		emit entryAdded(title, album, artist);
 	} else {
@@ -115,6 +118,8 @@ void APlaylist::save(QString fileName) {
 
 	QTextStream out(&file);
 	out << playListInText;
+
+	emit saved();
 
 	file.close();
 }

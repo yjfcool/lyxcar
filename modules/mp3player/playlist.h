@@ -32,6 +32,7 @@ public:
 	APlaylist(QString fileName);
 
 	QDomDocument	m_xml;
+	QDomElement	m_root;
 
 	void	addEntry(QString filePath, QString fileName, QString artist = "", QString album = "", QString title = "");
 	void	setEntryArtist(QString filePath, QString fileName, QString artist) {}
@@ -51,11 +52,11 @@ public:
 
 private:
 	QTextCodec *tagCodec;
-	QDomElement	m_root;
 	QString		m_fileName;
 
 signals:
 	void	loaded();
+	void	saved();
 	void	cleared();
 	void	entryAdded(QString title, QString album, QString artist);
 };

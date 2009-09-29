@@ -57,6 +57,8 @@ playlistmgrModuleWidget::playlistmgrModuleWidget(QWidget *parent, ASkinner *s) {
 	playListXML->load();
 
 	fillPlayList();
+
+	qDebug() << "Playlist manager created!";
 }
 
 void playlistmgrModuleWidget::animateReverse() {
@@ -68,6 +70,7 @@ playlistmgrModuleWidget::~playlistmgrModuleWidget() {
 }
 
 void playlistmgrModuleWidget::fillPlayList() {
+	qDebug() << "Filling playlist";
 	QDomNodeList entries = playListXML->m_xml.elementsByTagName("playlist").at(0).
 		toElement().elementsByTagName("entry");
 	qDebug() << playListXML->m_xml.toString();
@@ -92,12 +95,19 @@ void playlistmgrModuleWidget::fillPlayList() {
 }
 
 void playlistmgrModuleWidget::addToPlaylist(QString fileName) {
-    playList->clear();
+	qDebug() << "Adding" << fileName << "to playlist";
+	//playList->clear();
 
-    playListXML->addEntry(fileList->dir().path(), fileName);
-    playListXML->save();
+	//playListXML->addEntry(fileList->dir().path(), fileName);
 
-    fillPlayList();
+	QDomElement tag = playListXML->m_xml.createElement("entry");
+	tag.setAttribute("filePath", "test1");
+	tag.setAttribute("fileName", "test");
+	playListXML->m_root.appendChild(tag);
+	qDebug() << playListXML->m_xml.toString();
+	//playListXML->save();
+
+	//fillPlayList();
 }
 
 /*
@@ -131,13 +141,6 @@ void playlistmgrModule::deactivationFinished() {
 }
 
 QWidget *playlistmgrModule::activateApplet(QWidget *parent) {
-	// Create applet widget
-//	appletWidget = new playlistmgrModuleApplet(NULL, m_skinner);
-//	appletWidget->setSkinner(m_skinner);
-
-	// When signal from applet is recieved (button clicked)
-	// call activateWidget().
-//	connect(appletWidget, SIGNAL(buttonClicked()), this, SLOT(activateMyself()));
 	return NULL;
 }
 
